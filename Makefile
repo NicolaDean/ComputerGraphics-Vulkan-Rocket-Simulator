@@ -10,7 +10,7 @@ UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OSNAME = LINUX
 	endif
-	ifeq ($(UNAME_S),Monterei)
+	ifeq ($(UNAME_S),Darwin)
 		OSNAME = MAC
 	endif
 #OS DISTINCTION FOR FLAGS:
