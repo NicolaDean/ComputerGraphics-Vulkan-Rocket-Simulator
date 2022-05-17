@@ -2,7 +2,7 @@
 #include "../commonLibs.h"
 
 namespace Engine{
-    static std::vector<char*> deviceExtensions = {
+    static std::vector<const char*> deviceExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
 

@@ -9,12 +9,12 @@
 
 #include "./rocketSimulator/RocketSimulator.h"
 
-const uint32_t WIDTH = 640;
+const uint32_t WIDTH = 650;
 const uint32_t HEIGHT = 480;
 
 int main() {
     //App::App app = App::App();
-    RocketSimulator::RocketSimulator rocketSimulator = RocketSimulator::RocketSimulator(WIDTH,HEIGHT,"Rocket Simulator");
+    RocketSimulator::RocketSimulator rocketSimulator = RocketSimulator::RocketSimulator(WIDTH,HEIGHT,"Rocket Simusclsator");
     try {
         rocketSimulator.run();
     } catch (const std::exception& e) {

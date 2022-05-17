@@ -1,5 +1,5 @@
 CFLAGS = -std=c++17 -O2
-INC=-I./headers
+INC=-I ./header
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
 GLSLC_PATH = /usr/local/bin
@@ -30,12 +30,12 @@ COMPILED_SHADER = $(SHADER_FOLDER)/compiledShader
 #SOURCES PATHS
 #TODO modify the script, if we add more subfolder
 ENGINE_FOLDER = src/engine
-ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*.h $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*.h
+ENGINE = $(ENGINE_FOLDER)/*.cpp  $(ENGINE_FOLDER)/*/*.cpp
 MAIN = src/main.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
 
-Engine: $(SOURCES)
+Engine: $(MAIN) clean
 	echo OS:$(OSNAME)
 	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 
