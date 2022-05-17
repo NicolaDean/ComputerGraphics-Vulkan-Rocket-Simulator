@@ -38,7 +38,7 @@ ifeq ($(OSNAME),MAC)
 
 endif
 
-Engine: $(MAIN)
+Engine: $(MAIN) clean
 	echo OS:$(OSNAME)
 	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 
