@@ -1,6 +1,4 @@
-//
-// Created by nicomane on 16/05/22.
-//
+
 
 #ifndef ENGINE_RENDERER_H
 #define ENGINE_RENDERER_H
@@ -9,12 +7,14 @@
 #include "../Drawing/CommandBuffer.h"
 #include "../Presentation/SwapChain.h"
 #include "../commonLibs.h"
+#include "../Utils/Constants.h"
 namespace Engine{
     class Renderer {
 
-        VkSemaphore imageAvailableSemaphore;
-        VkSemaphore renderFinishedSemaphore;
-        VkFence inFlightFence;
+        int currentFrame = 0;
+        std::vector<VkSemaphore> imageAvailableSemaphores;
+        std::vector<VkSemaphore> renderFinishedSemaphores;
+        std::vector<VkFence> inFlightFences;
 
         LogicDeviceManager *logicDeviceManager;
         SwapChain * swapChainCopy;

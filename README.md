@@ -1,6 +1,6 @@
 # ComputerGraphics-Vulkan-Rocket-Simulator
 
-- FINISH "Frame In Flight and SwapChain Recreation" of Drawing chapter
+- FINISH "SwapChain Recreation" of Drawing chapter
 - FINISH VERTEX BUFFER TUTORIAL
 - FINISH UNIFORM BUFFER TUTORIAL
 - ADD THE "LOAD OBJ" FUNCTIONS

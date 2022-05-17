@@ -28,19 +28,23 @@ namespace Engine{
     }
 
     void CommandBuffer::createCommandBuffer() {
+        commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         allocInfo.commandPool = commandPool;
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         allocInfo.commandBufferCount = 1; //if we have multiple buffers we simply increase this number
 
+        allocInfo.commandBufferCount = (uint32_t) commandBuffers.size();
         /*
          * VK_COMMAND_BUFFER_LEVEL_PRIMARY   -> Can be submitted to a queue for execution, but cannot be called from other command buffers
          * VK_COMMAND_BUFFER_LEVEL_SECONDARY -> Cannot be submitted directly, but can be called from primary command buffers.
          */
 
         //Allocate command Buffer
-        if (vkAllocateCommandBuffers(*device, &allocInfo, &commandBuffer) != VK_SUCCESS) {
+
+        if (vkAllocateCommandBuffers(*device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
             throw std::runtime_error("failed to allocate command buffers!");
         }
     }
@@ -50,12 +54,12 @@ namespace Engine{
     //TODO NEED TO ADD A FUNCTION TO RECORD A GENERIC DRAW COMMAND
 
     //push a "draw triangle" command
-    void CommandBuffer::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex,SwapChain swapChain,GraphicPipeline graphicPipeline) {
+    void CommandBuffer::recordCommandBuffer(int currFrame,uint32_t imageIndex,SwapChain swapChain,GraphicPipeline graphicPipeline) {
 
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
-        if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS) {
+        if (vkBeginCommandBuffer(commandBuffers[currFrame], &beginInfo) != VK_SUCCESS) {
             throw std::runtime_error("failed to begin recording command buffer!");
         }
 
@@ -70,15 +74,15 @@ namespace Engine{
         renderPassInfo.clearValueCount = 1;
         renderPassInfo.pClearValues = &clearColor;
 
-        vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+        vkCmdBeginRenderPass(commandBuffers[currFrame], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-        vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getGraphicPipeline());
+        vkCmdBindPipeline(commandBuffers[currFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getGraphicPipeline());
 
-        vkCmdDraw(commandBuffer, 3, 1, 0, 0);
+        vkCmdDraw(commandBuffers[currFrame], 3, 1, 0, 0);
 
-        vkCmdEndRenderPass(commandBuffer);
+        vkCmdEndRenderPass(commandBuffers[currFrame]);
 
-        if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) {
+        if (vkEndCommandBuffer(commandBuffers[currFrame]) != VK_SUCCESS) {
             throw std::runtime_error("failed to record command buffer!");
         }
     }
