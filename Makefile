@@ -4,6 +4,19 @@ LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
 GLSLC_PATH = /usr/local/bin
 
+
+#SHADER INFO:
+SHADER_FOLDER = ./src/Shaders
+COMPILED_SHADER = $(SHADER_FOLDER)/compiledShader
+
+#SOURCES PATHS
+#TODO modify the script, if we add more subfolder
+ENGINE_FOLDER = src/engine
+ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*.h $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*.h
+MAIN = src/main.cpp
+#SOURCE COMPOSITION
+SOURCES = $(MAIN) $(ENGINE)
+
 #OS DETECTION
 OSNAME = LINUX
 UNAME_S := $(shell uname -s)
@@ -21,21 +34,11 @@ endif
 ifeq ($(OSNAME),MAC)
 	GLSLC_PATH = /Users/fasa/VulkanSDK/1.3.204.0/macOS/bin
     LDFLAGS = -lglfw -lvulkan -ldl -lpthread
+    ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp
+
 endif
 
-#SHADER INFO:
-SHADER_FOLDER = ./src/Shaders
-COMPILED_SHADER = $(SHADER_FOLDER)/compiledShader
-
-#SOURCES PATHS
-#TODO modify the script, if we add more subfolder
-ENGINE_FOLDER = src/engine
-ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*.h $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*.h
-MAIN = src/main.cpp
-#SOURCE COMPOSITION
-SOURCES = $(MAIN) $(ENGINE)
-
-Engine: $(SOURCES)
+Engine: $(MAIN)
 	echo OS:$(OSNAME)
 	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 
