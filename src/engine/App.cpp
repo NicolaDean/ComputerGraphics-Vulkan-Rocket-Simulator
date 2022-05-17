@@ -96,6 +96,9 @@ namespace Engine{
         //Destroy Window
         glfwDestroyWindow(window);
         glfwTerminate();
+
+        std::cout << "Resources released correctly!\n\n";
+
     }
 
     /**
