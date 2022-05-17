@@ -12,7 +12,7 @@ COMPILED_SHADER = $(SHADER_FOLDER)/compiledShader
 #SOURCES PATHS
 #TODO modify the script, if we add more subfolder
 ENGINE_FOLDER = src/engine
-ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*.h $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*.h
+ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp
 MAIN = src/main.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)

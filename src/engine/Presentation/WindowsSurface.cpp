@@ -13,7 +13,7 @@ namespace Engine{
         }
     }
 
-    void WindowsSurface::clean() {
+    void WindowsSurface::clean(VkInstance instance) {
         vkDestroySurfaceKHR(instance, surface, nullptr);
     }
 
