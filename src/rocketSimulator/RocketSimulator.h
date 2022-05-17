@@ -6,11 +6,11 @@
 
 #include "../engine/App.h"
 
-namespace MyApp{
-    class MyApp: public Engine::App{
+namespace RocketSimulator{
+    class RocketSimulator: public Engine::App{
 
     public:
-        MyApp(int width,int h,std::string win_name):Engine::App(width,h,win_name){
+        RocketSimulator(int width,int h,std::string win_name):Engine::App(width,h,win_name){
             //Some Code....
         }
 

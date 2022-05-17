@@ -7,16 +7,16 @@
 #include <cstdlib>
 #include <vector>
 
-#include "./myapp/MyApp.h"
+#include "./rocketSimulator/RocketSimulator.h"
 
 const uint32_t WIDTH = 640;
 const uint32_t HEIGHT = 480;
 
 int main() {
     //App::App app = App::App();
-    MyApp::MyApp assignment13 = MyApp::MyApp(WIDTH,HEIGHT,"Assignment 13");
+    RocketSimulator::RocketSimulator rocketSimulator = RocketSimulator::RocketSimulator(WIDTH,HEIGHT,"Rocket Simulator");
     try {
-        assignment13.run();
+        rocketSimulator.run();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
