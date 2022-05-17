@@ -4,6 +4,25 @@ LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
 GLSLC_PATH = /usr/local/bin
 
+#OS DETECTION
+OSNAME = LINUX
+UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OSNAME = LINUX
+	endif
+	ifeq ($(UNAME_S),Monterei)
+		OSNAME = MAC
+	endif
+#OS DISTINCTION FOR FLAGS:
+ifeq ($(OSNAME),LINUX)
+	GLSLC_PATH = /usr/local/bin
+	LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
+endif
+ifeq ($(OSNAME),MAC)
+	GLSLC_PATH = /Users/fasa/VulkanSDK/1.3.204.0/macOS/bin
+    LDFLAGS = -lglfw -lvulkan -ldl -lpthread
+endif
+
 #SHADER INFO:
 SHADER_FOLDER = ./src/Shaders
 COMPILED_SHADER = $(SHADER_FOLDER)/compiledShader
@@ -17,6 +36,7 @@ MAIN = src/main.cpp
 SOURCES = $(MAIN) $(ENGINE)
 
 Engine: $(SOURCES)
+	echo OS:$(OSNAME)
 	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 
 .PHONY: test clean debug
