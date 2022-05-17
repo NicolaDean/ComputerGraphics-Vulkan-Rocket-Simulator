@@ -24,6 +24,7 @@
   OBSERVER PATTERN so that we can subscribe entity to be 
   updated on events
   (eg, we subscribe rocket so when drawFrame we increment velocity,position...)
+  
 ##Camera System
 - Copy the camera matrixes used in the assignment and 
 convert them into a class so we can easily select what kind
