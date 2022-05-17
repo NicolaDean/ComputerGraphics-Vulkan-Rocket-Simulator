@@ -34,8 +34,6 @@ endif
 ifeq ($(OSNAME),MAC)
 	GLSLC_PATH = /Users/fasa/VulkanSDK/1.3.204.0/macOS/bin
     LDFLAGS = -lglfw -lvulkan -ldl -lpthread
-    ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp
-
 endif
 
 Engine: $(MAIN) clean

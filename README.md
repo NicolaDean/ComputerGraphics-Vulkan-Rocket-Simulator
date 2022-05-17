@@ -1,6 +1,7 @@
 # ComputerGraphics-Vulkan-Rocket-Simulator
 
 - FINISH "SwapChain Recreation" of Drawing chapter
+THINK HOW TO DO (now i dont know how to pass APP to Renderer)
 - FINISH VERTEX BUFFER TUTORIAL
 - FINISH UNIFORM BUFFER TUTORIAL
 - ADD THE "LOAD OBJ" FUNCTIONS

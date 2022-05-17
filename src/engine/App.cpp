@@ -1,5 +1,6 @@
 #include "App.h"
 
+
 namespace Engine{
     void App::run(){
         init();
@@ -25,8 +26,18 @@ namespace Engine{
     void App::initWindow(){
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        //glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); ->now is resizable
+
+
+
         window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
+        glfwSetWindowUserPointer(window, this);
+        glfwSetFramebufferSizeCallback(window, App::framebufferResizeCallback);
+    }
+
+    void App::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+        auto app = reinterpret_cast<App*>(glfwGetWindowUserPointer(window));
+        app->framebufferResized = true;
     }
 
     void App::initVulkan(){
@@ -68,23 +79,53 @@ namespace Engine{
     void App::main(){
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
-            renderer.drawFrame();
+            renderer.drawFrame(this);
         }
 
         vkDeviceWaitIdle(*logicDeviceManager.getDevice());
     }
 
-    void App::close(){
-        //Close All Semaphore
-        renderer.close();
-        //Close Command Pool
-        commandBuffer.close();
+
+    void App::recreateSwapChain() {
+        //Minimization
+        int width = 0, height = 0;
+        glfwGetFramebufferSize(window, &width, &height);
+        while (width == 0 || height == 0) {
+            glfwGetFramebufferSize(window, &width, &height);
+            glfwWaitEvents();
+        }
+
+        //Wait the device to be free to do stuff
+        vkDeviceWaitIdle(*logicDeviceManager.getDevice());
+
+        //Clean up the mess of old swap chain
+        cleanupSwapChain();
+
+        //Swap Chain
+        swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
+        swapChain.createImageView(*logicDeviceManager.getDevice());
+        //Graphic Pipeline
+        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
+        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
+        graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
+        //Create Frame Buffer
+        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass());
+    }
+    void App::cleanupSwapChain() {
         //Close Frame Buffer
         frameBuffer.close(*logicDeviceManager.getDevice());
         //Close Graphic Pipeline
         graphicPipeline.close();
         //Close SwapChain and ImageView
         swapChain.close(*logicDeviceManager.getDevice());
+    }
+
+    void App::close(){
+        cleanupSwapChain();
+        //Close All Semaphore
+        renderer.close();
+        //Close Command Pool
+        commandBuffer.close();
         //Destroy Device
         logicDeviceManager.clean();
         //Destroy Window surface

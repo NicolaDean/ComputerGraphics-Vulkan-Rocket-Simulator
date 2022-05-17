@@ -1,8 +1,6 @@
 
-
 #include "CommandBuffer.h"
 #include "../Device/QueueFamily.h"
-
 namespace Engine{
 
     void CommandBuffer::init(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {

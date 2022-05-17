@@ -1,14 +1,15 @@
 
-
 #ifndef ENGINE_RENDERER_H
 #define ENGINE_RENDERER_H
-
+#include "../Utils/Constants.h"
 #include "../Device/LogicDeviceManager.h"
 #include "../Drawing/CommandBuffer.h"
 #include "../Presentation/SwapChain.h"
 #include "../commonLibs.h"
 #include "../Utils/Constants.h"
+
 namespace Engine{
+    class App;
     class Renderer {
 
         int currentFrame = 0;
@@ -31,7 +32,7 @@ namespace Engine{
 
         void createSyncObjects();
 
-        void drawFrame();
+        void drawFrame(App* app);
         void close();
 
     };

@@ -1,6 +1,6 @@
 
 #include "Renderer.h"
-
+#include "../App.h"
 
 namespace Engine{
 
@@ -39,17 +39,24 @@ namespace Engine{
     }
 
 
-    void Renderer::drawFrame() {
+    void Renderer::drawFrame(App* app) {
         VkDevice device = *logicDeviceManager->getDevice();
         VkSwapchainKHR swapChain = swapChainCopy->getSwapChain();
         std::vector<VkCommandBuffer> commandBuffers = commandBufferCopy->getCommandBuffer();
 
-
         vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
-        vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
         uint32_t imageIndex;
-        vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+        VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+            app->recreateSwapChain();
+            return;
+        } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+            throw std::runtime_error("failed to acquire swap chain image!");
+        }
+
+        vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
         vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);
         commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
@@ -86,7 +93,14 @@ namespace Engine{
 
         presentInfo.pImageIndices = &imageIndex;
 
-        vkQueuePresentKHR(logicDeviceManager->getPresentQueue(), &presentInfo);
+        result = vkQueuePresentKHR(logicDeviceManager->getPresentQueue(), &presentInfo);
+
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || app->getResizeFlag()) {
+            app->resetResizeFlag();
+            app->recreateSwapChain();
+        } else if (result != VK_SUCCESS) {
+            throw std::runtime_error("failed to present swap chain image!");
+        }
 
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
