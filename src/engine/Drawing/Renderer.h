@@ -21,6 +21,7 @@ namespace Engine{
         SwapChain * swapChainCopy;
         CommandBuffer * commandBufferCopy;
         GraphicPipeline* graphicPipelineCopy;
+
     public:
         Renderer(){};
         Renderer(LogicDeviceManager * logicDevice,CommandBuffer * cb,SwapChain * sc,GraphicPipeline* g){

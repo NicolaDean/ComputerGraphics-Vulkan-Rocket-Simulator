@@ -10,7 +10,7 @@
 #include "Presentation/SwapChain.h"
 #include "GraphicPipeline/GraphicPipeline.h"
 #include "Drawing/Renderer.h"
-
+#include "Drawing/VertexBuffer.h"
 #include <memory>
 
 namespace Engine{
@@ -28,6 +28,7 @@ namespace Engine{
         WindowsSurface windowsSurface;
         FrameBuffer frameBuffer;
         CommandBuffer commandBuffer;
+        VertexBuffer vertexBuffer;
         SwapChain swapChain;
         GraphicPipeline graphicPipeline;
         Renderer renderer;

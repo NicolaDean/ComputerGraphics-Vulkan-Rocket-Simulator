@@ -1,6 +1,6 @@
 #pragma once
 #include "../commonLibs.h"
-
+#include "../Vertex/Vertex.h"
 namespace Engine{
     class GraphicPipeline {
 

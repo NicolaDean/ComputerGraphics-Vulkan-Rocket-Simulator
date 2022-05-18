@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <optional>
+#include <array>
 #include <set>
 
 //VULKAN OR GLFW Library

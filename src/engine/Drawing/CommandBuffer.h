@@ -6,6 +6,7 @@
 #include "../GraphicPipeline/GraphicPipeline.h"
 #include "../Presentation/SwapChain.h"
 #include "FrameBuffer.h"
+#include "VertexBuffer.h"
 #include "../Utils/Constants.h"
 namespace Engine{
     //TODO THIS CLASS MUST BE UPDATED WITH SOME "CUSTOMIZABLE" CREATE COMMAND FUNCTIONS (Now they are hardcoded)
@@ -14,14 +15,16 @@ namespace Engine{
         std::vector<VkCommandBuffer> commandBuffers;
         VkDevice* device;
         FrameBuffer* frameBuffer;
+        VertexBuffer* vertexBuffer;
 
     public:
         CommandBuffer(){
 
         }
-        CommandBuffer(VkDevice* dev,FrameBuffer* buffer){
+        CommandBuffer(VkDevice* dev,FrameBuffer* buffer,VertexBuffer* vertexBuff){
             device = dev;
             frameBuffer = buffer;
+            vertexBuffer = vertexBuff;
         }
 
         std::vector<VkCommandBuffer> getCommandBuffer(){
@@ -33,6 +36,9 @@ namespace Engine{
         void createCommandBuffer();
         void recordCommandBuffer(int currFrame, uint32_t imageIndex,SwapChain swapChain,GraphicPipeline graphicPipeline);
 
+        VertexBuffer* getVertexBuffer(){
+            return vertexBuffer;
+        }
     };
 }
 #endif //ENGINE_COMMANDBUFFER_H

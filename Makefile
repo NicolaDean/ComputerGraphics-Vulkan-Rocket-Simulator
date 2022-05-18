@@ -1,13 +1,12 @@
 CFLAGS = -std=c++17 -O2
 INC=-I./headers
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
-
 GLSLC_PATH = /usr/local/bin
 
 
 #SHADER INFO:
 SHADER_FOLDER = ./src/Shaders
-COMPILED_SHADER = $(SHADER_FOLDER)/compiledShader
+COMPILED_SHADER = $(SHADER_FOLDER)/compiledShaders
 
 #SOURCES PATHS
 #TODO modify the script, if we add more subfolder

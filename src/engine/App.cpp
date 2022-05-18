@@ -59,9 +59,14 @@ namespace Engine{
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
         //Create Frame Buffer
         frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass());
+        //Vertex Buffer
+        vertexBuffer = VertexBuffer(logicDeviceManager.getDevice(),devicesManager.getSelectedDevice());
+        vertexBuffer.createVertexBuffer();
         //Create Command Buffer
-        commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer);
+        commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer,&vertexBuffer);
         commandBuffer.init(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
+
+
         //Create Renderer (to draw Frames)
         renderer = Renderer(&logicDeviceManager,&commandBuffer,&swapChain,&graphicPipeline);
         renderer.createSyncObjects();

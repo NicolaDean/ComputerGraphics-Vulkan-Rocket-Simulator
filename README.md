@@ -1,8 +1,8 @@
 # ComputerGraphics-Vulkan-Rocket-Simulator
 
-- FINISH "SwapChain Recreation" of Drawing chapter
-THINK HOW TO DO (now i dont know how to pass APP to Renderer)
-- FINISH VERTEX BUFFER TUTORIAL
+- FINISH VERTEX BUFFER TUTORIAL:
+    * staging
+    * index
 - FINISH UNIFORM BUFFER TUTORIAL
 - ADD THE "LOAD OBJ" FUNCTIONS
 - CREATE A "CUSTOMIZABLE" VERSION OF "createPipeline" function

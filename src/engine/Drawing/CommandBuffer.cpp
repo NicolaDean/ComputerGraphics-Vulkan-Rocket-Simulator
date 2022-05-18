@@ -74,9 +74,17 @@ namespace Engine{
 
         vkCmdBeginRenderPass(commandBuffers[currFrame], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-        vkCmdBindPipeline(commandBuffers[currFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getGraphicPipeline());
 
-        vkCmdDraw(commandBuffers[currFrame], 3, 1, 0, 0);
+        std::vector<Vertex> vertices = vertexBuffer->getVertices();
+        /*for (Vertex v : vertices) {
+            printf("{%f,%f}\n",v.pos.x,v.pos.y);
+        }*/
+
+        vkCmdBindPipeline(commandBuffers[currFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getGraphicPipeline());
+        VkBuffer vertexBuffers[] = {vertexBuffer->getVertexBuffer()};
+        VkDeviceSize offsets[] = {0};
+        vkCmdBindVertexBuffers(commandBuffers[currFrame], 0, 1, vertexBuffers, offsets);
+        vkCmdDraw(commandBuffers[currFrame], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
 
         vkCmdEndRenderPass(commandBuffers[currFrame]);
 
