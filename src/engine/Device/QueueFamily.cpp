@@ -16,15 +16,16 @@ namespace Engine{
             if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
                 indices.graphicsFamily = i;
             }
-            if (indices.isComplete()) {
-                break;
-            }
 
             VkBool32 presentSupport = false;
             vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
 
             if (presentSupport) {
                 indices.presentFamily = i;
+            }
+
+            if (indices.isComplete()) {
+                break;
             }
 
             i++;

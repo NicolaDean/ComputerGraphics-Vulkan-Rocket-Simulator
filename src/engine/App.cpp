@@ -1,6 +1,7 @@
 #include "App.h"
 
 
+
 namespace Engine{
     void App::run(){
         init();
@@ -43,6 +44,10 @@ namespace Engine{
     void App::initVulkan(){
         //CREATE INSTANCE
         createInstance();
+        DEBUG::validationLayer.setInstance(&instance);
+        DEBUG::validationLayer.setupDebugMessenger();
+
+
         printExtensionNames();
         //Create Presentation Layer
         windowsSurface.createSurface(instance,window);
@@ -59,13 +64,13 @@ namespace Engine{
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
         //Create Frame Buffer
         frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass());
-        //Vertex Buffer
-        vertexBuffer = VertexBuffer(logicDeviceManager.getDevice(),devicesManager.getSelectedDevice());
-        vertexBuffer.createVertexBuffer();
         //Create Command Buffer
         commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer,&vertexBuffer);
         commandBuffer.init(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
-
+        //Vertex Buffer
+        vertexBuffer = VertexBuffer(&logicDeviceManager,devicesManager.getSelectedDevice());
+        vertexBuffer.createVertexBuffer(&commandBuffer);
+        vertexBuffer.createIndexBuffer(&commandBuffer);
 
         //Create Renderer (to draw Frames)
         renderer = Renderer(&logicDeviceManager,&commandBuffer,&swapChain,&graphicPipeline);
@@ -105,7 +110,8 @@ namespace Engine{
 
         //Clean up the mess of old swap chain
         cleanupSwapChain();
-
+        //Vertex Buffer and Index Buffer
+        vertexBuffer.close();
         //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageView(*logicDeviceManager.getDevice());
@@ -126,6 +132,10 @@ namespace Engine{
     }
 
     void App::close(){
+
+        DEBUG::validationLayer.clean();
+
+        vertexBuffer.close();
         cleanupSwapChain();
         //Close All Semaphore
         renderer.close();
@@ -147,10 +157,15 @@ namespace Engine{
 
     }
 
+
     /**
      * It allow to specify some useful information needed by driver in order to optimize the application
      */
     void App::createInstance() {
+        if (enableValidationLayers && !checkValidationLayerSupport()) {
+            throw std::runtime_error("validation layers requested, but not available!");
+        }
+
         VkApplicationInfo appInfo{};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         appInfo.pApplicationName = "Hello Triangle";
@@ -163,20 +178,26 @@ namespace Engine{
         // we want to use.
         // Global here means that they apply to the entire program and not a specific device,which will become clear in the next few chapters.
 
-
         VkInstanceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         createInfo.pApplicationInfo = &appInfo;
 
-        uint32_t glfwExtensionCount = 0;
-        const char** glfwExtensions;
+        auto extensions = getRequiredExtensions();
+        createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+        createInfo.ppEnabledExtensionNames = extensions.data();
 
-        glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+        if (enableValidationLayers) {
+            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            createInfo.ppEnabledLayerNames = validationLayers.data();
 
-        createInfo.enabledExtensionCount = glfwExtensionCount;
-        createInfo.ppEnabledExtensionNames = glfwExtensions;
+            populateDebugMessengerCreateInfo(debugCreateInfo);
+            createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
+        } else {
+            createInfo.enabledLayerCount = 0;
+            createInfo.pNext = nullptr;
+        }
 
-        createInfo.enabledLayerCount = 0;
 
         if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
             throw std::runtime_error("failed to create instance!");

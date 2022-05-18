@@ -30,14 +30,20 @@ namespace Engine{
         std::vector<VkCommandBuffer> getCommandBuffer(){
             return commandBuffers;
         }
+
         void init(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
         void close();
         void createCommandPool(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
         void createCommandBuffer();
         void recordCommandBuffer(int currFrame, uint32_t imageIndex,SwapChain swapChain,GraphicPipeline graphicPipeline);
 
+
         VertexBuffer* getVertexBuffer(){
             return vertexBuffer;
+        }
+
+        VkCommandPool getCommandPool(){
+            return commandPool;
         }
     };
 }

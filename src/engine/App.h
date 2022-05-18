@@ -12,6 +12,7 @@
 #include "Drawing/Renderer.h"
 #include "Drawing/VertexBuffer.h"
 #include <memory>
+#include "Utils/ValidationLayer.h"
 
 namespace Engine{
     class App {
