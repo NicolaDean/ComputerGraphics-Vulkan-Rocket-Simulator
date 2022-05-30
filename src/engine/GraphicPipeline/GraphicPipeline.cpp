@@ -12,6 +12,7 @@ namespace Engine{
         vkDestroyPipeline(*device, graphicsPipeline, nullptr);
         vkDestroyPipelineLayout(*device, pipelineLayout, nullptr);
         vkDestroyRenderPass(*device, renderPass, nullptr);
+        descriptor.close();
     }
 
     void GraphicPipeline::createGraphicPipeline(VkExtent2D swapChainExtent) {
@@ -131,7 +132,7 @@ namespace Engine{
         rasterizer.lineWidth = 1.0f;
         //IMPORTANT TODO CHECK ON TUTORIAL, PROF HAVE PUT THIS IN THE FUNCTION HEADER TO CUSTOMIZE IT
         rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-        rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+        rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
         rasterizer.depthBiasEnable = VK_FALSE;
 
         /**
@@ -168,8 +169,8 @@ namespace Engine{
          */
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-        pipelineLayoutInfo.setLayoutCount = 0;
-        pipelineLayoutInfo.pushConstantRangeCount = 0;
+        pipelineLayoutInfo.setLayoutCount = 1;
+        pipelineLayoutInfo.pSetLayouts = descriptor.getDescriptorSetLayout();
 
         if (vkCreatePipelineLayout(*device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
@@ -269,5 +270,7 @@ namespace Engine{
         }
 
     }
+
+
 
 }

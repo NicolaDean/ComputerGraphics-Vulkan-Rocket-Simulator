@@ -8,11 +8,14 @@
 namespace Engine{
 
     void VertexBuffer::close(){
+        //Clean Index Buffer
         vkDestroyBuffer(*logicDeviceManager->getDevice(), indexBuffer, nullptr);
         vkFreeMemory(*logicDeviceManager->getDevice(), indexBufferMemory, nullptr);
 
+        //Clean Vertex Buffer
         vkDestroyBuffer(*logicDeviceManager->getDevice(), vertexBuffer, nullptr);
         vkFreeMemory(*logicDeviceManager->getDevice(), vertexBufferMemory, nullptr);
+
     }
 
     void VertexBuffer::createIndexBuffer(CommandBuffer *cmdBuffer) {
@@ -51,6 +54,7 @@ namespace Engine{
         copyBuffer(stagingBuffer, vertexBuffer, bufferSize,cmdBuffer);
         vkFreeMemory(*logicDeviceManager->getDevice(), stagingBufferMemory, nullptr);
     }
+
 
     uint32_t VertexBuffer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
         VkPhysicalDeviceMemoryProperties memProperties;
@@ -123,8 +127,6 @@ namespace Engine{
 
             vkFreeCommandBuffers(*logicDeviceManager->getDevice(), cmdBuffer->getCommandPool(), 1, &commandBuffer);
         }
-
-
 
 
 }

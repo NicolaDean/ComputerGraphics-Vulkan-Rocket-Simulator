@@ -55,11 +55,15 @@ namespace Engine{
         devicesManager.pickPhysicalDevice(windowsSurface.getSurface());
         //GENERATE A LOGIC DEVICE INTERFACE OF THE SELECTED DEVICE
         logicDeviceManager.generateLogicDevice(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
+
+        bufferManager = BufferManager(logicDeviceManager.getDevice(),devicesManager.getSelectedDevice());
         //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageView(*logicDeviceManager.getDevice());
-        //Graphic Pipeline
-        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
+        //Descriptor Set Layout
+        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
+        graphicPipeline.createDescriptorSetLayout();
+        //Graphic Pipeline & Render Pass
         graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
         //Create Frame Buffer
@@ -71,6 +75,11 @@ namespace Engine{
         vertexBuffer = VertexBuffer(&logicDeviceManager,devicesManager.getSelectedDevice());
         vertexBuffer.createVertexBuffer(&commandBuffer);
         vertexBuffer.createIndexBuffer(&commandBuffer);
+        //Uniform Buffer
+        graphicPipeline.createUniformBuffers();
+        //Descriptor set and Poll
+        graphicPipeline.createDescriptorPool();
+        graphicPipeline.createDescriptorSet();
 
         //Create Renderer (to draw Frames)
         renderer = Renderer(&logicDeviceManager,&commandBuffer,&swapChain,&graphicPipeline);
@@ -116,7 +125,7 @@ namespace Engine{
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageView(*logicDeviceManager.getDevice());
         //Graphic Pipeline
-        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
+        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
         graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
         //Create Frame Buffer

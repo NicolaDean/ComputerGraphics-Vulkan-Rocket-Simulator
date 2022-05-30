@@ -13,6 +13,7 @@
 #include "Drawing/VertexBuffer.h"
 #include <memory>
 #include "Utils/ValidationLayer.h"
+#include "Drawing/BufferManager.h"
 
 namespace Engine{
     class App {
@@ -33,6 +34,7 @@ namespace Engine{
         SwapChain swapChain;
         GraphicPipeline graphicPipeline;
         Renderer renderer;
+        BufferManager bufferManager;
     public:
         App(){}
 

@@ -7,6 +7,7 @@
 
 #include "../commonLibs.h"
 #include "../Vertex/Vertex.h"
+#include "../Vertex/UniformBufferObject.h"
 #include "../Device/LogicDeviceManager.h"
 
 //TODO The previous chapter already mentioned that you should allocate multiple resources like buffers from a single memory allocation, but in fact you should go a step further. Driver developers recommend that you also store multiple buffers, like the vertex and index buffer, into a single VkBuffer and use offsets in commands like vkCmdBindVertexBuffers. The advantage is that your data is more cache friendly in that case, because it's closer together. It is even possible to reuse the same chunk of memory for multiple resources if they are not used during the same render operations, provided that their data is refreshed, of course. This is known as aliasing and some Vulkan functions have explicit flags to specify that you want to do this
@@ -46,14 +47,22 @@ namespace Engine{
             };
         };
 
+        //DEDICATED BUFFER CREATIONS
         void createVertexBuffer(CommandBuffer * cmdBuffer);
         void createIndexBuffer(CommandBuffer * cmdBuffer);
-        uint32_t  findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+        void createUniformBuffers();
+        void updateUniformBuffer(uint32_t currentImage,VkExtent2D swapChainExtent);
+        //BUFFER CREATION HELPERS:
         void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
         void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size,CommandBuffer * cmdBuffer);
+
+        //FIND COMPATIBLE MEMORY TYPE FOR CPU AND GPU
+        uint32_t  findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+
+        //CLOSE ALL
         void close();
 
-        //GETER
+        //GETTER-------------------------------------------------------------
         VkBuffer getVertexBuffer(){
             return vertexBuffer;
         }

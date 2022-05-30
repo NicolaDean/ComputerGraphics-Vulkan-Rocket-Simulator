@@ -56,6 +56,9 @@ namespace Engine{
             throw std::runtime_error("failed to acquire swap chain image!");
         }
 
+        //UPDATE UNIFORM BUFFER
+        graphicPipelineCopy->updateUniformBuffer(currentFrame,swapChainCopy->getSwapChainExtent());
+
         vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
         vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);

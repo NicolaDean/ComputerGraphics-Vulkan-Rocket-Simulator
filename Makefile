@@ -3,6 +3,7 @@ INC=-I./headers
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 GLSLC_PATH = /usr/local/bin
 
+PRECOMPILE =  ./src/engine/commonLibs
 
 #SHADER INFO:
 SHADER_FOLDER = ./src/Shaders
@@ -35,11 +36,17 @@ ifeq ($(OSNAME),MAC)
     LDFLAGS = -lglfw -lvulkan -ldl -lpthread
 endif
 
-Engine: $(MAIN) clean
-	echo OS:$(OSNAME)
-	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
+#Precompiled header allow to fast up the compile time (by precompiling some static non changing code)
+#For example when Engine will be done we can put Engine and App compiler so we can include Engine as a PRECOMPILED HEADER
+#https://gcc.gnu.org/onlinedocs/gcc/Precompiled-Headers.html
+Precompile: $(PRECOMPILE).cpp
+	g++ $(CFLAGS) -o $(PRECOMPILE).h.gch $(PRECOMPILE).h
 
-.PHONY: test clean debug
+Engine: $(MAIN)  clean
+	echo OS:$(OSNAME)
+	g++ $(CFLAGS) $(INC)  -o Engine $(SOURCES) $(LDFLAGS)
+
+.PHONY: test clean debug Precompile
 
 test: Engine
 	./Engine

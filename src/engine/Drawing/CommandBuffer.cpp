@@ -81,13 +81,17 @@ namespace Engine{
         }*/
 
         vkCmdBindPipeline(commandBuffers[currFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getGraphicPipeline());
-        VkBuffer vertexBuffers[] = {vertexBuffer->getVertexBuffer()};
+        VkBuffer vertexBuffers[] = {vertexBuffer->getVertexBuffer()};//TODO here we can merge more Vertex Buffer
         VkDeviceSize offsets[] = {0};
         //vkCmdBindVertexBuffers(commandBuffers[currFrame], 0, 1, vertexBuffers, offsets);
         //vkCmdDraw(commandBuffers[currFrame], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
 
         vkCmdBindVertexBuffers(commandBuffers[currFrame], 0, 1, vertexBuffers, offsets);
         vkCmdBindIndexBuffer(commandBuffers[currFrame],vertexBuffer->getIndexBuffer() , 0, VK_INDEX_TYPE_UINT16);
+
+        std::vector<VkDescriptorSet> descriptorSets = graphicPipeline.getDescriptorSets();
+        vkCmdBindDescriptorSets(commandBuffers[currFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getPipelineLayout(), 0, 1, &descriptorSets[currFrame], 0, nullptr);
+
         vkCmdDrawIndexed(commandBuffers[currFrame], static_cast<uint32_t>(vertexBuffer->getIndices().size()), 1, 0, 0, 0);
 
         vkCmdEndRenderPass(commandBuffers[currFrame]);
