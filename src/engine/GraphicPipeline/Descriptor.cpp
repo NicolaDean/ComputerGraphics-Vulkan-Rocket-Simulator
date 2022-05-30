@@ -24,7 +24,6 @@ namespace Engine{
         if (vkCreateDescriptorSetLayout(*device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
             throw std::runtime_error("failed to create descriptor set layout!");
         }
-        printf("CREATED DESCRIPTION LAYOUT");
     }
 
     void Descriptor::createDescriptorPool() {
@@ -76,8 +75,8 @@ namespace Engine{
             vkUpdateDescriptorSets(*device, 1, &descriptorWrite, 0, nullptr);
         }
     }
+
     void Descriptor::close() {
-        vkDestroyDescriptorSetLayout(*device, descriptorSetLayout, nullptr);
         vkDestroyDescriptorPool(*device, descriptorPool, nullptr);
         vkDestroyDescriptorSetLayout(*device, descriptorSetLayout, nullptr);
     }

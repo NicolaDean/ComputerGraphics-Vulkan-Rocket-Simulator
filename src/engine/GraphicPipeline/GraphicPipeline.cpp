@@ -12,7 +12,6 @@ namespace Engine{
         vkDestroyPipeline(*device, graphicsPipeline, nullptr);
         vkDestroyPipelineLayout(*device, pipelineLayout, nullptr);
         vkDestroyRenderPass(*device, renderPass, nullptr);
-        descriptor.close();
     }
 
     void GraphicPipeline::createGraphicPipeline(VkExtent2D swapChainExtent) {

@@ -31,8 +31,8 @@ namespace Engine{
         }
 
         void close();
-
-
+        void closeDescriptor(){descriptor.close();};
+        void closeUniformBuffer(){uniformBuffer.close();};
         /**
          * Create the graphic pipeline starting from shaders
          */
@@ -59,6 +59,7 @@ namespace Engine{
          * @return vulkan create info struct
          */
         VkShaderModule createShaderModule(const std::vector<char>& code);
+
 
 
         std::vector<VkDescriptorSet> getDescriptorSets(){

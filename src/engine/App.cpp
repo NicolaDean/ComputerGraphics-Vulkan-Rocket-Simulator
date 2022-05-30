@@ -106,6 +106,7 @@ namespace Engine{
 
 
     void App::recreateSwapChain() {
+        //TODO CHECK WHY CRASH NOW
         //Minimization
         int width = 0, height = 0;
         glfwGetFramebufferSize(window, &width, &height);
@@ -119,13 +120,11 @@ namespace Engine{
 
         //Clean up the mess of old swap chain
         cleanupSwapChain();
-        //Vertex Buffer and Index Buffer
-        vertexBuffer.close();
         //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageView(*logicDeviceManager.getDevice());
         //Graphic Pipeline
-        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
+        //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
         graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
         //Create Frame Buffer
@@ -142,10 +141,14 @@ namespace Engine{
 
     void App::close(){
 
-        DEBUG::validationLayer.clean();
-
-        vertexBuffer.close();
+        //TODO CHECK THE CLEANUP METHODS, A VK BUFFER IS MISSING...
         cleanupSwapChain();
+        //Uniform Buffer
+        graphicPipeline.closeUniformBuffer();
+        //LayoutSet and Pool Descriptor
+        graphicPipeline.closeDescriptor();
+        //Vertex and Index Buffer
+        vertexBuffer.close();
         //Close All Semaphore
         renderer.close();
         //Close Command Pool
@@ -155,6 +158,8 @@ namespace Engine{
         //Destroy Window surface
         windowsSurface.clean(instance);
 
+        //Validation Layer
+        DEBUG::validationLayer.clean();
         //Free instance
         vkDestroyInstance(instance, nullptr);
 
@@ -163,7 +168,6 @@ namespace Engine{
         glfwTerminate();
 
         std::cout << "Resources released correctly!\n\n";
-
     }
 
 

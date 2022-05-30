@@ -37,6 +37,7 @@ namespace Engine{
         vkDestroyBuffer(*logicDeviceManager->getDevice(), stagingBuffer, nullptr);
         vkFreeMemory(*logicDeviceManager->getDevice(), stagingBufferMemory, nullptr);
     }
+
     void VertexBuffer::createVertexBuffer(CommandBuffer * cmdBuffer) {
         VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
 
