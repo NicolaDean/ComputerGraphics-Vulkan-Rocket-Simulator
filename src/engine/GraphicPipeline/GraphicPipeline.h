@@ -4,6 +4,7 @@
 #include "Descriptor.h"
 #include "../Drawing/UniformBuffer.h"
 #include "../Drawing/BufferManager.h"
+#include "../Drawing/TextureManager.h"
 namespace Engine{
     class GraphicPipeline {
 
@@ -17,10 +18,10 @@ namespace Engine{
 
     public:
         GraphicPipeline(){}
-        GraphicPipeline(VkDevice * d,BufferManager bufferMng){
+        GraphicPipeline(VkDevice * d){
             device = d;
             descriptor = Descriptor(d); //Associate the descriptor to the device
-            uniformBuffer = UniformBuffer(d,bufferMng);
+
         }
 
         VkRenderPass getRenderPass(){
@@ -38,11 +39,14 @@ namespace Engine{
          */
         void createGraphicPipeline(VkExtent2D swapChainExtent);
         void createRenderPass(VkFormat swapChainImageFormat);
-        void createUniformBuffers(){uniformBuffer.createUniformBuffers();};
+        void createUniformBuffers(BufferManager bufferMng){
+            uniformBuffer = UniformBuffer(device,bufferMng);
+            uniformBuffer.createUniformBuffers();
+        };
 
         void createDescriptorSetLayout(){descriptor.createDescriptorSetLayout();};
         void createDescriptorPool(){descriptor.createDescriptorPool();};
-        void createDescriptorSet(){descriptor.createDescriptorSets(&uniformBuffer);};
+        void createDescriptorSet(TextureManager textureManager){descriptor.createDescriptorSets(&uniformBuffer,textureManager);};
         void updateUniformBuffer(uint32_t currentImage,VkExtent2D swapChainExtent){
             uniformBuffer.updateUniformBuffer(currentImage,swapChainExtent);
         };

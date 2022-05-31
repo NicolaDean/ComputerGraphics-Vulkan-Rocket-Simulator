@@ -98,8 +98,10 @@ namespace Engine{
 
         result = vkQueuePresentKHR(logicDeviceManager->getPresentQueue(), &presentInfo);
 
+        //TODO check why in this specific point Validation layer comunicate "suboptimal KHR"
+        // it is right, but why it print out before i can recreate swapcahin?
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || app->getResizeFlag()) {
-            app->resetResizeFlag();
+            app->resetResizeFlag(); //put false the resize flag
             app->recreateSwapChain();
         } else if (result != VK_SUCCESS) {
             throw std::runtime_error("failed to present swap chain image!");

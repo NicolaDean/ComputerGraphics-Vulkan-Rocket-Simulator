@@ -4,6 +4,7 @@
 #include <cstdint> // Necessary for uint32_t
 #include <limits> // Necessary for std::numeric_limits
 #include <algorithm> // Necessary for std::clamp
+#include "../Drawing/TextureManager.h"
 
 /**
  * Swap chain is the component that will own the buffers we will render to before we visualize them on the screen
@@ -55,7 +56,7 @@ namespace Engine {
          */
         void createSwapChain(VkPhysicalDevice physicalDevice,VkDevice device,VkSurfaceKHR surface,GLFWwindow * window);
 
-        void createImageView(VkDevice device);
+        void createImageViews(VkDevice device);
 
         void close(VkDevice device);
 

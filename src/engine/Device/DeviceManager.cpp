@@ -70,9 +70,11 @@ namespace Engine{
             SwapChainSupportDetails swapChainSupport = querySwapChainSupport(device,surface);
             swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
         }
+        VkPhysicalDeviceFeatures supportedFeatures;
+        vkGetPhysicalDeviceFeatures(device, &supportedFeatures);
 
         //Return true if device has all necessary requirements
-        return indices.isComplete() && extensionsSupported && swapChainAdequate;;
+        return indices.isComplete() && extensionsSupported && swapChainAdequate && supportedFeatures.samplerAnisotropy;
 
     }
 

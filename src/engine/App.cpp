@@ -55,13 +55,11 @@ namespace Engine{
         devicesManager.pickPhysicalDevice(windowsSurface.getSurface());
         //GENERATE A LOGIC DEVICE INTERFACE OF THE SELECTED DEVICE
         logicDeviceManager.generateLogicDevice(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
-
-        bufferManager = BufferManager(logicDeviceManager.getDevice(),devicesManager.getSelectedDevice());
-        //Swap Chain
+       //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
-        swapChain.createImageView(*logicDeviceManager.getDevice());
+        swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Descriptor Set Layout
-        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
+        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
         graphicPipeline.createDescriptorSetLayout();
         //Graphic Pipeline & Render Pass
         graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
@@ -71,15 +69,22 @@ namespace Engine{
         //Create Command Buffer
         commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer,&vertexBuffer);
         commandBuffer.init(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
+        //CREATE AN HELPER CLASS TO MANAGE BUFFER CREATIONS
+        bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(),commandBuffer.getCommandPool());
+        textureManager = TextureManager(bufferManager);
+        textureManager.createTextureImage();
+        textureManager.createTextureImageView();
+        textureManager.createTextureSampler();
+
         //Vertex Buffer
         vertexBuffer = VertexBuffer(&logicDeviceManager,devicesManager.getSelectedDevice());
         vertexBuffer.createVertexBuffer(&commandBuffer);
         vertexBuffer.createIndexBuffer(&commandBuffer);
         //Uniform Buffer
-        graphicPipeline.createUniformBuffers();
+        graphicPipeline.createUniformBuffers(bufferManager);
         //Descriptor set and Poll
         graphicPipeline.createDescriptorPool();
-        graphicPipeline.createDescriptorSet();
+        graphicPipeline.createDescriptorSet(textureManager);
 
         //Create Renderer (to draw Frames)
         renderer = Renderer(&logicDeviceManager,&commandBuffer,&swapChain,&graphicPipeline);
@@ -106,6 +111,7 @@ namespace Engine{
 
 
     void App::recreateSwapChain() {
+        //printf("Recreated swapchain");
         //TODO CHECK WHY CRASH NOW
         //Minimization
         int width = 0, height = 0;
@@ -122,7 +128,7 @@ namespace Engine{
         cleanupSwapChain();
         //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
-        swapChain.createImageView(*logicDeviceManager.getDevice());
+        swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Graphic Pipeline
         //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
         graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
@@ -145,6 +151,7 @@ namespace Engine{
         cleanupSwapChain();
         //Uniform Buffer
         graphicPipeline.closeUniformBuffer();
+        textureManager.close();
         //LayoutSet and Pool Descriptor
         graphicPipeline.closeDescriptor();
         //Vertex and Index Buffer

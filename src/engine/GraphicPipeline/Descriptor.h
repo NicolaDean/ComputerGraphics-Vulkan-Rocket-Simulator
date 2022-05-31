@@ -7,6 +7,7 @@
 #include "../commonLibs.h"
 #include "../Utils/Constants.h"
 #include "../Drawing/UniformBuffer.h"
+#include "../Drawing/TextureManager.h"
 
 namespace Engine{
     class Descriptor {
@@ -23,7 +24,7 @@ namespace Engine{
         }
         void createDescriptorSetLayout();
         void createDescriptorPool();
-        void createDescriptorSets(UniformBuffer * uniformBuffer);
+        void createDescriptorSets(UniformBuffer * uniformBuffer,TextureManager textureManager);
         void close();
 
         //GETTER

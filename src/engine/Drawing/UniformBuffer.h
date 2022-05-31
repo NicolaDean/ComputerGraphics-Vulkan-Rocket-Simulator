@@ -26,7 +26,7 @@ namespace Engine {
         };
 
         UniformBuffer(VkDevice * dev,BufferManager bufferMng){
-            device = dev;
+            device = bufferMng.getAssignedDevice();
             bufferManager = bufferMng;
         };
 

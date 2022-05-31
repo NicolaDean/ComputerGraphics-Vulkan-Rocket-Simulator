@@ -1,5 +1,7 @@
 CFLAGS = -std=c++17 -O2
-INC=-I./headers
+STB_INCLUDE_PATH = ./src/headers/
+
+INC=-I ./headers -I $(STB_INCLUDE_PATH) -I ./src/engine/precompiled/
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 GLSLC_PATH = /usr/local/bin
 

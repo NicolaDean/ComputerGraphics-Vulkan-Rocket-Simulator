@@ -7,14 +7,15 @@
 #include "Presentation/WindowsSurface.h"
 #include "Drawing/CommandBuffer.h"
 #include "Drawing/FrameBuffer.h"
-#include "Presentation/SwapChain.h"
-#include "GraphicPipeline/GraphicPipeline.h"
 #include "Drawing/Renderer.h"
 #include "Drawing/VertexBuffer.h"
-#include <memory>
-#include "Utils/ValidationLayer.h"
 #include "Drawing/BufferManager.h"
+#include "Drawing/TextureManager.h"
+#include "Presentation/SwapChain.h"
+#include "GraphicPipeline/GraphicPipeline.h"
+#include "Utils/ValidationLayer.h"
 
+#include <memory>
 namespace Engine{
     class App {
     private:
@@ -28,13 +29,15 @@ namespace Engine{
         DeviceManager devicesManager;
         LogicDeviceManager logicDeviceManager;
         WindowsSurface windowsSurface;
-        FrameBuffer frameBuffer;
         CommandBuffer commandBuffer;
+        FrameBuffer frameBuffer;
         VertexBuffer vertexBuffer;
+        BufferManager bufferManager;
+        TextureManager textureManager;
         SwapChain swapChain;
         GraphicPipeline graphicPipeline;
         Renderer renderer;
-        BufferManager bufferManager;
+
     public:
         App(){}
 
