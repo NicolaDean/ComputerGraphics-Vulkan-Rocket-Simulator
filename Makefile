@@ -1,7 +1,7 @@
 CFLAGS = -std=c++17 -O2
 STB_INCLUDE_PATH = ./src/headers/
 
-INC=-I ./headers -I $(STB_INCLUDE_PATH) -I ./src/engine/precompiled/
+INC=-I ./headers -I $(STB_INCLUDE_PATH)
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 GLSLC_PATH = /usr/local/bin
 
@@ -42,11 +42,12 @@ endif
 #For example when Engine will be done we can put Engine and App compiler so we can include Engine as a PRECOMPILED HEADER
 #https://gcc.gnu.org/onlinedocs/gcc/Precompiled-Headers.html
 Precompile: $(PRECOMPILE).cpp
-	g++ $(CFLAGS) -o $(PRECOMPILE).h.gch $(PRECOMPILE).h
+	g++ -std=c++17 $(PRECOMPILE).h
+	#g++ $(CFLAGS) -o $(PRECOMPILE).h.gch $(PRECOMPILE).h
 
 Engine: $(MAIN)  clean
 	echo OS:$(OSNAME)
-	g++ $(CFLAGS) $(INC)  -o Engine $(SOURCES) $(LDFLAGS)
+	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 
 .PHONY: test clean debug Precompile
 
