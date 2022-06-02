@@ -11,6 +11,7 @@
 #include "Drawing/VertexBuffer.h"
 #include "Drawing/BufferManager.h"
 #include "Drawing/TextureManager.h"
+#include "Drawing/DepthImage.h"
 #include "Presentation/SwapChain.h"
 #include "GraphicPipeline/GraphicPipeline.h"
 #include "Utils/ValidationLayer.h"
@@ -34,6 +35,7 @@ namespace Engine{
         VertexBuffer vertexBuffer;
         BufferManager bufferManager;
         TextureManager textureManager;
+        DepthImage depthImage;
         SwapChain swapChain;
         GraphicPipeline graphicPipeline;
         Renderer renderer;

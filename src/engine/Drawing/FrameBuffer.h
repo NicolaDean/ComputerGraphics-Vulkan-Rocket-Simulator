@@ -12,7 +12,7 @@ namespace Engine{
                 return swapChainFramebuffers[index];
         }
         void close(VkDevice device);
-        void createFrameBuffer(VkDevice device,std::vector<VkImageView> swapChainImageViews,VkExtent2D swapChainExtent,VkRenderPass renderPass);
+        void createFrameBuffer(VkDevice device,std::vector<VkImageView> swapChainImageViews,VkExtent2D swapChainExtent,VkRenderPass renderPass,VkImageView depthImageView);
     };
 }
 

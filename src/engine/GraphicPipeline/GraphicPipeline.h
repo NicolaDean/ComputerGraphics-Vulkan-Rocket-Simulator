@@ -1,10 +1,11 @@
 #pragma once
 #include "../commonLibs.h"
-#include "../Vertex/Vertex.h"
+#include "../Geometry/Vertex.h"
 #include "Descriptor.h"
 #include "../Drawing/UniformBuffer.h"
 #include "../Drawing/BufferManager.h"
 #include "../Drawing/TextureManager.h"
+#include "../Drawing/DepthImage.h"
 namespace Engine{
     class GraphicPipeline {
 
@@ -38,7 +39,7 @@ namespace Engine{
          * Create the graphic pipeline starting from shaders
          */
         void createGraphicPipeline(VkExtent2D swapChainExtent);
-        void createRenderPass(VkFormat swapChainImageFormat);
+        void createRenderPass(VkFormat swapChainImageFormat,DepthImage depthImage);
         void createUniformBuffers(BufferManager bufferMng){
             uniformBuffer = UniformBuffer(device,bufferMng);
             uniformBuffer.createUniformBuffers();

@@ -62,20 +62,23 @@ namespace Engine{
         graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
         graphicPipeline.createDescriptorSetLayout();
         //Graphic Pipeline & Render Pass
-        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
+        bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(), nullptr);
+        depthImage = DepthImage(bufferManager);
+        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
-        //Create Frame Buffer
-        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass());
         //Create Command Buffer
         commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer,&vertexBuffer);
         commandBuffer.init(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
-        //CREATE AN HELPER CLASS TO MANAGE BUFFER CREATIONS
         bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(),commandBuffer.getCommandPool());
         textureManager = TextureManager(bufferManager);
+        depthImage = DepthImage(bufferManager);
+        depthImage.createDepthResources(swapChain.getSwapChainExtent(),textureManager);
+        //Create Frame Buffer
+        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass(),depthImage.getDepthImageView());
+        //CREATE AN HELPER CLASS TO MANAGE BUFFER CREATIONS
         textureManager.createTextureImage();
         textureManager.createTextureImageView();
         textureManager.createTextureSampler();
-
         //Vertex Buffer
         vertexBuffer = VertexBuffer(&logicDeviceManager,devicesManager.getSelectedDevice());
         vertexBuffer.createVertexBuffer(&commandBuffer);
@@ -131,12 +134,15 @@ namespace Engine{
         swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Graphic Pipeline
         //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
-        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat());
+        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
         graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
+        //Depth resource
+        depthImage.createDepthResources(swapChain.getSwapChainExtent(),textureManager);
         //Create Frame Buffer
-        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass());
+        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass(),depthImage.getDepthImageView());
     }
     void App::cleanupSwapChain() {
+        depthImage.close();
         //Close Frame Buffer
         frameBuffer.close(*logicDeviceManager.getDevice());
         //Close Graphic Pipeline

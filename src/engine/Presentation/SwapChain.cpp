@@ -148,7 +148,7 @@ namespace Engine{
 
         //For Each Image in the image vector create a view
         for (size_t i = 0; i < swapChainImages.size(); i++) {
-            swapChainImageViews[i] = createImageView(&device,swapChainImages[i], swapChainImageFormat);
+            swapChainImageViews[i] = createImageView(&device,swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT);
         }
 
     }

@@ -6,8 +6,8 @@
 #define ROCKETSIMULATOR_VERTEXBUFFER_H
 
 #include "../commonLibs.h"
-#include "../Vertex/Vertex.h"
-#include "../Vertex/UniformBufferObject.h"
+#include "../Geometry/Vertex.h"
+#include "../Geometry/UniformBufferObject.h"
 #include "../Device/LogicDeviceManager.h"
 
 //TODO The previous chapter already mentioned that you should allocate multiple resources like buffers from a single memory allocation, but in fact you should go a step further. Driver developers recommend that you also store multiple buffers, like the vertex and index buffer, into a single VkBuffer and use offsets in commands like vkCmdBindVertexBuffers. The advantage is that your data is more cache friendly in that case, because it's closer together. It is even possible to reuse the same chunk of memory for multiple resources if they are not used during the same render operations, provided that their data is refreshed, of course. This is known as aliasing and some Vulkan functions have explicit flags to specify that you want to do this
@@ -25,7 +25,7 @@ namespace Engine{
 
         //DEVICES POINTERS
         LogicDeviceManager * logicDeviceManager;
-        VkPhysicalDevice * physicalDevice;
+        VkPhysicalDevice  physicalDevice;
 
         //DATA (put into a singleton??)
         std::vector<Vertex> vertices;
@@ -35,7 +35,7 @@ namespace Engine{
         VertexBuffer(){};
         VertexBuffer(LogicDeviceManager * device ,VkPhysicalDevice physicalDev){
             logicDeviceManager = device;
-            physicalDevice = &physicalDev;
+            physicalDevice = physicalDev;
             vertices = {
                     {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
                     {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},

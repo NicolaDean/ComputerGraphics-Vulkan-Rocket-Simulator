@@ -8,26 +8,18 @@
 
 namespace Engine{
 
-    VkImageView createImageView(VkDevice* device,VkImage image, VkFormat format) {
-        //Start creating the imageView Struct
+    VkImageView createImageView(VkDevice* device,VkImage image, VkFormat format, VkImageAspectFlags aspectFlags) {
         VkImageViewCreateInfo viewInfo{};
         viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
         viewInfo.image = image;
-        //The viewType and format fields specify how the image data should be interpreted.
-        //The viewType parameter allows you to treat images as 1D textures, 2D textures, 3D textures and cube maps.
-
         viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
         viewInfo.format = format;
-
-        //The subresourceRange field describes what the image's purpose is
-        // and which part of the image should be accessed.
-        viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        viewInfo.subresourceRange.aspectMask = aspectFlags;
         viewInfo.subresourceRange.baseMipLevel = 0;
         viewInfo.subresourceRange.levelCount = 1;
         viewInfo.subresourceRange.baseArrayLayer = 0;
         viewInfo.subresourceRange.layerCount = 1;
 
-        //Creating the actual ImageView
         VkImageView imageView;
         if (vkCreateImageView(*device, &viewInfo, nullptr, &imageView) != VK_SUCCESS) {
             throw std::runtime_error("failed to create texture image view!");
@@ -76,7 +68,7 @@ namespace Engine{
 
     void TextureManager::createTextureImageView() {
         VkDevice * device = bufferManager.getAssignedDevice();
-        textureImageView = createImageView(device,textureImage, VK_FORMAT_R8G8B8A8_SRGB);
+        textureImageView = createImageView(device,textureImage, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT);
     }
 
     void TextureManager::createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {

@@ -47,7 +47,7 @@ Precompile: $(PRECOMPILE).cpp
 
 Engine: $(MAIN)  clean
 	echo OS:$(OSNAME)
-	g++ $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
+	g++ -g $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 
 .PHONY: test clean debug Precompile
 

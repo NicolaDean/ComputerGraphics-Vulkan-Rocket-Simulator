@@ -10,7 +10,7 @@
 #include "BufferManager.h"
 
 namespace Engine {
-    VkImageView createImageView(VkDevice* device,VkImage image, VkFormat format);
+    VkImageView createImageView(VkDevice* device,VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
     class TextureManager {
 
         VkImage textureImage;

@@ -45,6 +45,9 @@ namespace Engine{
         VkCommandPool getCommandPool(){
             return commandPool;
         }
+        VkCommandPool * getCommandPoolRef(){
+            return &commandPool;
+        }
     };
 }
 #endif //ENGINE_COMMANDBUFFER_H

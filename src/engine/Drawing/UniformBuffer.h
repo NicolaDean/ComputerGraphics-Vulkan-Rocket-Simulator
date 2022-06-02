@@ -5,7 +5,7 @@
 #ifndef ROCKETSIMULATOR_UNIFORMBUFFER_H
 #define ROCKETSIMULATOR_UNIFORMBUFFER_H
 
-#include "../Vertex/UniformBufferObject.h"
+#include "../Geometry/UniformBufferObject.h"
 #include "../commonLibs.h"
 #include "../Utils/Constants.h"
 #include "BufferManager.h"
