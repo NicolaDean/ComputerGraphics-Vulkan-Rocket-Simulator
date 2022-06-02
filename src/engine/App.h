@@ -1,86 +1,30 @@
-#ifndef ROCKETSIMULATOR_APP_H
-#define ROCKETSIMULATOR_APP_H
-#pragma once
-#include "commonLibs.h"
-#include "Device/DeviceManager.h"
-#include "Device/LogicDeviceManager.h"
-#include "Presentation/WindowsSurface.h"
-#include "Drawing/CommandBuffer.h"
-#include "Drawing/FrameBuffer.h"
-#include "Drawing/Renderer.h"
-#include "Drawing/VertexBuffer.h"
-#include "Drawing/BufferManager.h"
-#include "Drawing/TextureManager.h"
-#include "Drawing/DepthImage.h"
-#include "Presentation/SwapChain.h"
-#include "GraphicPipeline/GraphicPipeline.h"
-#include "Utils/ValidationLayer.h"
+//
+// Created by nicomane on 02/06/22.
+//
 
-#include <memory>
+#ifndef COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H
+#define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H
+#include "core/Core.h"
+
 namespace Engine{
-    class App {
-    private:
-        int width;
-        int height;
-        bool framebufferResized = false;
-
-        std::string name;
-        GLFWwindow* window;
-        VkInstance instance;
-        DeviceManager devicesManager;
-        LogicDeviceManager logicDeviceManager;
-        WindowsSurface windowsSurface;
-        CommandBuffer commandBuffer;
-        FrameBuffer frameBuffer;
-        VertexBuffer vertexBuffer;
-        BufferManager bufferManager;
-        TextureManager textureManager;
-        DepthImage depthImage;
-        SwapChain swapChain;
-        GraphicPipeline graphicPipeline;
-        Renderer renderer;
-
+    /**
+     * App class will contail all engine method public to the user (us)
+     * For example methods to change views, to setup Camera, Load Models......
+     */
+    class App: public Engine::Core {
     public:
-        App(){}
+        App(int width,int h,std::string win_name):Core(width,h,win_name){
+            //Some Code....
 
-        App(int w,int h,std::string win_name)
-        {
-            width = w;
-            height = h;
-            name = win_name;
         }
-    private:
-        void init();
-        void initVulkan();
-        void initWindow();
-        void main();
-        void appLoop();
-        void close();
-        void createInstance();
-        void printExtensionNames();
-        static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
-        /**
-          * Cleen the swap chain before recreation
-          */
-        void cleanupSwapChain();
 
-        GLFWwindow* getWindow();
-    public:
-        void run();
-        void loop();
         /**
-        * Recreate the swapchain, called if old swap chain is no more usefull (eg window resize)
-        */
-        void recreateSwapChain();
-        void resetResizeFlag(){
-            framebufferResized = false;
-        }
-        bool getResizeFlag() {
-            return framebufferResized;
-        }
+         * Override this method to load all our methods
+         */
+        void loadMeshes();
+
+        //void addMesh(); -> other idea, add mesh to APP( example a vector) so we can loop through models
     };
-
-
 }
 
-#endif //ROCKETSIMULATOR_APP_H
+#endif //COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H

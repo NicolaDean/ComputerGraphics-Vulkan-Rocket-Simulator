@@ -5,7 +5,7 @@ INC=-I ./headers -I $(STB_INCLUDE_PATH)
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 GLSLC_PATH = /usr/local/bin
 
-PRECOMPILE =  ./src/engine/commonLibs
+PRECOMPILE =  ./src/engine/core/commonLibs
 
 #SHADER INFO:
 SHADER_FOLDER = ./src/Shaders
@@ -14,7 +14,7 @@ COMPILED_SHADER = $(SHADER_FOLDER)/compiledShaders
 #SOURCES PATHS
 #TODO modify the script, if we add more subfolder
 ENGINE_FOLDER = src/engine
-ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp
+ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.cpp
 MAIN = src/main.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
