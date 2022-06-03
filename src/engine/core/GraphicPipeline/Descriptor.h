@@ -10,6 +10,9 @@
 #include "../Drawing/TextureManager.h"
 
 namespace Engine{
+
+
+
     class Descriptor {
         VkDescriptorSetLayout descriptorSetLayout;
         VkDescriptorPool descriptorPool;

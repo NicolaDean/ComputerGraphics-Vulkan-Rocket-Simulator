@@ -41,7 +41,7 @@ namespace Engine{
         void createGraphicPipeline(VkExtent2D swapChainExtent);
         void createRenderPass(VkFormat swapChainImageFormat,DepthImage depthImage);
         void createUniformBuffers(BufferManager bufferMng){
-            uniformBuffer = UniformBuffer(device,bufferMng);
+            uniformBuffer = UniformBuffer(bufferMng);
             uniformBuffer.createUniformBuffers();
         };
 

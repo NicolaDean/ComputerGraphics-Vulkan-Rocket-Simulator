@@ -7,6 +7,7 @@
 #include "../../commonLibs.h"
 #include "../Drawing/BufferManager.h"
 #include "../Geometry/Vertex.h"
+#include "../DrawingNew/DescriptorManager.h"
 namespace Engine{
     class Mesh {
         //Vertex Buffer
@@ -17,6 +18,7 @@ namespace Engine{
         VkDeviceMemory indexBufferMemory;
         //BufferManager
         BufferManager bufferManager;
+        DescriptorManager * descriptorManager;
     protected:
         //Vetices and Indexes
         std::vector<Vertex> vertices;
@@ -32,6 +34,28 @@ namespace Engine{
         void createVertexBuffer();
         void createIndexBuffer();
         void close();
+
+
+        void bindDescriptor(DescriptorManager *  desc){
+            descriptorManager = desc;
+        }
+        VkBuffer getVertexBuffer(){
+            return vertexBuffer;
+        }
+        VkBuffer getIndexBuffer(){
+            return indexBuffer;
+        }
+
+        std::vector<Vertex> getVertices(){
+            return vertices;
+        }
+        std::vector<uint32_t> getIndices(){
+            return indices;
+        }
+
+        DescriptorManager * getDescriptorManager(){
+            return descriptorManager;
+        }
     };
 }
 

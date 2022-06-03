@@ -15,7 +15,6 @@ namespace Engine{
     }
     void UniformBuffer::createUniformBuffers() {
         VkDeviceSize bufferSize = sizeof(UniformBufferObject);
-
         uniformBuffers.resize(MAX_FRAMES_IN_FLIGHT);
         uniformBuffersMemory.resize(MAX_FRAMES_IN_FLIGHT);
 

@@ -42,7 +42,7 @@ namespace Engine{
     void Renderer::drawFrame(Core* app) {
         VkDevice device = *logicDeviceManager->getDevice();
         VkSwapchainKHR swapChain = swapChainCopy->getSwapChain();
-        std::vector<VkCommandBuffer> commandBuffers = commandBufferCopy->getCommandBuffer();
+        std::vector<VkCommandBuffer> commandBuffers = manager->getCommandBuffers();
 
         vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
@@ -57,13 +57,13 @@ namespace Engine{
         }
 
         //UPDATE UNIFORM BUFFER
-        graphicPipelineCopy->updateUniformBuffer(currentFrame,swapChainCopy->getSwapChainExtent());
-
+        //graphicPipelineCopy->updateUniformBuffer(currentFrame,swapChainCopy->getSwapChainExtent());
+        manager->updateBufferManager(currentFrame);
         vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
         vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);
-        commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
-
+        //commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
+        manager->recordCommandBuffers();
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 

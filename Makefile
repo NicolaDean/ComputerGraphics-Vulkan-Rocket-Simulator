@@ -48,6 +48,7 @@ Precompile: $(PRECOMPILE).cpp
 Engine: $(MAIN)  clean
 	echo OS:$(OSNAME)
 	g++ -g $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
+	echo "Ended Compilation"
 
 .PHONY: test clean debug Precompile
 

@@ -1,24 +1,22 @@
 //
-// Created by nicomane on 16/05/22.
+// Created by nicomane on 02/06/22.
 //
 
-#include "GraphicPipeline.h"
+#include "GraphicPipelineCustom.h"
+#include "DescriptorManager.h"
 #include "../Utils/helperFunctions.h"
-
 
 namespace Engine{
 
-    void GraphicPipeline::close(){
-        vkDestroyPipeline(*device, graphicsPipeline, nullptr);
-        vkDestroyPipelineLayout(*device, pipelineLayout, nullptr);
-        vkDestroyRenderPass(*device, renderPass, nullptr);
-    }
 
-    void GraphicPipeline::createGraphicPipeline(VkExtent2D swapChainExtent) {
+    void GraphicPipelineCustom::createGraphicPipeline(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D) {
         //MUST USE PATH RELATIVE TO "Engine" executable
         //LOAD SHADER FILES
-        auto vertShaderCode = readFile("./src/Shaders/compiledShaders/Vert.spv");
-        auto fragShaderCode = readFile("./src/Shaders/compiledShaders/Frag.spv");
+        auto vertShaderCode = readFile(VertShader);
+        auto fragShaderCode = readFile(FragShader);
+
+        std::cout << "Vertex shader len: " <<vertShaderCode.size() << "\n";
+        std::cout << "Fragment shader len: " <<fragShaderCode.size() << "\n";
 
         //CREATE SHADER MODULES by passing code read from file
         VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
@@ -63,21 +61,21 @@ namespace Engine{
         vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
         vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
 
-            /**
-     * INPUT ASSEMBLY
-     *  struct describes two things:
-     *  what kind of geometry will be drawn from the vertices and if primitive restart should be enabled.
-     *  The former is specified in the topology member and can have values like:
-            VK_PRIMITIVE_TOPOLOGY_POINT_LIST: points from vertices
-            VK_PRIMITIVE_TOPOLOGY_LINE_LIST: line from every 2 vertices without reuse
-            VK_PRIMITIVE_TOPOLOGY_LINE_STRIP: the end vertex of every line is used as start vertex for the next line
-            VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST: triangle from every 3 vertices without reuse
-            VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP: the second and third vertex of every triangle are used as first two vertices of the next triangle
+        /**
+ * INPUT ASSEMBLY
+ *  struct describes two things:
+ *  what kind of geometry will be drawn from the vertices and if primitive restart should be enabled.
+ *  The former is specified in the topology member and can have values like:
+        VK_PRIMITIVE_TOPOLOGY_POINT_LIST: points from vertices
+        VK_PRIMITIVE_TOPOLOGY_LINE_LIST: line from every 2 vertices without reuse
+        VK_PRIMITIVE_TOPOLOGY_LINE_STRIP: the end vertex of every line is used as start vertex for the next line
+        VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST: triangle from every 3 vertices without reuse
+        VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP: the second and third vertex of every triangle are used as first two vertices of the next triangle
 
-        If you set the primitiveRestartEnable member to VK_TRUE,
-        then it's possible to break up lines and triangles in the _STRIP topology modes
-        by using a special index of 0xFFFF or 0xFFFFFFFF
-     */
+    If you set the primitiveRestartEnable member to VK_TRUE,
+    then it's possible to break up lines and triangles in the _STRIP topology modes
+    by using a special index of 0xFFFF or 0xFFFFFFFF
+ */
 
         VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
         inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -90,18 +88,18 @@ namespace Engine{
          * This will almost always be (0, 0) to (width, height) and in this tutorial that will also be the case.
          *
          */
-         //ViewPort
+        //ViewPort
         VkViewport viewport{};
         viewport.x = 0.0f;
         viewport.y = 0.0f;
-        viewport.width = (float) swapChainExtent.width;
-        viewport.height = (float) swapChainExtent.height;
+        viewport.width = (float) swapChain->getSwapChainExtent().width;
+        viewport.height = (float) swapChain->getSwapChainExtent().height;
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
         //Scissor
         VkRect2D scissor{};
         scissor.offset = {0, 0};
-        scissor.extent = swapChainExtent;
+        scissor.extent = swapChain->getSwapChainExtent();
         //ViewPort and Scissor merge
         VkPipelineViewportStateCreateInfo viewportState{};
         viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
@@ -171,13 +169,21 @@ namespace Engine{
         colorBlending.blendConstants[2] = 0.0f;
         colorBlending.blendConstants[3] = 0.0f;
 
+        //DESCRIPTORS
+        std::vector<VkDescriptorSetLayout> DSL(D.size());
+        for(int i = 0; i < D.size(); i++) {
+            DSL[i] = D[i]->getDescriptorSetLayout();
+        }
+
         /**
          * PIPELINE LAYOUT
          */
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-        pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-        pipelineLayoutInfo.setLayoutCount = 1;
-        pipelineLayoutInfo.pSetLayouts = descriptor.getDescriptorSetLayout();
+        pipelineLayoutInfo.sType =VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+        pipelineLayoutInfo.setLayoutCount = DSL.size();
+        pipelineLayoutInfo.pSetLayouts = DSL.data();
+        pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
+        pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
         if (vkCreatePipelineLayout(*device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
@@ -198,31 +204,19 @@ namespace Engine{
         pipelineInfo.renderPass = renderPass;
         pipelineInfo.subpass = 0;
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
+        pipelineInfo.basePipelineIndex = -1; // Optional
 
         if (vkCreateGraphicsPipelines(*device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) !=
             VK_SUCCESS) {
             throw std::runtime_error("failed to create graphics pipeline!");
         }
 
-
         //DESTROY SHADER MODULES
         vkDestroyShaderModule(*device, fragShaderModule, nullptr);
         vkDestroyShaderModule(*device, vertShaderModule, nullptr);
     }
 
-
-
-    VkPipelineShaderStageCreateInfo GraphicPipeline::createPipelineShaderStage(VkShaderModule module){
-        VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
-        vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-        vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-        vertShaderStageInfo.module = module;
-        vertShaderStageInfo.pName = "main";
-
-        return vertShaderStageInfo;
-    }
-
-    VkShaderModule GraphicPipeline::createShaderModule(const std::vector<char>& code){
+    VkShaderModule GraphicPipelineCustom::createShaderModule(const std::vector<char>& code){
         VkShaderModuleCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = code.size();
@@ -232,16 +226,27 @@ namespace Engine{
         if (vkCreateShaderModule(*device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
             throw std::runtime_error("failed to create shader module!");
         }
-
-
-
         return shaderModule;
     }
+    void GraphicPipelineCustom::createRenderPass(DepthImage depthImage) {
+        VkAttachmentDescription depthAttachment{};
+        depthAttachment.format = VK_FORMAT_D32_SFLOAT;
+        depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        depthAttachment.finalLayout =
+                VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
-    void GraphicPipeline::createRenderPass(VkFormat swapChainImageFormat,DepthImage depthImage) {
+        VkAttachmentReference depthAttachmentRef{};
+        depthAttachmentRef.attachment = 1; //TODO, FIND SUPPORTED FORMAT???
+        depthAttachmentRef.layout =
+                VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
         VkAttachmentDescription colorAttachment{};
-        colorAttachment.format = swapChainImageFormat;
+        colorAttachment.format = swapChain->getSwapChainImageFormat();
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
         colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
         colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -250,23 +255,10 @@ namespace Engine{
         colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
-        VkAttachmentDescription depthAttachment{};
-        depthAttachment.format = depthImage.findDepthFormat();
-        depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-        depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        depthAttachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
         VkAttachmentReference colorAttachmentRef{};
         colorAttachmentRef.attachment = 0;
-        colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        VkAttachmentReference depthAttachmentRef{};
-        depthAttachmentRef.attachment = 1;
-        depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+        colorAttachmentRef.layout =
+                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
         VkSubpassDescription subpass{};
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
@@ -277,17 +269,17 @@ namespace Engine{
         VkSubpassDependency dependency{};
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         dependency.dstSubpass = 0;
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         dependency.srcAccessMask = 0;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
 
+        std::array<VkAttachmentDescription, 2> attachments =
+                {colorAttachment, depthAttachment};
 
-        //Finally, Create the Render Pass:
-        std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
         VkRenderPassCreateInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-        renderPassInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+        renderPassInfo.attachmentCount = static_cast<uint32_t>(attachments.size());;
         renderPassInfo.pAttachments = attachments.data();
         renderPassInfo.subpassCount = 1;
         renderPassInfo.pSubpasses = &subpass;
@@ -297,7 +289,5 @@ namespace Engine{
         if (vkCreateRenderPass(*device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
             throw std::runtime_error("failed to create render pass!");
         }
-
     }
-
 }

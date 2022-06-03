@@ -11,9 +11,10 @@ namespace Engine{
     };
 
     class Constants {
-
+    public:
         static int WIDTH;
         static int HEIGHT;
+        //static VkClearColorValue initialBackgroundColor;
         //static vertex
     };
 

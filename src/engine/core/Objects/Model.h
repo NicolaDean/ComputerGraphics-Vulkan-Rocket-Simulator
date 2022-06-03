@@ -7,16 +7,15 @@
 #include "../../commonLibs.h"
 #include "Mesh.h"
 #include "../Geometry/Vertex.h"
-#define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
+
 
 namespace Engine{
     class Model: public Mesh {
 
         std::string modelPath;
     public:
-
-        Model(std::string model_path){
+        Model():Mesh(){}
+        Model(std::string model_path,BufferManager buffManager):Mesh(buffManager){
             modelPath = model_path;
         }
 

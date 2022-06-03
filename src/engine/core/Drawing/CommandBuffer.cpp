@@ -86,6 +86,7 @@ namespace Engine{
         vkCmdBindVertexBuffers(commandBuffers[currFrame], 0, 1, vertexBuffers, offsets);
         vkCmdBindIndexBuffer(commandBuffers[currFrame],vertexBuffer->getIndexBuffer() , 0, VK_INDEX_TYPE_UINT16);
 
+
         std::vector<VkDescriptorSet> descriptorSets = graphicPipeline.getDescriptorSets();
         vkCmdBindDescriptorSets(commandBuffers[currFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, graphicPipeline.getPipelineLayout(), 0, 1, &descriptorSets[currFrame], 0, nullptr);
 

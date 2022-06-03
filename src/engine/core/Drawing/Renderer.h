@@ -7,6 +7,7 @@
 #include "../Presentation/SwapChain.h"
 #include "../../commonLibs.h"
 #include "../Utils/Constants.h"
+#include "../DrawingNew/CommandManager.h"
 
 namespace Engine{
     class Core;
@@ -19,15 +20,15 @@ namespace Engine{
 
         LogicDeviceManager *logicDeviceManager;
         SwapChain * swapChainCopy;
-        CommandBuffer * commandBufferCopy;
+        CommandManager * manager;
         GraphicPipeline* graphicPipelineCopy;
 
     public:
         Renderer(){};
-        Renderer(LogicDeviceManager * logicDevice,CommandBuffer * cb,SwapChain * sc,GraphicPipeline* g){
+        Renderer(LogicDeviceManager * logicDevice,CommandManager * cb,SwapChain * sc,GraphicPipeline* g){
             logicDeviceManager = logicDevice;
             swapChainCopy = sc;
-            commandBufferCopy = cb;
+            manager = cb;
             graphicPipelineCopy = g;
         };
 

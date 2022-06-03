@@ -35,10 +35,10 @@ namespace Engine{
         vkDestroyImage(*device, textureImage, nullptr);
         vkFreeMemory(*device, textureImageMemory, nullptr);
     }
-    void TextureManager::createTextureImage() {
+    void TextureManager::createTextureImage(std::string imageName) {
         VkDevice * device = bufferManager.getAssignedDevice();
         int texWidth, texHeight, texChannels;
-        stbi_uc* pixels = stbi_load("./src/Textures/texture.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+        stbi_uc* pixels = stbi_load(imageName.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
         VkDeviceSize imageSize = texWidth * texHeight * 4;
 
         if (!pixels) {

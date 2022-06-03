@@ -15,6 +15,15 @@
 #include "Presentation/SwapChain.h"
 #include "GraphicPipeline/GraphicPipeline.h"
 #include "Utils/ValidationLayer.h"
+#include "Objects/Mesh.h"
+#include "Objects/Model.h"
+#include "Objects/Texture.h"
+
+//NEW
+
+#include "DrawingNew/CommandManager.h"
+#include "DrawingNew/DescriptorManager.h"
+#include "DrawingNew/GraphicPipelineCustom.h"
 
 #include <memory>
 namespace Engine{
@@ -39,7 +48,9 @@ namespace Engine{
         SwapChain swapChain;
         GraphicPipeline graphicPipeline;
         Renderer renderer;
-
+        GraphicPipelineCustom graphicPipelineCustom;
+        //NEW
+        CommandManager manager;
     public:
         Core(){}
 
@@ -53,6 +64,7 @@ namespace Engine{
         void init();
         void initVulkan();
         void initWindow();
+        void customInit();
         void main();
         void appLoop();
         void close();
@@ -78,6 +90,10 @@ namespace Engine{
         bool getResizeFlag() {
             return framebufferResized;
         }
+
+
+        //FACTORY:
+
     };
 
 

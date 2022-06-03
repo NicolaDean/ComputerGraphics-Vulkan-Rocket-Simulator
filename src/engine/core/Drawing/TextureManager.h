@@ -29,7 +29,7 @@ namespace Engine {
         }
 
         void close();
-        void createTextureImage();
+        void createTextureImage(std::string imageName);
         void createTextureImageView();
         void createTextureSampler();
         //UTILS FUNCTIONS:

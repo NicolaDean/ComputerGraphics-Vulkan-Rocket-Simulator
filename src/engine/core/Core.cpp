@@ -15,7 +15,6 @@ namespace Engine{
     }
 
     void Core::init(){
-
         //Open GLFW window
         initWindow();
         //Initialize some of the Engine Components
@@ -28,8 +27,6 @@ namespace Engine{
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         //glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); ->now is resizable
-
-
 
         window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
         glfwSetWindowUserPointer(window, this);
@@ -59,39 +56,73 @@ namespace Engine{
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Descriptor Set Layout
-        graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
-        graphicPipeline.createDescriptorSetLayout();
+        //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
+        //graphicPipeline.createDescriptorSetLayout();
+        graphicPipelineCustom = GraphicPipelineCustom(logicDeviceManager.getDevice(),&swapChain);
         //Graphic Pipeline & Render Pass
         bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(), nullptr);
         depthImage = DepthImage(bufferManager);
-        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
-        graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
-        //Create Command Buffer
-        commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer,&vertexBuffer);
-        commandBuffer.init(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
-        bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(),commandBuffer.getCommandPool());
+        //graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
+        graphicPipelineCustom.createRenderPass(depthImage);
+        //Command Pool
+        manager = CommandManager(logicDeviceManager.getDevice());
+        manager.createCommandPool(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
+        //Depth Resources
         textureManager = TextureManager(bufferManager);
         depthImage = DepthImage(bufferManager);
         depthImage.createDepthResources(swapChain.getSwapChainExtent(),textureManager);
         //Create Frame Buffer
-        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass(),depthImage.getDepthImageView());
-        //CREATE AN HELPER CLASS TO MANAGE BUFFER CREATIONS
-        textureManager.createTextureImage();
-        textureManager.createTextureImageView();
-        textureManager.createTextureSampler();
-        //Vertex Buffer
-        vertexBuffer = VertexBuffer(&logicDeviceManager,devicesManager.getSelectedDevice());
-        vertexBuffer.createVertexBuffer(&commandBuffer);
-        vertexBuffer.createIndexBuffer(&commandBuffer);
-        //Uniform Buffer
-        graphicPipeline.createUniformBuffers(bufferManager);
-        //Descriptor set and Poll
-        graphicPipeline.createDescriptorPool();
-        graphicPipeline.createDescriptorSet(textureManager);
+        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipelineCustom.getRenderPass(),depthImage.getDepthImageView());
+        manager.setFrameBuffer(&frameBuffer);
+        //Recreate the Buffer manager with the command pool (to help texture manager)
+        bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(),manager.getCommandPool());
+        textureManager = TextureManager(bufferManager);
 
+        customInit();
+
+        manager.recordCommandBuffers();
         //Create Renderer (to draw Frames)
-        renderer = Renderer(&logicDeviceManager,&commandBuffer,&swapChain,&graphicPipeline);
+        renderer = Renderer(&logicDeviceManager,&manager,&swapChain,&graphicPipeline);
         renderer.createSyncObjects();
+    }
+
+    void Core::customInit() {
+        Model model;
+        Texture texture;
+        DescriptorManager descManager;
+        GraphicPipelineCustom graphicPipeline;
+
+        model = Model("./src/Models/viking_room.obj",bufferManager);
+        model.init();
+        texture = Texture("./src/Textures/viking_room.png",bufferManager);
+        texture.load();
+
+        descManager = DescriptorManager(bufferManager,&swapChain);
+        //graphicPipeline = GraphicPipelineCustom(logicDeviceManager.getDevice(),&swapChain);
+
+        descManager.createDescriptorPool();
+
+        descManager.pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
+        descManager.pushBindingDescriptor({1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT});
+
+        descManager.createDescriptorSetLayouts();
+
+        descManager.pushElementDescriptor({0, UNIFORM, sizeof(UniformBufferObject), nullptr});
+        descManager.pushElementDescriptor({1, TEXTURE, 0, &texture});
+
+        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/Vert.spv",
+                                              "./src/Shaders/compiledShaders/Frag.spv",
+                                              {&descManager});
+
+        manager.setGraphicPipeline(&graphicPipelineCustom);
+        manager.setModel(model);
+
+        descManager.createDescriptorSets();
+
+        model.bindDescriptor(&descManager);
+        manager.setDescriptor(&descManager);
+
+
     }
 
     void Core::loop() {
@@ -249,3 +280,24 @@ namespace Engine{
     }
 
 }
+
+/*
+ *         //graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
+        //Create Command Buffer
+        //commandBuffer = CommandBuffer(logicDeviceManager.getDevice(),&frameBuffer,&vertexBuffer);
+        //commandBuffer.init(devicesManager.getSelectedDevice(),windowsSurface.getSurface());
+
+
+ * //CREATE AN HELPER CLASS TO MANAGE BUFFER CREATIONS
+ textureManager.createTextureImage("./src/Textures/viking_room.png");
+ textureManager.createTextureImageView();
+ textureManager.createTextureSampler();
+ //Vertex Buffer
+ vertexBuffer = VertexBuffer(&logicDeviceManager,devicesManager.getSelectedDevice());
+ vertexBuffer.createVertexBuffer(&commandBuffer);
+ vertexBuffer.createIndexBuffer(&commandBuffer);
+ //Uniform Buffer
+ graphicPipeline.createUniformBuffers(bufferManager);
+ //Descriptor set and Poll
+ graphicPipeline.createDescriptorPool();
+ graphicPipeline.createDescriptorSet(textureManager);*/

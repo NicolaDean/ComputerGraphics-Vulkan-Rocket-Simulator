@@ -19,13 +19,14 @@ namespace Engine {
         std::vector<VkDeviceMemory> uniformBuffersMemory;
         VkDevice * device;
         BufferManager bufferManager;
+
     public:
         UniformBuffer(){};
         UniformBuffer(VkDevice * dev){
             device = dev;
         };
 
-        UniformBuffer(VkDevice * dev,BufferManager bufferMng){
+        UniformBuffer(BufferManager bufferMng){
             device = bufferMng.getAssignedDevice();
             bufferManager = bufferMng;
         };
@@ -33,14 +34,17 @@ namespace Engine {
         void close();
         void createUniformBuffers();
         void updateUniformBuffer(uint32_t currentImage,VkExtent2D swapChainExtent);
-        void
-        createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer &buffer,
+        void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer &buffer,
                      VkDeviceMemory &bufferMemory);
 
 
         //GETTER:
         std::vector<VkBuffer> getUniformBuffer(){
             return uniformBuffers;
+        }
+
+        std::vector<VkDeviceMemory> getUniformBufferMemory(){
+            return uniformBuffersMemory;
         }
 
     };
