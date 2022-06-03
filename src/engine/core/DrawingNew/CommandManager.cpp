@@ -43,6 +43,7 @@ namespace Engine{
     void CommandManager::recordCommandBuffers() {
         createCommandBuffers();
 
+        std::cout<<"Created Command Buffer, Try Record Command:\n";
         for (size_t i = 0; i < commandBuffers.size(); i++) {
             VkCommandBufferBeginInfo beginInfo{};
             beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -53,7 +54,7 @@ namespace Engine{
                 VK_SUCCESS) {
                 throw std::runtime_error("failed to begin recording command buffer!");
             }
-
+            std::cout<<"Render Pass Info:\n";
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
             renderPassInfo.renderPass = graphicPipeline->getRenderPass();
@@ -61,21 +62,22 @@ namespace Engine{
             renderPassInfo.renderArea.offset = {0, 0};
             renderPassInfo.renderArea.extent = graphicPipeline->getSwapChainExtent();
 
+            std::cout<<"Clear Values:\n";
             std::array<VkClearValue, 2> clearValues{};
             clearValues[0].color = {{0.0f, 0.0f, 0.0f, 1.0f}};
             clearValues[1].depthStencil = {1.0f, 0};
-
+            std::cout<<"Clear Values:\n";
             renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
             renderPassInfo.pClearValues = clearValues.data();
 
-
+            std::cout<<"Begin Render Pass:\n";
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo,
                                  VK_SUBPASS_CONTENTS_INLINE);
 
-
+            std::cout<<"vkCmdBeginRenderPass:\n";
             populateCommandBuffers(commandBuffers[i], i);
 
-
+            std::cout<<"populateCommandBuffers:\n";
             vkCmdEndRenderPass(commandBuffers[i]);
 
             if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
@@ -90,6 +92,7 @@ namespace Engine{
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
                           graphicPipeline->getGraphicPipeline());
 
+        std::cout<<"Bind Command to Pipeline\n";
         VkBuffer vertexBuffers[] = {M1.getVertexBuffer()};
         // property .vertexBuffer of models, contains the VkBuffer handle to its vertex buffer
         VkDeviceSize offsets[] = {0};
