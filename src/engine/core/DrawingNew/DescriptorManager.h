@@ -34,16 +34,21 @@ namespace Engine{
         //Helper
         VkDevice * device;
         UniformBufferManager uniformBufferManager;
+
+        std::vector<std::vector<VkBuffer>> uniformBuffers;
+        std::vector<std::vector<VkDeviceMemory>> uniformBuffersMemory;
+
         //Descriptors
         VkDescriptorSetLayout descriptorSetLayout;
         VkDescriptorPool descriptorPool;
         std::vector<VkDescriptorSet> descriptorSets;
         SwapChain * swapChain;
-
+        BufferManager bufferManager;
     public:
 
         DescriptorManager(){}
         DescriptorManager(BufferManager manager,SwapChain * swap){
+            bufferManager = manager;
             device = manager.getAssignedDevice();
             swapChain = swap;
             uniformBufferManager = UniformBufferManager(manager);
@@ -57,6 +62,7 @@ namespace Engine{
         void createDescriptorSetLayouts();
         void createDescriptorPool();
         void createDescriptorSets();
+
 
         //Getter
         VkDescriptorSetLayout getDescriptorSetLayout(){

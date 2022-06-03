@@ -23,18 +23,16 @@ namespace Engine{
 
 
     void BufferManager::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {
-        std::cout<<"Creaing Command Buffer\n";
+
         VkBufferCreateInfo bufferInfo{};
         bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
         bufferInfo.size = size;
         bufferInfo.usage = usage;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-        std::cout<<"AAAAAAAA Command Buffer\n";
 
         if (vkCreateBuffer(*device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS) {
             throw std::runtime_error("failed to create buffer!");
         }
-        std::cout<<"BBBBBBBBBBB Command Buffer\n";
         VkMemoryRequirements memRequirements;
         vkGetBufferMemoryRequirements(*device, buffer, &memRequirements);
 
@@ -48,7 +46,6 @@ namespace Engine{
         }
 
         vkBindBufferMemory(*device, buffer, bufferMemory, 0);
-        std::cout<<"End Command Buffer\n";
     }
 
     VkCommandBuffer BufferManager::beginSingleTimeCommands() {
