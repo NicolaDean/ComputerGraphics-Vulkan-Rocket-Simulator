@@ -5,17 +5,13 @@
 #include "UniformBufferManager.h"
 
 namespace Engine{
-    void UniformBufferManager::pushUniformBuffer(){
-        UniformBuffer buffer = UniformBuffer(bufferManager);
-        buffer.createUniformBuffers();
-        uniformBuffers.push_back(buffer);
-
-        //return &buffer; //TODO Check if pointer is ok
+    void UniformBufferManager::pushUniformBuffer(int i){
+        uniformBuffers.push_back(UniformBuffer(bufferManager));
+        uniformBuffers.at(i).createUniformBuffers();
     }
 
-    VkBuffer UniformBufferManager::getBuffer(int buffer,int frame) {
-        return uniformBuffers[buffer].getUniformBuffer()[frame];
-    }
+
+
 
     void UniformBufferManager::update(uint32_t currentImage,VkExtent2D swapChainExtent) {
         //UPDATE UNIFORM BUFFER OF ALL DESCRIPTOR SETS

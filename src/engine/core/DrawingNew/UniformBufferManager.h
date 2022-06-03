@@ -11,6 +11,7 @@
 namespace Engine{
     class UniformBufferManager {
         std::vector<UniformBuffer> uniformBuffers;
+        //std::vector<std::vector<VkBuffer>> uniformBuffers;
         BufferManager bufferManager;
 
     public:
@@ -20,8 +21,22 @@ namespace Engine{
         }
 
         void clean();
-        void pushUniformBuffer();
-        VkBuffer getBuffer(int buffer,int frame) ;
+        void pushUniformBuffer(int i);
+
+        void resizeVector(int size){
+            uniformBuffers.resize(size);
+        }
+
+        std::vector<UniformBuffer> * getBuffers(){
+            return &uniformBuffers;
+        }
+        VkBuffer getBuffer(int buffer,int frame) {
+            return (uniformBuffers[buffer].getUniformBuffer())[frame];
+        }
+
+        std::vector<VkBuffer>   getBuffer(int buffer){
+            return (uniformBuffers[buffer].getUniformBuffer());
+        }
 
         void update(uint32_t currentImage,VkExtent2D swapChainExtent);
     };

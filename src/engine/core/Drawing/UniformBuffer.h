@@ -43,6 +43,10 @@ namespace Engine {
             return uniformBuffers;
         }
 
+        std::vector<VkBuffer> *  getUniformBufferRef(){
+            return &uniformBuffers;
+        }
+
         std::vector<VkDeviceMemory> getUniformBufferMemory(){
             return uniformBuffersMemory;
         }
