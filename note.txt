@@ -1,0 +1,64 @@
+NOTE:
+DONE:
+
+Model Loading
+Texture Loading
+Descriptor Creation and uniform buffers from user input
+Pipeline with custom files and descriptors
+
+TODO:
+PopulateCommandBuffers
+UpdateUniformBuffers
+
+Descriptors:
+
+contengono informazioni per bindare vertex/index/texture/ubo con gli shaders
+
+		// Descriptor Layouts [what will be passed to the shaders]
+		DSL1.init(this, {
+					// this array contains the binding:
+					// first  element : the binding number
+					// second element : the time of element (buffer or texture)
+					// third  element : the pipeline stage where it will be used
+					{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT},
+					{1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT}
+				  });
+		
+		Per esempio qui passa prima delle informazioni:
+		- ( 0 ) riguardanti UBO (per muovere i modelli 3d)
+		- ( 1 ) riguardanti Texture (per colorare i modelli 3d)
+		
+		
+		DS1.init(this, &DSL1, {
+		// the second parameter, is a pointer to the Uniform Set Layout of this set
+		// the last parameter is an array, with one element per binding of the set.
+		// first  elmenet : the binding number
+		// second element : UNIFORM or TEXTURE (an enum) depending on the type
+		// third  element : only for UNIFORMs, the size of the corresponding C++ object
+		// fourth element : only for TEXTUREs, the pointer to the corresponding texture object
+					{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+					{1, TEXTURE, 0, &T1}
+				});
+				
+		
+		DSL1 è accoppiato ad DS1 (usando i binding number!!!!)
+		
+		
+		//PER OGNI DESCRIPTOR SET CHE VOGLIO CREARE CREO UN NUMERO DI UNIFORM BUFFERS PARI AL MAX_FRAME_...
+		
+		for (int j = 0; j < E.size(); j++) {
+		uniformBuffers[j].resize(BP->swapChainImages.size());
+		uniformBuffersMemory[j].resize(BP->swapChainImages.size());
+		if(E[j].type == UNIFORM) {
+			for (size_t i = 0; i < BP->swapChainImages.size(); i++) {
+				VkDeviceSize bufferSize = E[j].size;
+				BP->createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+									 	 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+									 	 VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+									 	 uniformBuffers[j][i], uniformBuffersMemory[j][i]);
+			}
+			toFree[j] = true;
+		} else {
+			toFree[j] = false;
+		}
+	}
