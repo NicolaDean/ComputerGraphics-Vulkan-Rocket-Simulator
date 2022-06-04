@@ -43,23 +43,10 @@ namespace Engine{
         //toFree.resize(E.size());
 
         for (int j = 0; j < elementsDescriptors.size(); j++) {
-            uniformBuffers[j].resize(MAX_FRAMES_IN_FLIGHT);
-            uniformBuffersMemory[j].resize(MAX_FRAMES_IN_FLIGHT);
             if(elementsDescriptors[j].type == UNIFORM) {
-                for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-                    VkDeviceSize bufferSize = elementsDescriptors[j].size;
-                    bufferManager.createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-                                     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-                                     VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                                     uniformBuffers[j][i], uniformBuffersMemory[j][i]);
-                }
-                //toFree[j] = true;
-            } else {
-                //toFree[j] = false;
+                uniformBufferManager.pushUniformBuffer(j);
             }
         }
-
-        std::vector<UniformBuffer> * tmp = uniformBufferManager.getBuffers();
 
         // Create Descriptor set
         std::vector <VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayout);
@@ -86,7 +73,8 @@ namespace Engine{
 
                     VkDescriptorBufferInfo bufferInfo{};
                     //(uniformBufferManager.getBuffer(uniformCount,i));
-                    bufferInfo.buffer = uniformBuffers[0][i];
+                    //bufferInfo.buffer = uniformBuffers[0][i];
+                    bufferInfo.buffer = uniformBufferManager.getBuffer(0,i);
                     bufferInfo.offset = 0;
                     bufferInfo.range = elementsDescriptors[0].size;
 
