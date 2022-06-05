@@ -21,7 +21,9 @@ namespace Engine{
 
         void init();
         void loadModel();
+        void customUpdate(float ft){
 
+        }
     };
 }
 

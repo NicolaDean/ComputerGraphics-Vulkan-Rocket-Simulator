@@ -5,7 +5,7 @@ INC=-I ./headers -I $(STB_INCLUDE_PATH)
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 GLSLC_PATH = /usr/local/bin
 
-PRECOMPILE =  ./src/engine/core/commonLibs
+PRECOMPILE =  ./src/engine/commonLibs
 
 #SHADER INFO:
 SHADER_FOLDER = ./src/Shaders
@@ -45,9 +45,9 @@ Precompile: $(PRECOMPILE).cpp
 	g++ -std=c++17 $(PRECOMPILE).h
 	#g++ $(CFLAGS) -o $(PRECOMPILE).h.gch $(PRECOMPILE).h
 
-Engine: $(MAIN)  clean
+Engine:  $(MAIN)  clean
 	echo OS:$(OSNAME)
-	g++ -g $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
+	g++ -g  $(CFLAGS)  $(INC) -o Engine $(SOURCES) $(LDFLAGS)
 	echo "Ended Compilation"
 
 .PHONY: test clean debug Precompile

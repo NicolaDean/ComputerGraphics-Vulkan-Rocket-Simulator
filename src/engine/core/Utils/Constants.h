@@ -14,8 +14,15 @@ namespace Engine{
     public:
         static int WIDTH;
         static int HEIGHT;
+        static uint32_t IMAGE_COUNT;
         //static VkClearColorValue initialBackgroundColor;
         //static vertex
+
+        static void setImageCount(uint32_t count);
+    };
+
+    class App_Singleton{
+
     };
 
     class VertexFilesPath{

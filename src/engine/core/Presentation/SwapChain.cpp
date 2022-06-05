@@ -136,6 +136,7 @@ namespace Engine{
         swapChainImages.resize(imageCount);
         vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
 
+        Constants::setImageCount(swapChainImages.size());
         //Saving format and extent of swapchain
         swapChainImageFormat = surfaceFormat.format;
         swapChainExtent = extent;

@@ -9,7 +9,7 @@
 #include "../../commonLibs.h"
 #include "../Utils/Constants.h"
 #include "BufferManager.h"
-
+#include "../Objects/Camera.h"
 
 namespace Engine {
 

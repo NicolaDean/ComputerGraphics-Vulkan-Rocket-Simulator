@@ -12,6 +12,10 @@ namespace Engine{
      * For example methods to change views, to setup Camera, Load Models......
      */
     class App: public Engine::Core {
+
+    protected:
+
+
     public:
         App(int width,int h,std::string win_name):Core(width,h,win_name){
             //Some Code....

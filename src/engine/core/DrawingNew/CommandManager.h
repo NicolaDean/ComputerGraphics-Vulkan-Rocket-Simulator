@@ -17,6 +17,7 @@ namespace Engine{
         FrameBuffer* frameBuffer;
         GraphicPipelineCustom*  graphicPipeline;
         Model M1;
+        Model M2;
         DescriptorManager * descriptorManager;
 
     public:
@@ -38,8 +39,8 @@ namespace Engine{
         void recordCommandBuffers();
         void populateCommandBuffers(VkCommandBuffer commandBuffer, int currentImage);
 
-        void setModel(Model m){
-            M1 = m;
+        void setModel(Model m1){
+            M1 = m1;
         }
 
         VkCommandPool getCommandPool(){
@@ -60,6 +61,10 @@ namespace Engine{
 
         std::vector<VkCommandBuffer> getCommandBuffers(){
             return commandBuffers;
+        }
+
+        VkCommandBuffer * getCommandBuffers(int imageIndex){
+            return &(commandBuffers[imageIndex]);
         }
 
         void updateBufferManager(uint32_t currentImage){

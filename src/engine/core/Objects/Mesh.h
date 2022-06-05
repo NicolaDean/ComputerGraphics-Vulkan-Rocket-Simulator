@@ -8,8 +8,12 @@
 #include "../Drawing/BufferManager.h"
 #include "../Geometry/Vertex.h"
 #include "../DrawingNew/DescriptorManager.h"
+
 namespace Engine{
-    class Mesh {
+    class Mesh  {
+
+
+
         //Vertex Buffer
         VkBuffer vertexBuffer;
         VkDeviceMemory vertexBufferMemory;
@@ -24,6 +28,8 @@ namespace Engine{
         std::vector<Vertex> vertices;
         std::vector<uint32_t> indices;
     public:
+        static std::vector<Mesh>* meshes;
+
         Mesh(){}
 
         Mesh(BufferManager buffManager){

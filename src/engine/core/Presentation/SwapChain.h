@@ -5,7 +5,7 @@
 #include <limits> // Necessary for std::numeric_limits
 #include <algorithm> // Necessary for std::clamp
 #include "../Drawing/TextureManager.h"
-
+#include "../Utils/Constants.h"
 /**
  * Swap chain is the component that will own the buffers we will render to before we visualize them on the screen
  * I summary is like a queue containing the images to be presented on screen

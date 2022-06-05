@@ -42,15 +42,21 @@ namespace Engine{
         CommandBuffer commandBuffer;
         FrameBuffer frameBuffer;
         VertexBuffer vertexBuffer;
-        BufferManager bufferManager;
         TextureManager textureManager;
         DepthImage depthImage;
-        SwapChain swapChain;
+
         GraphicPipeline graphicPipeline;
         Renderer renderer;
+    protected:
+        BufferManager bufferManager;
         GraphicPipelineCustom graphicPipelineCustom;
+        SwapChain swapChain;
         //NEW
         CommandManager manager;
+        Model model;
+        Texture texture;
+        DescriptorManager descManager;
+
     public:
         Core(){}
 
@@ -64,7 +70,7 @@ namespace Engine{
         void init();
         void initVulkan();
         void initWindow();
-        void customInit();
+
         void main();
         void appLoop();
         void close();
@@ -78,6 +84,7 @@ namespace Engine{
 
         GLFWwindow* getWindow();
     public:
+        void customInit();
         void run();
         void loop();
         /**

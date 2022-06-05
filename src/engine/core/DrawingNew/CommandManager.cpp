@@ -19,7 +19,7 @@ namespace Engine{
         }
     }
     void CommandManager::createCommandBuffers() {
-        commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+        commandBuffers.resize(Constants::IMAGE_COUNT);
 
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -43,7 +43,6 @@ namespace Engine{
     void CommandManager::recordCommandBuffers() {
         createCommandBuffers();
 
-        std::cout<<"Created Command Buffer, Try Record Command:\n";
         for (size_t i = 0; i < commandBuffers.size(); i++) {
             VkCommandBufferBeginInfo beginInfo{};
             beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -54,7 +53,6 @@ namespace Engine{
                 VK_SUCCESS) {
                 throw std::runtime_error("failed to begin recording command buffer!");
             }
-            std::cout<<"Render Pass Info:\n";
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
             renderPassInfo.renderPass = graphicPipeline->getRenderPass();
@@ -62,22 +60,19 @@ namespace Engine{
             renderPassInfo.renderArea.offset = {0, 0};
             renderPassInfo.renderArea.extent = graphicPipeline->getSwapChainExtent();
 
-            std::cout<<"Clear Values:\n";
+
             std::array<VkClearValue, 2> clearValues{};
             clearValues[0].color = {{0.0f, 0.0f, 0.0f, 1.0f}};
             clearValues[1].depthStencil = {1.0f, 0};
-            std::cout<<"Clear Values:\n";
+
             renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
             renderPassInfo.pClearValues = clearValues.data();
 
-            std::cout<<"Begin Render Pass:\n";
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo,
                                  VK_SUBPASS_CONTENTS_INLINE);
 
-            std::cout<<"vkCmdBeginRenderPass:\n";
             populateCommandBuffers(commandBuffers[i], i);
 
-            std::cout<<"populateCommandBuffers:\n";
             vkCmdEndRenderPass(commandBuffers[i]);
 
             if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
@@ -88,29 +83,34 @@ namespace Engine{
     }
 
     void CommandManager::populateCommandBuffers(VkCommandBuffer commandBuffer, int currentImage) {
+        for (auto &mesh : *Mesh::meshes) // access by reference to avoid copying
+        {
+            vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
+                              graphicPipeline->getGraphicPipeline());
+            VkBuffer vertexBuffers[] = {mesh.getVertexBuffer()};
+            // property .vertexBuffer of models, contains the VkBuffer handle to its vertex buffer
+            VkDeviceSize offsets[] = {0};
+            vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
+            // property .indexBuffer of models, contains the VkBuffer handle to its index buffer
+            vkCmdBindIndexBuffer(commandBuffers[currentImage], mesh.getIndexBuffer(), 0,
+                                 VK_INDEX_TYPE_UINT32);
 
-        vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-                          graphicPipeline->getGraphicPipeline());
+            // property .pipelineLayout of a pipeline contains its layout.
+            // property .descriptorSets of a descriptor set contains its elements.
 
-        std::cout<<"Bind Command to Pipeline\n";
-        VkBuffer vertexBuffers[] = {M1.getVertexBuffer()};
-        // property .vertexBuffer of models, contains the VkBuffer handle to its vertex buffer
-        VkDeviceSize offsets[] = {0};
-        vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-        // property .indexBuffer of models, contains the VkBuffer handle to its index buffer
-        vkCmdBindIndexBuffer(commandBuffer, M1.getIndexBuffer(), 0,
-                             VK_INDEX_TYPE_UINT32);
+            //TODO GET DESCRIPTOR FROM MODEL
+            std::vector<VkDescriptorSet> descriptorSets = descriptorManager->getDescriptorSet();
+            vkCmdBindDescriptorSets(commandBuffers[currentImage],
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    graphicPipeline->getPipelineLayout(), 0, 1, &(descriptorSets[currentImage]),
+                                    0, nullptr);
 
-        // property .pipelineLayout of a pipeline contains its layout.
-        // property .descriptorSets of a descriptor set contains its elements.
+            vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
+                              graphicPipeline->getGraphicPipeline());
 
-        vkCmdBindDescriptorSets(commandBuffer,
-                                VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                graphicPipeline->getPipelineLayout(), 0, 1, &(descriptorManager->getDescriptorSet()[currentImage]),
-                                0, nullptr);
-
-        // property .indices.size() of models, contains the number of triangles * 3 of the mesh.
-        vkCmdDrawIndexed(commandBuffer,
-                         static_cast<uint32_t>(M1.getIndices().size()), 1, 0, 0, 0);
-    }
+            // property .indices.size() of models, contains the number of triangles * 3 of the mesh.
+            vkCmdDrawIndexed(commandBuffers[currentImage],
+                             static_cast<uint32_t>(mesh.getIndices().size()), 1, 0, 0, 0);
+        }
+        }
 }

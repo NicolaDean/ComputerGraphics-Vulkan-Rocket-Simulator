@@ -1,22 +1,25 @@
 
 #include "Renderer.h"
 #include "../Core.h"
+#include <chrono>
 
 namespace Engine{
 
     void Renderer::close() {
         VkDevice device = *logicDeviceManager->getDevice();
-        //Destroy Semaphore
+        //DeVK_IMAGE_LAYOUT_PRESENT_SRC_KHRstroy Semaphore
         for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
             vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
             vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
             vkDestroyFence(device, inFlightFences[i], nullptr);
         }
+
     }
     void Renderer::createSyncObjects() {
         imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
+        imagesInFlight.resize(Constants::IMAGE_COUNT, VK_NULL_HANDLE);
 
         VkSemaphoreCreateInfo semaphoreInfo{};
         semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -38,47 +41,57 @@ namespace Engine{
 
     }
 
-
     void Renderer::drawFrame(Core* app) {
+
+        // Get starting timepoint
+        auto start = std::chrono::high_resolution_clock::now();
+
         VkDevice device = *logicDeviceManager->getDevice();
         VkSwapchainKHR swapChain = swapChainCopy->getSwapChain();
         std::vector<VkCommandBuffer> commandBuffers = manager->getCommandBuffers();
 
-        vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
+        vkWaitForFences(device, 1, &inFlightFences[currentFrame],VK_TRUE, UINT64_MAX);
 
         uint32_t imageIndex;
+        //std::cout<<"ImageIndex->" <<imageIndex<<"\n";
         VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
-        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+        /*if (result == VK_ERROR_OUT_OF_DATE_KHR) {
             app->recreateSwapChain();
             return;
         } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
             throw std::runtime_error("failed to acquire swap chain image!");
-        }
+        }*/
 
         //UPDATE UNIFORM BUFFER
-        //graphicPipelineCopy->updateUniformBuffer(currentFrame,swapChainCopy->getSwapChainExtent());
-        manager->updateBufferManager(currentFrame);
-        vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
-        vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);
-        //commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
-        manager->recordCommandBuffers();
+        if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
+            vkWaitForFences(device, 1, &imagesInFlight[imageIndex],
+                            VK_TRUE, UINT64_MAX);
+        }
+        imagesInFlight[imageIndex] = inFlightFences[currentFrame];
+
+        manager->updateBufferManager(imageIndex);
+
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
         VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};
-        VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        VkPipelineStageFlags waitStages[] ={VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         submitInfo.waitSemaphoreCount = 1;
         submitInfo.pWaitSemaphores = waitSemaphores;
         submitInfo.pWaitDstStageMask = waitStages;
-
         submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = &commandBuffers[currentFrame];
-
+        submitInfo.pCommandBuffers = manager->getCommandBuffers(imageIndex);
         VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = signalSemaphores;
+
+        vkResetFences(device, 1, &inFlightFences[currentFrame]);
+
+        //vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);
+        //commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
+        //manager->recordCommandBuffers();
+
 
         if (vkQueueSubmit(logicDeviceManager->getGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
             throw std::runtime_error("failed to submit draw command buffer!");
@@ -108,5 +121,16 @@ namespace Engine{
         }
 
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+
+        // Get ending timepoint
+        auto stop =  std::chrono::high_resolution_clock::now();
+
+        // Get duration. Substart timepoints to
+        // get duration. To cast it to proper unit
+        // use duration cast method
+        auto duration =  std::chrono::duration_cast< std::chrono::microseconds>(stop - start);
+
+        //TODO CALCULATE FPS!!!
+        std::cout << "Time taken by function: "<< std::dec<<duration.count() << " microseconds\n";
     }
 }

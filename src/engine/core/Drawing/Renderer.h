@@ -17,6 +17,7 @@ namespace Engine{
         std::vector<VkSemaphore> imageAvailableSemaphores;
         std::vector<VkSemaphore> renderFinishedSemaphores;
         std::vector<VkFence> inFlightFences;
+        std::vector<VkFence> imagesInFlight;
 
         LogicDeviceManager *logicDeviceManager;
         SwapChain * swapChainCopy;

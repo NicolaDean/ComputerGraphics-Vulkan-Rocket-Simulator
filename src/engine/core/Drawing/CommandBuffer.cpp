@@ -26,7 +26,7 @@ namespace Engine{
     }
 
     void CommandBuffer::createCommandBuffer() {
-        commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+        commandBuffers.resize(Constants::IMAGE_COUNT);
 
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;

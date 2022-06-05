@@ -6,6 +6,8 @@
 
 namespace Engine{
 
+    std::vector<Mesh>* Mesh::meshes = new std::vector<Mesh>();
+
     void Mesh::init() {
         createVertexBuffer();
         createIndexBuffer();

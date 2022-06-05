@@ -18,6 +18,7 @@ namespace Engine{
         VkDescriptorType type;
         VkShaderStageFlags flags;
     };
+
     enum DescriptorSetElementType {UNIFORM, TEXTURE};
 
     struct DescriptorSetElement {
@@ -34,9 +35,6 @@ namespace Engine{
         //Helper
         VkDevice * device;
         UniformBufferManager uniformBufferManager;
-
-        std::vector<std::vector<VkBuffer>> uniformBuffers;
-        std::vector<std::vector<VkDeviceMemory>> uniformBuffersMemory;
 
         //Descriptors
         VkDescriptorSetLayout descriptorSetLayout;

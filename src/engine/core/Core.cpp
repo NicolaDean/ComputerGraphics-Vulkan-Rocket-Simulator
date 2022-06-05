@@ -55,6 +55,8 @@ namespace Engine{
        //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageViews(*logicDeviceManager.getDevice());
+        int x = Constants::IMAGE_COUNT;
+        std::cout<<"SWAPCHAIN IMAGE COUNT: "<<x<<"\n";
         //Descriptor Set Layout
         //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice());
         //graphicPipeline.createDescriptorSetLayout();
@@ -86,41 +88,42 @@ namespace Engine{
         renderer.createSyncObjects();
     }
 
+
+
     void Core::customInit() {
-        Model model;
-        Texture texture;
-        DescriptorManager descManager;
-        GraphicPipelineCustom graphicPipeline;
 
         model = Model("./src/Models/viking_room.obj",bufferManager);
         model.init();
+        Mesh::meshes->push_back(model);
+        //TODO incorporate Texture inside Model
         texture = Texture("./src/Textures/viking_room.png",bufferManager);
         texture.load();
 
         descManager = DescriptorManager(bufferManager,&swapChain);
-        //graphicPipeline = GraphicPipelineCustom(logicDeviceManager.getDevice(),&swapChain);
-
         descManager.createDescriptorPool();
+
 
         descManager.pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
         descManager.pushBindingDescriptor({1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT});
 
         descManager.createDescriptorSetLayouts();
 
+        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/Vert.spv",
+                                                    "./src/Shaders/compiledShaders/Frag.spv",
+                                                    {&descManager});
+        manager.setGraphicPipeline(&graphicPipelineCustom);
+
+        //TODO RESET THE ELEMENT DESCRIPTOR LIST TO ALLOW CREATING MORE DESCRIPTOR SET,
+        // THEN USI DESCRIPTOR WITH ALL MESH AS A FACTORY OF DESCRIPTOR SET
+        // eg: Mesh x = ....; descManager.createDescriptor(x) ->  uso descriptorset del modello (eg: x.getDes...)
+        //Create a function inside descriptor called "CreateDefaultModelDescriptorSet(Model)
         descManager.pushElementDescriptor({0, UNIFORM, sizeof(UniformBufferObject), nullptr});
         descManager.pushElementDescriptor({1, TEXTURE, 0, &texture});
-
-        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/Vert.spv",
-                                              "./src/Shaders/compiledShaders/Frag.spv",
-                                              {&descManager});
-
-        manager.setGraphicPipeline(&graphicPipelineCustom);
-        manager.setModel(model);
-
         descManager.createDescriptorSets();
 
         model.bindDescriptor(&descManager);
         manager.setDescriptor(&descManager);
+
 
 
     }
@@ -139,7 +142,6 @@ namespace Engine{
             glfwPollEvents();
             renderer.drawFrame(this);
         }
-
         vkDeviceWaitIdle(*logicDeviceManager.getDevice());
     }
 
@@ -159,7 +161,7 @@ namespace Engine{
         vkDeviceWaitIdle(*logicDeviceManager.getDevice());
 
         //Clean up the mess of old swap chain
-        cleanupSwapChain();
+        cleanupSwapChain();//TODO ADD RESIZE SWAPCHAIN!!!
         //Swap Chain
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageViews(*logicDeviceManager.getDevice());

@@ -64,6 +64,7 @@ namespace Engine{
 
         vkDestroyBuffer(*device, stagingBuffer, nullptr);
         vkFreeMemory(*device, stagingBufferMemory, nullptr);
+
     }
 
     void TextureManager::createTextureImageView() {
@@ -142,8 +143,7 @@ namespace Engine{
             throw std::invalid_argument("unsupported layout transition!");
         }
 
-        vkCmdPipelineBarrier(
-                commandBuffer,
+        vkCmdPipelineBarrier(commandBuffer,
                 sourceStage, destinationStage,
                 0,
                 0, nullptr,
