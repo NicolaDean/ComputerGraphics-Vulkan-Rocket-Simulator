@@ -11,9 +11,7 @@
 
 namespace Engine{
     class Mesh  {
-
-
-
+        /*VULKAN BUFFERS AND VARIABLES*/
         //Vertex Buffer
         VkBuffer vertexBuffer;
         VkDeviceMemory vertexBufferMemory;
@@ -22,29 +20,54 @@ namespace Engine{
         VkDeviceMemory indexBufferMemory;
         //BufferManager
         BufferManager bufferManager;
-        DescriptorManager * descriptorManager;
+
     protected:
         //Vetices and Indexes
         std::vector<Vertex> vertices;
         std::vector<uint32_t> indices;
+
+        //DESCRIPTOR AND UNIFORM BUFFERS OF MY MODEL
+        UniformBufferManager uniformBufferManager;
+        std::vector<VkDescriptorSet> descriptorSets;
+
+        //MESH WORLD INFO
+        glm::vec3 pos = glm::vec3(1,1,1);
+        glm::vec3 orientation = glm::vec3(0,0,1);
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+
     public:
         static std::vector<Mesh>* meshes;
+
 
         Mesh(){}
 
         Mesh(BufferManager buffManager){
             bufferManager = buffManager;
+            uniformBufferManager = UniformBufferManager(buffManager);
         }
 
         void init();
         void createVertexBuffer();
         void createIndexBuffer();
+        void updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix);
         void close();
-
-
-        void bindDescriptor(DescriptorManager *  desc){
-            descriptorManager = desc;
+        /********************MOVEMENT********************************/
+        void move(){
+            modelMatrix = glm::translate(glm::mat4(1.0f),pos);
         }
+
+        glm::mat4 getModelMatrix(){
+            return modelMatrix;
+        }
+
+        /********************GETTER SETTER********************************/
+        UniformBufferManager* getUniformBufferManager(){
+            return &uniformBufferManager;
+        }
+        std::vector<VkDescriptorSet>* getDescriptorSet(){
+            return &descriptorSets;
+        }
+
         VkBuffer getVertexBuffer(){
             return vertexBuffer;
         }
@@ -59,9 +82,6 @@ namespace Engine{
             return indices;
         }
 
-        DescriptorManager * getDescriptorManager(){
-            return descriptorManager;
-        }
     };
 }
 

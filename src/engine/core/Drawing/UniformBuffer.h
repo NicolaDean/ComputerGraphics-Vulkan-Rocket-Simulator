@@ -10,7 +10,7 @@
 #include "../Utils/Constants.h"
 #include "BufferManager.h"
 #include "../Objects/Camera.h"
-
+#include "../Presentation/SwapChain.h"
 namespace Engine {
 
     class UniformBuffer {
@@ -33,10 +33,9 @@ namespace Engine {
 
         void close();
         void createUniformBuffers();
-        void updateUniformBuffer(uint32_t currentImage,VkExtent2D swapChainExtent);
+        void updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix);
         void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer &buffer,
                      VkDeviceMemory &bufferMemory);
-
 
         //GETTER:
         std::vector<VkBuffer> getUniformBuffer(){

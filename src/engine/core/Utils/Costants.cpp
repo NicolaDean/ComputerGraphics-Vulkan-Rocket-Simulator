@@ -6,6 +6,8 @@
 
 namespace Engine{
     uint32_t Constants::IMAGE_COUNT = 2;
+    uint32_t Constants::swapWidth   = 480;
+    uint32_t Constants::swapHeight  = 560;
 
     void Constants::setImageCount(uint32_t count) {
         IMAGE_COUNT = count;

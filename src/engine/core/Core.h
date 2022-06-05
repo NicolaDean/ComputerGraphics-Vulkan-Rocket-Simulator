@@ -48,13 +48,11 @@ namespace Engine{
         GraphicPipeline graphicPipeline;
         Renderer renderer;
     protected:
-        BufferManager bufferManager;
+        BufferManager bufferManager; //TODO PUT THIS CLASS STATIC SO TO REMOVE ALL ITS PASSAGES
         GraphicPipelineCustom graphicPipelineCustom;
         SwapChain swapChain;
         //NEW
         CommandManager manager;
-        Model model;
-        Texture texture;
         DescriptorManager descManager;
 
     public:
@@ -84,6 +82,7 @@ namespace Engine{
 
         GLFWwindow* getWindow();
     public:
+        void updateScene(uint32_t currentImage);
         void customInit();
         void run();
         void loop();

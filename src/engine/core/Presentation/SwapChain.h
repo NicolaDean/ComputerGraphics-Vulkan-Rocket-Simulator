@@ -28,13 +28,13 @@ namespace Engine {
         std::vector<VkImageView> swapChainImageViews;
 
         VkFormat swapChainImageFormat;
-        VkExtent2D swapChainExtent;
+        static VkExtent2D swapChainExtent;
     public:
         SwapChain(){
 
         }
 
-        VkExtent2D getSwapChainExtent(){
+        static VkExtent2D getSwapChainExtent(){
             return swapChainExtent;
         }
 
@@ -45,6 +45,7 @@ namespace Engine {
         std::vector<VkImageView> getSwapChainImageViews(){
             return swapChainImageViews;
         }
+
 
         VkSwapchainKHR getSwapChain(){
             return swapChain;

@@ -13,6 +13,7 @@
 
 namespace Engine{
 
+    enum uniformsType {UNIFORM_B,GLOBAL_UNIFORM_B};
     struct DescriptorSetLayoutBinding {
         uint32_t binding;
         VkDescriptorType type;
@@ -37,12 +38,15 @@ namespace Engine{
         UniformBufferManager uniformBufferManager;
 
         //Descriptors
-        VkDescriptorSetLayout descriptorSetLayout;
-        VkDescriptorPool descriptorPool;
         std::vector<VkDescriptorSet> descriptorSets;
+        VkDescriptorSetLayout descriptorSetLayout;
+
         SwapChain * swapChain;
         BufferManager bufferManager;
     public:
+        static DescriptorManager* globalDescriptor;
+        static VkDescriptorPool descriptorPool; //STATIC BECAUSE ALL DESCRIPTOR USE SAME DESCRIPTOR POOL
+
 
         DescriptorManager(){}
         DescriptorManager(BufferManager manager,SwapChain * swap){
@@ -52,15 +56,18 @@ namespace Engine{
             uniformBufferManager = UniformBufferManager(manager);
         }
 
+        void setAsGlobal();
+        static void setAsGlobal(DescriptorManager* d);
+
         //User push descriptors info
         void pushElementDescriptor(DescriptorSetElement e){elementsDescriptors.push_back(e);};
         void pushBindingDescriptor(DescriptorSetLayoutBinding b){bindingsDescriptors.push_back(b);};
 
         //Create Descriptors
         void createDescriptorSetLayouts();
-        void createDescriptorPool();
+        void createDescriptorPool(VkDevice* device);
+        std::vector<VkDescriptorSet> createAndGetDescriptorSets(UniformBufferManager* manager);
         void createDescriptorSets();
-
 
         //Getter
         VkDescriptorSetLayout getDescriptorSetLayout(){
@@ -71,8 +78,9 @@ namespace Engine{
         }
 
         void updateBufferManager(uint32_t currentImage){
-            uniformBufferManager.update(currentImage,swapChain->getSwapChainExtent());
+            uniformBufferManager.update(currentImage,glm::mat4(1.0f));//TODO CORRECT HERE IF NEDED
         }
+
     };
 }
 

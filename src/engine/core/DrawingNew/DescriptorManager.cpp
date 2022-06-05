@@ -6,8 +6,17 @@
 
 
 namespace Engine{
-    void DescriptorManager::createDescriptorSetLayouts(){
+    DescriptorManager* DescriptorManager::globalDescriptor = new DescriptorManager();
+    VkDescriptorPool DescriptorManager::descriptorPool;
 
+    void DescriptorManager::setAsGlobal() {
+        DescriptorManager::setAsGlobal(this);
+    }
+    void DescriptorManager::setAsGlobal(DescriptorManager* d) {
+       globalDescriptor = d;
+    }
+
+    void DescriptorManager::createDescriptorSetLayouts(){
         std::vector<VkDescriptorSetLayoutBinding> bindings;
         bindings.resize(bindingsDescriptors.size());
         //This correspond to create the uboLayoutBinding and samplerLayoutBinding..
@@ -27,13 +36,19 @@ namespace Engine{
         if (vkCreateDescriptorSetLayout(*device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
             throw std::runtime_error("failed to create descriptor set layout!");
         }
-
     }
-    void DescriptorManager::createDescriptorSets() {
+
+    void DescriptorManager::createDescriptorSets(){
+        descriptorSets = createAndGetDescriptorSets(&uniformBufferManager);
+    }
+
+    std::vector<VkDescriptorSet> DescriptorManager::createAndGetDescriptorSets(UniformBufferManager* manager) {
+
+        std::vector<VkDescriptorSet> descriptorSetTmp;
         // Create uniform buffer
         for (int j = 0; j < elementsDescriptors.size(); j++) {
             if(elementsDescriptors[j].type == UNIFORM) {
-                uniformBufferManager.pushUniformBuffer(j);
+                manager->pushUniformBuffer(j);
             }
         }
 
@@ -41,13 +56,13 @@ namespace Engine{
         std::vector <VkDescriptorSetLayout> layouts(Constants::IMAGE_COUNT, descriptorSetLayout);
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-        allocInfo.descriptorPool = descriptorPool;
+        allocInfo.descriptorPool = DescriptorManager::descriptorPool;
         allocInfo.descriptorSetCount = static_cast<uint32_t>(Constants::IMAGE_COUNT);
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets.resize(Constants::IMAGE_COUNT);
+        descriptorSetTmp.resize(Constants::IMAGE_COUNT);
 
-        if (vkAllocateDescriptorSets(*device, &allocInfo, descriptorSets.data()) != VK_SUCCESS) {
+        if (vkAllocateDescriptorSets(*device, &allocInfo, descriptorSetTmp.data()) != VK_SUCCESS) {
             throw std::runtime_error("failed to allocate descriptor sets!");
         }
 
@@ -58,12 +73,12 @@ namespace Engine{
             int uniformCount = 0;//Used to map ONLY UNIFORM BUFFER
             for (int j = 0; j < elementsDescriptors.size(); j++) {
                 if(elementsDescriptors[j].type == UNIFORM) {
-                    bufferInfo.buffer = uniformBufferManager.getBuffer(uniformCount,i);
+                    bufferInfo.buffer = manager->getBuffer(uniformCount,i);
                     uniformCount++;
                     bufferInfo.offset = 0;
                     bufferInfo.range = elementsDescriptors[j].size;
                     descriptorWrites[j].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                    descriptorWrites[j].dstSet = descriptorSets[i];
+                    descriptorWrites[j].dstSet = descriptorSetTmp[i];
                     descriptorWrites[j].dstBinding = elementsDescriptors[j].binding;
                     descriptorWrites[j].dstArrayElement = 0;
                     descriptorWrites[j].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -77,7 +92,7 @@ namespace Engine{
                     imageInfo.sampler = elementsDescriptors[j].tex->getSampler();
 
                     descriptorWrites[j].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                    descriptorWrites[j].dstSet = descriptorSets[i];
+                    descriptorWrites[j].dstSet = descriptorSetTmp[i];
                     descriptorWrites[j].dstBinding = elementsDescriptors[j].binding;
                     descriptorWrites[j].dstArrayElement = 0;
                     descriptorWrites[j].descriptorType =VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
@@ -90,23 +105,27 @@ namespace Engine{
                                    descriptorWrites.data(), 0, nullptr);
         }
 
+        elementsDescriptors.clear();
+        return descriptorSetTmp;
+
     }
 
-    void DescriptorManager::createDescriptorPool() {
+    void DescriptorManager::createDescriptorPool(VkDevice*  device) {
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        poolSizes[0].descriptorCount = static_cast<uint32_t>(Constants::IMAGE_COUNT);
+        poolSizes[0].descriptorCount = static_cast<uint32_t>(2*Constants::IMAGE_COUNT);//TODO ADD uniformInPool* (come fa il prof, vedi starter)
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        poolSizes[1].descriptorCount = static_cast<uint32_t>(Constants::IMAGE_COUNT);
+        poolSizes[1].descriptorCount = static_cast<uint32_t>(2*Constants::IMAGE_COUNT);//TODO ADD texturesInPool* (come fa il prof, vedi starter)
 
         VkDescriptorPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = static_cast<uint32_t>(Constants::IMAGE_COUNT);
+        poolInfo.maxSets = static_cast<uint32_t>(2*Constants::IMAGE_COUNT);//TODO ADD setsInPool* (come fa il prof, vedi starter)
 
-        if (vkCreateDescriptorPool(*device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
+        if (vkCreateDescriptorPool(*device, &poolInfo, nullptr, &DescriptorManager::descriptorPool) != VK_SUCCESS) {
             throw std::runtime_error("failed to create descriptor pool!");
         }
     }
+
 }

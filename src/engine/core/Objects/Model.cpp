@@ -7,10 +7,20 @@
 #include <tiny_obj_loader.h>
 
 namespace Engine{
+
     void Model::init() {
         loadModel();
+        texture.load();
         Mesh::init();
     }
+
+    void Model::initDescriptor(DescriptorManager* descriptorManager) {
+        descriptorManager->pushElementDescriptor({0, UNIFORM, sizeof(UniformBufferObject), nullptr});
+        descriptorManager->pushElementDescriptor({1, TEXTURE, 0, &texture});
+        descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
+    }
+
+
 
     void Model::loadModel() {
         tinyobj::attrib_t attrib;

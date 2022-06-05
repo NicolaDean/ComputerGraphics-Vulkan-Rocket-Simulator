@@ -20,6 +20,11 @@ namespace Engine{
         vkFreeMemory(*bufferManager.getAssignedDevice(), vertexBufferMemory, nullptr);
     }
 
+    void Mesh::updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix) {
+
+        this->uniformBufferManager.update(currentImage,modelMatrix);//TODO remove swapChainExtent From updateUniform buffer
+    }
+
     void Mesh::createIndexBuffer() {
         VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 

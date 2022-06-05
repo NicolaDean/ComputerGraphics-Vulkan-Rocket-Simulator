@@ -80,6 +80,22 @@ namespace Engine{
         bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(),manager.getCommandPool());
         textureManager = TextureManager(bufferManager);
 
+        //Create Descriptor Manager and DescriptorPool
+        descManager = DescriptorManager(bufferManager,&swapChain);
+        descManager.createDescriptorPool(logicDeviceManager.getDevice());
+
+        //Create the App descriptorLayout
+        descManager.pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
+        descManager.pushBindingDescriptor({1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT});
+
+        descManager.createDescriptorSetLayouts();
+        descManager.setAsGlobal();
+
+        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/Vert.spv",
+                                                    "./src/Shaders/compiledShaders/Frag.spv",
+                                                    {&descManager});
+        manager.setGraphicPipeline(&graphicPipelineCustom);
+
         customInit();
 
         manager.recordCommandBuffers();
@@ -89,43 +105,41 @@ namespace Engine{
     }
 
 
+    void Core::updateScene(uint32_t currentImage) {
+        //DO ONE CYCLE FOR SIMPLY RENDER THINGS AND BEFORE THAT A CYCLE THAT UPDATE ALL THE DYNAMIC OBJECT POSITION(only movable objects)
+        for (auto &mesh : *Mesh::meshes) //TODO ACCESS "MOVABLE OBJECTS IN A SEPARATE LOOP"
+        {
+            if(glfwGetKey(window, GLFW_KEY_A)) {
+                mesh.move();
+            }
 
+            if(glfwGetKey(window, GLFW_KEY_S)) {
+                Camera::setCamera(new Camera(true));
+            }
+            if(glfwGetKey(window, GLFW_KEY_W)) {
+                Camera::setCamera(new Camera());
+            }
+            //TODO HERE PUT INPUTS AND CALL THE MESHES METHODS
+            mesh.updateUniformBuffer(currentImage,mesh.getModelMatrix());
+        }
+    }
     void Core::customInit() {
 
-        model = Model("./src/Models/viking_room.obj",bufferManager);
-        model.init();
-        Mesh::meshes->push_back(model);
-        //TODO incorporate Texture inside Model
-        texture = Texture("./src/Textures/viking_room.png",bufferManager);
-        texture.load();
+        //MODEL 1:
+        Model m1 = Model("./src/Models/viking_room.obj",
+                      "./src/Textures/viking_room.png",bufferManager);
+        m1.init();
+        //descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
+        m1.initDescriptor(&descManager);
+        Mesh::meshes->push_back(m1);
 
-        descManager = DescriptorManager(bufferManager,&swapChain);
-        descManager.createDescriptorPool();
-
-
-        descManager.pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
-        descManager.pushBindingDescriptor({1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT});
-
-        descManager.createDescriptorSetLayouts();
-
-        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/Vert.spv",
-                                                    "./src/Shaders/compiledShaders/Frag.spv",
-                                                    {&descManager});
-        manager.setGraphicPipeline(&graphicPipelineCustom);
-
-        //TODO RESET THE ELEMENT DESCRIPTOR LIST TO ALLOW CREATING MORE DESCRIPTOR SET,
-        // THEN USI DESCRIPTOR WITH ALL MESH AS A FACTORY OF DESCRIPTOR SET
-        // eg: Mesh x = ....; descManager.createDescriptor(x) ->  uso descriptorset del modello (eg: x.getDes...)
-        //Create a function inside descriptor called "CreateDefaultModelDescriptorSet(Model)
-        descManager.pushElementDescriptor({0, UNIFORM, sizeof(UniformBufferObject), nullptr});
-        descManager.pushElementDescriptor({1, TEXTURE, 0, &texture});
-        descManager.createDescriptorSets();
-
-        model.bindDescriptor(&descManager);
-        manager.setDescriptor(&descManager);
-
-
-
+        //MODEL 2:
+        Model m2 = Model("./src/Models/SlotBody.obj",
+                         "./src/Textures/SlotBody.png",bufferManager);
+        m2.init();
+        //descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
+        m2.initDescriptor(&descManager);
+        Mesh::meshes->push_back(m2);
     }
 
     void Core::loop() {

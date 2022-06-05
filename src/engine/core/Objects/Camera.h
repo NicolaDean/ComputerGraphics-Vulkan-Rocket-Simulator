@@ -6,7 +6,7 @@
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_CAMERA_H
 
 #include "../../commonLibs.h"
-
+#include "../Utils/Constants.h"
 namespace Engine{
     enum CameraType { LOOK_AT_CAMERA, LOOK_IN_DIRECTION};
     enum Perspective {ORTOGONALE};
@@ -21,7 +21,9 @@ namespace Engine{
         glm::mat4 perspectiveMatrix;
 
         Camera();
+        Camera(bool a);
 
+        static void setCamera(Camera* cam);
     };
 }
 

@@ -13,10 +13,10 @@ namespace Engine{
 
 
 
-    void UniformBufferManager::update(uint32_t currentImage,VkExtent2D swapChainExtent) {
+    void UniformBufferManager::update(uint32_t currentImage,glm::mat4 modelMatrix) {
         //UPDATE UNIFORM BUFFER OF ALL DESCRIPTOR SETS
         for(int i=0;i<uniformBuffers.size();i++){
-            uniformBuffers[i].updateUniformBuffer(currentImage,swapChainExtent);
+            uniformBuffers[i].updateUniformBuffer(currentImage,modelMatrix);
         }
     }
 

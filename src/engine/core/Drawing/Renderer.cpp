@@ -71,7 +71,8 @@ namespace Engine{
         }
         imagesInFlight[imageIndex] = inFlightFences[currentFrame];
 
-        manager->updateBufferManager(imageIndex);
+        app->updateScene(imageIndex);
+        //manager->updateBufferManager(imageIndex);
 
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;

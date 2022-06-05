@@ -15,6 +15,9 @@ namespace Engine{
         static int WIDTH;
         static int HEIGHT;
         static uint32_t IMAGE_COUNT;
+
+        static uint32_t swapWidth;
+        static uint32_t swapHeight;
         //static VkClearColorValue initialBackgroundColor;
         //static vertex
 

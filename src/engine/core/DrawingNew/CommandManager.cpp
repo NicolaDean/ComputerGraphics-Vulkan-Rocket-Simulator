@@ -60,7 +60,6 @@ namespace Engine{
             renderPassInfo.renderArea.offset = {0, 0};
             renderPassInfo.renderArea.extent = graphicPipeline->getSwapChainExtent();
 
-
             std::array<VkClearValue, 2> clearValues{};
             clearValues[0].color = {{0.0f, 0.0f, 0.0f, 1.0f}};
             clearValues[1].depthStencil = {1.0f, 0};
@@ -71,7 +70,7 @@ namespace Engine{
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo,
                                  VK_SUBPASS_CONTENTS_INLINE);
 
-            populateCommandBuffers(commandBuffers[i], i);
+            populateCommandBuffers(i);
 
             vkCmdEndRenderPass(commandBuffers[i]);
 
@@ -82,35 +81,34 @@ namespace Engine{
         }
     }
 
-    void CommandManager::populateCommandBuffers(VkCommandBuffer commandBuffer, int currentImage) {
+    void CommandManager::populateCommandBuffers(int currentImage) {
+        //BIND PIPELINE TO COMMAND BUFFER
+        vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
+                          graphicPipeline->getGraphicPipeline());
+
         for (auto &mesh : *Mesh::meshes) // access by reference to avoid copying
         {
-            vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
-                              graphicPipeline->getGraphicPipeline());
+            //BIND VERTEX BAFFER
             VkBuffer vertexBuffers[] = {mesh.getVertexBuffer()};
-            // property .vertexBuffer of models, contains the VkBuffer handle to its vertex buffer
             VkDeviceSize offsets[] = {0};
             vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
-            // property .indexBuffer of models, contains the VkBuffer handle to its index buffer
+           //BIND INDEX BUFFER
             vkCmdBindIndexBuffer(commandBuffers[currentImage], mesh.getIndexBuffer(), 0,
                                  VK_INDEX_TYPE_UINT32);
 
-            // property .pipelineLayout of a pipeline contains its layout.
-            // property .descriptorSets of a descriptor set contains its elements.
-
+            //BIND DESCRIPTOR SET
             //TODO GET DESCRIPTOR FROM MODEL
-            std::vector<VkDescriptorSet> descriptorSets = descriptorManager->getDescriptorSet();
+            std::vector<VkDescriptorSet> descriptorSets = *(mesh.getDescriptorSet());
+
             vkCmdBindDescriptorSets(commandBuffers[currentImage],
                                     VK_PIPELINE_BIND_POINT_GRAPHICS,
                                     graphicPipeline->getPipelineLayout(), 0, 1, &(descriptorSets[currentImage]),
                                     0, nullptr);
 
-            vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
-                              graphicPipeline->getGraphicPipeline());
 
-            // property .indices.size() of models, contains the number of triangles * 3 of the mesh.
+            //DRAW COMMAND
             vkCmdDrawIndexed(commandBuffers[currentImage],
                              static_cast<uint32_t>(mesh.getIndices().size()), 1, 0, 0, 0);
         }
-        }
+    }
 }

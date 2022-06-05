@@ -14,6 +14,7 @@ namespace Engine{
         }
     }
 
+    //TODO, put create GLOBAL UNIFORM (or other type of uniform)
     void UniformBuffer::createUniformBuffers() {
         VkDeviceSize bufferSize = sizeof(UniformBufferObject);
         uniformBuffers.resize(Constants::IMAGE_COUNT);
@@ -25,18 +26,16 @@ namespace Engine{
     }
 
 
-    void UniformBuffer::updateUniformBuffer(uint32_t currentImage,VkExtent2D swapChainExtent) {
+    void UniformBuffer::updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix) {
         static auto startTime = std::chrono::high_resolution_clock::now();
 
         auto currentTime = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
         UniformBufferObject ubo{};
-        ubo.model = glm::mat4(1.0f);
-        //ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        ubo.view = Camera::currentCam->viewMatrix;
-        ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float) swapChainExtent.height, 0.1f, 10.0f);
-        ubo.proj[1][1] *= -1;
+        ubo.model = modelMatrix;
+        ubo.view = Camera::currentCam->viewMatrix;//TODO app Camera::perspective and camera customizzation
+        ubo.proj = Camera::currentCam->perspectiveMatrix;
 
         void* data;
         vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);

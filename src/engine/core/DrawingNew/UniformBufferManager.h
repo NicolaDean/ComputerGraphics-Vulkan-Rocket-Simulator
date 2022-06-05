@@ -38,7 +38,7 @@ namespace Engine{
             return (uniformBuffers[buffer].getUniformBuffer());
         }
 
-        void update(uint32_t currentImage,VkExtent2D swapChainExtent);
+        void update(uint32_t currentImage,glm::mat4 modelMatrix);
     };
 }
 

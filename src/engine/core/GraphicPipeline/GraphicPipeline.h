@@ -48,8 +48,8 @@ namespace Engine{
         void createDescriptorSetLayout(){descriptor.createDescriptorSetLayout();};
         void createDescriptorPool(){descriptor.createDescriptorPool();};
         void createDescriptorSet(TextureManager textureManager){descriptor.createDescriptorSets(&uniformBuffer,textureManager);};
-        void updateUniformBuffer(uint32_t currentImage,VkExtent2D swapChainExtent){
-            uniformBuffer.updateUniformBuffer(currentImage,swapChainExtent);
+        void updateUniformBuffer(uint32_t currentImage){
+            //uniformBuffer.updateUniformBuffer(currentImage);
         };
         /**
          * Create the vulkan struct to declare the Pipeline Shaders stage of a Shared module

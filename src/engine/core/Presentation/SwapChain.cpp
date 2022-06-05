@@ -4,7 +4,7 @@
 
 namespace Engine{
 
-
+    VkExtent2D SwapChain::swapChainExtent;
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device,VkSurfaceKHR surface) {
         SwapChainSupportDetails details;
 
@@ -80,7 +80,11 @@ namespace Engine{
         //Setup Presentation mode of swapChain
         VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
         //Setup extent of swapChain
-        VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities,window);
+        //VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities,window);//TODO SWAPCHAIN EXTENT(not a todo but a reminder)
+        SwapChain::swapChainExtent = chooseSwapExtent(swapChainSupport.capabilities,window);
+
+        Constants::swapWidth = SwapChain::swapChainExtent.width;
+        Constants::swapHeight = SwapChain::swapChainExtent.height;
 
         //Select number of images to have in swapchain (+1)
         uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
@@ -98,7 +102,7 @@ namespace Engine{
         createInfo.minImageCount = imageCount;
         createInfo.imageFormat = surfaceFormat.format;
         createInfo.imageColorSpace = surfaceFormat.colorSpace;
-        createInfo.imageExtent = extent;
+        createInfo.imageExtent = SwapChain::swapChainExtent;
         createInfo.imageArrayLayers = 1;
         createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
@@ -139,7 +143,7 @@ namespace Engine{
         Constants::setImageCount(swapChainImages.size());
         //Saving format and extent of swapchain
         swapChainImageFormat = surfaceFormat.format;
-        swapChainExtent = extent;
+        //swapChainExtent = extent;
 
     }
 
