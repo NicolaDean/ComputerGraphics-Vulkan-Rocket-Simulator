@@ -70,6 +70,8 @@ shaders:
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.frag -o $(COMPILED_SHADER)/Frag.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.vert -o $(COMPILED_SHADER)/Vert.spv
 
+completeCompile: cleanCore fastCompile
+
 cleanCore:
 	rm -r ./src/engine/core/build
 fastCompile:
@@ -81,3 +83,6 @@ fastCompile:
 	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./src/main.o
 	#Link all .o files and compile Engine
 	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)
+
+fastExe: fastCompile
+	./Engine
