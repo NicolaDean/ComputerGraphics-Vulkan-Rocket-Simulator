@@ -98,6 +98,7 @@ namespace Engine{
 
         customInit();
 
+        Camera::setCamera(new Camera());
         manager.recordCommandBuffers();
         //Create Renderer (to draw Frames)
         renderer = Renderer(&logicDeviceManager,&manager,&swapChain,&graphicPipeline);
@@ -114,7 +115,7 @@ namespace Engine{
             }
 
             if(glfwGetKey(window, GLFW_KEY_S)) {
-                Camera::setCamera(new Camera(true));
+                Camera::setCamera(new Camera(LOOK_AT_CAMERA,ORTOGONALE));
             }
             if(glfwGetKey(window, GLFW_KEY_W)) {
                 Camera::setCamera(new Camera());
@@ -134,8 +135,8 @@ namespace Engine{
         Mesh::meshes->push_back(m1);
 
         //MODEL 2:
-        Model m2 = Model("./src/Models/SlotBody.obj",
-                         "./src/Textures/SlotBody.png",bufferManager);
+        Model m2 = Model("./src/Models/rocket.obj",
+                         "./src/Textures/rocket.jpg",bufferManager);
         m2.init();
         //descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
         m2.initDescriptor(&descManager);
