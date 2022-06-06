@@ -33,7 +33,7 @@ namespace Engine{
 
 
     public:
-        static std::vector<Mesh>* meshes;
+        static std::vector<Mesh*>* meshes;
 
 
         Mesh(): Entity(){}
@@ -46,7 +46,7 @@ namespace Engine{
         void init();
         void createVertexBuffer();
         void createIndexBuffer();
-        void updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix);
+        void updateUniformBuffer(uint32_t currentImage);
         void close();
 
         /********************GETTER SETTER********************************/

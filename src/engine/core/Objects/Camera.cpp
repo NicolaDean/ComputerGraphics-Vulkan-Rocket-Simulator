@@ -8,6 +8,26 @@
 namespace Engine{
 
 
+    /**
+ * Create a look in direction matrix
+ * @param Pos Position of the camera
+ * @param Angs Angs.x -> direction (alpha)
+ *             Angs.y -> elevation (beta)
+ *             Angs.z -> roll (rho)
+ * @return first person matrix
+ */
+    glm::mat4 LookInDirMat(glm::vec3 Pos, glm::vec3 Angs) {
+
+        //INVERSE TRANSFORMATION
+        glm::mat4 T_inv = glm::translate(I,-Pos);
+        glm::mat4 Ry_inv = y_rotation(-Angs.x);
+        glm::mat4 Rx_inv = x_rotation(-Angs.y);
+        glm::mat4 Rz_inv = z_rotation(-Angs.z);
+
+        glm::mat4 out = Rz_inv * Rx_inv * Ry_inv * T_inv;
+        return out;
+    }
+
 /**
   * Create a look at matrix
   * @param Pos Position of the camera (c)
@@ -43,17 +63,17 @@ namespace Engine{
         setCamera(this);
     }
 
+
     void Camera::switchType(CameraType t){
         type = t;
         if(type == LOOK_AT_CAMERA){
-            LookAtMat(glm::vec3(2.0f, 2.0f, 2.0f),glm::vec3(0.0f, 0.0f, 0.0f),0);
+            LookAtMat(glm::vec3(5.0f, 5.0f, 5.0f),glm::vec3(0.0f, 0.0f, 0.0f),0);
             //viewMatrix = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
         if(type == LOOK_IN_DIRECTION){
             //TODO FIND HOW DO
             viewMatrix = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
-
     }
 
     void Camera::setPerspective(PerspectiveType p){

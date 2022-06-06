@@ -6,7 +6,7 @@
 
 namespace Engine{
 
-    std::vector<Mesh>* Mesh::meshes = new std::vector<Mesh>();
+    std::vector<Mesh*>* Mesh::meshes = new std::vector<Mesh*>();
 
     void Mesh::init() {
         createVertexBuffer();
@@ -20,7 +20,7 @@ namespace Engine{
         vkFreeMemory(*bufferManager.getAssignedDevice(), vertexBufferMemory, nullptr);
     }
 
-    void Mesh::updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix) {
+    void Mesh::updateUniformBuffer(uint32_t currentImage) {
 
         this->uniformBufferManager.update(currentImage,modelMatrix);//TODO remove swapChainExtent From updateUniform buffer
     }

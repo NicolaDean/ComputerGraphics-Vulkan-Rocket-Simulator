@@ -34,25 +34,6 @@ namespace Engine{
         return glm::rotate(I,angle,z_axis);
     }
 
-    /**
-     * Create a look in direction matrix
-     * @param Pos Position of the camera
-     * @param Angs Angs.x -> direction (alpha)
-     *             Angs.y -> elevation (beta)
-     *             Angs.z -> roll (rho)
-     * @return first person matrix
-     */
-    glm::mat4 LookInDirMat(glm::vec3 Pos, glm::vec3 Angs) {
 
-        //INVERSE TRANSFORMATION
-        glm::mat4 T_inv = glm::translate(I,-Pos);
-        glm::mat4 Ry_inv = y_rotation(-Angs.x);
-        glm::mat4 Rx_inv = x_rotation(-Angs.y);
-        glm::mat4 Rz_inv = z_rotation(-Angs.z);
-
-        //glm::mat4 out = T_inv * Ry_inv * Rx_inv * Rz_inv;
-        glm::mat4 out = Rz_inv * Rx_inv * Ry_inv * T_inv;
-        return out;
-    }
 
 }

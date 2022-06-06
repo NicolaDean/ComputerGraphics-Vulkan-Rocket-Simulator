@@ -18,7 +18,8 @@ ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.
 MAIN = src/main.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
-
+SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/main.o
+#TODO CHECK HOW DO ACTUAL LIBRARY
 #OS DETECTION
 OSNAME = LINUX
 UNAME_S := $(shell uname -s)
@@ -69,3 +70,14 @@ shaders:
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.frag -o $(COMPILED_SHADER)/Frag.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.vert -o $(COMPILED_SHADER)/Vert.spv
 
+cleanCore:
+	rm -r ./src/engine/core/build
+fastCompile:
+	#Check if core is builded or not
+	make -C ./src/engine/core all
+	#Those file are always created:
+	g++ $(CFLAGS)  $(INC) -c ./src/engine/App.cpp -o ./src/engine/App.o
+	g++ $(CFLAGS)  $(INC) -c ./src/RocketSimulator/RocketSimulator.cpp -o ./src/RocketSimulator/RocketSimulator.o
+	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./src/main.o
+	#Link all .o files and compile Engine
+	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)

@@ -5,7 +5,6 @@
 #ifndef COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H
 #include "core/Core.h"
-
 namespace Engine{
     /**
      * App class will contail all engine method public to the user (us)
@@ -22,10 +21,8 @@ namespace Engine{
 
         }
 
-        /**
-         * Override this method to load all our methods
-         */
-        void loadMeshes();
+        void updateScene(uint32_t currentImage);
+        void customInit();
 
         //void addMesh(); -> other idea, add mesh to APP( example a vector) so we can loop through models
     };

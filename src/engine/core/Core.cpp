@@ -105,44 +105,6 @@ namespace Engine{
         renderer.createSyncObjects();
     }
 
-
-    void Core::updateScene(uint32_t currentImage) {
-        //DO ONE CYCLE FOR SIMPLY RENDER THINGS AND BEFORE THAT A CYCLE THAT UPDATE ALL THE DYNAMIC OBJECT POSITION(only movable objects)
-        for (auto &mesh : *Mesh::meshes) //TODO ACCESS "MOVABLE OBJECTS IN A SEPARATE LOOP"
-        {
-            if(glfwGetKey(window, GLFW_KEY_A)) {
-                mesh.move();
-            }
-
-            if(glfwGetKey(window, GLFW_KEY_S)) {
-                Camera::setCamera(new Camera(LOOK_AT_CAMERA,ORTOGONALE));
-            }
-            if(glfwGetKey(window, GLFW_KEY_W)) {
-                Camera::setCamera(new Camera());
-            }
-            //TODO HERE PUT INPUTS AND CALL THE MESHES METHODS
-            mesh.updateUniformBuffer(currentImage,mesh.getModelMatrix());
-        }
-    }
-    void Core::customInit() {
-
-        //MODEL 1:
-        Model m1 = Model("./src/Models/cube.obj",
-                      "./src/Textures/cube.jpg",bufferManager);
-        m1.init();
-        //descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
-        m1.initDescriptor(&descManager);
-        Mesh::meshes->push_back(m1);
-
-        //MODEL 2:
-        Model m2 = Model("./src/Models/rocket.obj",
-                         "./src/Textures/rocket.jpg",bufferManager);
-        m2.init();
-        //descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
-        m2.initDescriptor(&descManager);
-        Mesh::meshes->push_back(m2);
-    }
-
     void Core::loop() {
         //USER MUST OVERRIDE THIS FUNCTION
         std::cout<<"Original\n";
@@ -182,8 +144,8 @@ namespace Engine{
         swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Graphic Pipeline
         //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
-        graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
-        graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
+        //graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
+        //graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
         //Depth resource
         depthImage.createDepthResources(swapChain.getSwapChainExtent(),textureManager);
         //Create Frame Buffer
@@ -194,7 +156,7 @@ namespace Engine{
         //Close Frame Buffer
         frameBuffer.close(*logicDeviceManager.getDevice());
         //Close Graphic Pipeline
-        graphicPipeline.close();
+        //graphicPipeline.close();
         //Close SwapChain and ImageView
         swapChain.close(*logicDeviceManager.getDevice());
     }
@@ -207,7 +169,7 @@ namespace Engine{
         graphicPipeline.closeUniformBuffer();
         textureManager.close();
         //LayoutSet and Pool Descriptor
-        graphicPipeline.closeDescriptor();
+        //graphicPipeline.closeDescriptor();
         //Vertex and Index Buffer
         vertexBuffer.close();
         //Close All Semaphore

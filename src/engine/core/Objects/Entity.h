@@ -19,6 +19,7 @@ namespace Engine{
     glm::mat4 z_rotation(float angle);
 
     class Entity{
+    protected:
         //MESH WORLD INFO
         glm::vec3 pos = glm::vec3(1,1,1);
         glm::vec3 orientation = glm::vec3(0,0,1);
@@ -33,8 +34,11 @@ namespace Engine{
         }
         /********************MOVEMENT********************************/
 
+        float scaling = 1.0f;
+
         void move(){
-            modelMatrix = glm::scale(glm::mat4(1.0f),glm::vec3(0.5f));
+            scaling = scaling/2.0f;
+            modelMatrix =glm::translate(glm::mat4(1.0f),pos) * glm::scale(glm::mat4(1.0f),glm::vec3(0.03));
         }
 
         glm::mat4 getModelMatrix(){

@@ -34,7 +34,7 @@ namespace Engine{
         bool framebufferResized = false;
 
         std::string name;
-        GLFWwindow* window;
+
         VkInstance instance;
         DeviceManager devicesManager;
         LogicDeviceManager logicDeviceManager;
@@ -44,10 +44,10 @@ namespace Engine{
         VertexBuffer vertexBuffer;
         TextureManager textureManager;
         DepthImage depthImage;
-
         GraphicPipeline graphicPipeline;
         Renderer renderer;
     protected:
+        GLFWwindow* window;
         BufferManager bufferManager; //TODO PUT THIS CLASS STATIC SO TO REMOVE ALL ITS PASSAGES
         GraphicPipelineCustom graphicPipelineCustom;
         SwapChain swapChain;
@@ -64,6 +64,9 @@ namespace Engine{
             height = h;
             name = win_name;
         }
+
+        GLFWwindow* getWindow();
+
     private:
         void init();
         void initVulkan();
@@ -80,10 +83,10 @@ namespace Engine{
           */
         void cleanupSwapChain();
 
-        GLFWwindow* getWindow();
     public:
-        void updateScene(uint32_t currentImage);
-        void customInit();
+        virtual void updateScene(uint32_t currentImage)=0;
+        virtual void customInit()=0;
+
         void run();
         void loop();
         /**

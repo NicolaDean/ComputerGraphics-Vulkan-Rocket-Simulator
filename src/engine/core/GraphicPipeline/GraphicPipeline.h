@@ -33,7 +33,6 @@ namespace Engine{
         }
 
         void close();
-        void closeDescriptor(){descriptor.close();};
         void closeUniformBuffer(){uniformBuffer.close();};
         /**
          * Create the graphic pipeline starting from shaders

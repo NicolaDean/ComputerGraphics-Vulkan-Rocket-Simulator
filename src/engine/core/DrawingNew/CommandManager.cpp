@@ -86,19 +86,19 @@ namespace Engine{
         vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
                           graphicPipeline->getGraphicPipeline());
 
-        for (auto &mesh : *Mesh::meshes) // access by reference to avoid copying
+        for (auto mesh : *Mesh::meshes) // access by reference to avoid copying
         {
             //BIND VERTEX BAFFER
-            VkBuffer vertexBuffers[] = {mesh.getVertexBuffer()};
+            VkBuffer vertexBuffers[] = {mesh->getVertexBuffer()};
             VkDeviceSize offsets[] = {0};
             vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
            //BIND INDEX BUFFER
-            vkCmdBindIndexBuffer(commandBuffers[currentImage], mesh.getIndexBuffer(), 0,
+            vkCmdBindIndexBuffer(commandBuffers[currentImage], mesh->getIndexBuffer(), 0,
                                  VK_INDEX_TYPE_UINT32);
 
             //BIND DESCRIPTOR SET
             //TODO GET DESCRIPTOR FROM MODEL
-            std::vector<VkDescriptorSet> descriptorSets = *(mesh.getDescriptorSet());
+            std::vector<VkDescriptorSet> descriptorSets = *(mesh->getDescriptorSet());
 
             vkCmdBindDescriptorSets(commandBuffers[currentImage],
                                     VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -108,7 +108,7 @@ namespace Engine{
 
             //DRAW COMMAND
             vkCmdDrawIndexed(commandBuffers[currentImage],
-                             static_cast<uint32_t>(mesh.getIndices().size()), 1, 0, 0, 0);
+                             static_cast<uint32_t>(mesh->getIndices().size()), 1, 0, 0, 0);
         }
     }
 }

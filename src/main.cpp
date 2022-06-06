@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <vector>
 
-#include "./rocketSimulator/RocketSimulator.h"
+#include "./RocketSimulator/RocketSimulator.h"
 
 const uint32_t WIDTH = 650;
 const uint32_t HEIGHT = 480;
