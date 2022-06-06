@@ -7,11 +7,12 @@
 
 #include "../../commonLibs.h"
 #include "../Utils/Constants.h"
+#include "Entity.h"
 namespace Engine{
     enum CameraType { LOOK_AT_CAMERA, LOOK_IN_DIRECTION};
     enum Perspective {ORTOGONALE};
 
-    class Camera {
+    class Camera:public Entity {
     public:
         static Camera* currentCam;
 

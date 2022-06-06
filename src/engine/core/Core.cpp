@@ -126,8 +126,8 @@ namespace Engine{
     void Core::customInit() {
 
         //MODEL 1:
-        Model m1 = Model("./src/Models/viking_room.obj",
-                      "./src/Textures/viking_room.png",bufferManager);
+        Model m1 = Model("./src/Models/cube.obj",
+                      "./src/Textures/cube.jpg",bufferManager);
         m1.init();
         //descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
         m1.initDescriptor(&descManager);

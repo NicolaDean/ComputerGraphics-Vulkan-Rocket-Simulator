@@ -8,9 +8,10 @@
 #include "../Drawing/BufferManager.h"
 #include "../Geometry/Vertex.h"
 #include "../DrawingNew/DescriptorManager.h"
+#include "Entity.h"
 
 namespace Engine{
-    class Mesh  {
+    class Mesh:public Entity  {
         /*VULKAN BUFFERS AND VARIABLES*/
         //Vertex Buffer
         VkBuffer vertexBuffer;
@@ -30,18 +31,14 @@ namespace Engine{
         UniformBufferManager uniformBufferManager;
         std::vector<VkDescriptorSet> descriptorSets;
 
-        //MESH WORLD INFO
-        glm::vec3 pos = glm::vec3(1,1,1);
-        glm::vec3 orientation = glm::vec3(0,0,1);
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
 
     public:
         static std::vector<Mesh>* meshes;
 
 
-        Mesh(){}
+        Mesh(): Entity(){}
 
-        Mesh(BufferManager buffManager){
+        Mesh(BufferManager buffManager): Entity(){
             bufferManager = buffManager;
             uniformBufferManager = UniformBufferManager(buffManager);
         }
@@ -51,14 +48,6 @@ namespace Engine{
         void createIndexBuffer();
         void updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix);
         void close();
-        /********************MOVEMENT********************************/
-        void move(){
-            modelMatrix = glm::translate(glm::mat4(1.0f),pos);
-        }
-
-        glm::mat4 getModelMatrix(){
-            return modelMatrix;
-        }
 
         /********************GETTER SETTER********************************/
         UniformBufferManager* getUniformBufferManager(){
