@@ -1,15 +1,10 @@
 # ComputerGraphics-Vulkan-Rocket-Simulator
-
-- FINISH VERTEX BUFFER TUTORIAL:
-    * staging
-    * index
-- FINISH UNIFORM BUFFER TUTORIAL
-- ADD THE "LOAD OBJ" FUNCTIONS
-- CREATE A "CUSTOMIZABLE" VERSION OF "createPipeline" function
-  (see how prof do it, so we can create multiple pipeline for multiple object/scenes)
-- CREATE A "appLoop" structure so we can define RocketLogic in RocketSimulator.cpp and 
-  NOT in ENGINE
-
+##TERRAIN GENERATION
+ -Create a gradientClass that allow to do gradient between 2 color (eg yellow->dark yellow)
+ -Create a PerlinNoise generator
+ -Generate a Plane using triangles
+ -Use PerlinNoise to generate vertices height
+ -Use Gradient to generate vertices colors
 #SOME IDEAS: 
 ###This can simplify the logic of the simulator
 ##Entity System
@@ -26,13 +21,13 @@
   OBSERVER PATTERN so that we can subscribe entity to be 
   updated on events
   (eg, we subscribe rocket so when drawFrame we increment velocity,position...)
-  
-##Camera System
-- Copy the camera matrixes used in the assignment and 
-convert them into a class so we can easily select what kind
-of view we want
 
 ##Light System
+- Create the GlobalUniformBuffer class an insert inside it an array of "LIGHT"
+- struct Light{ color, pos, ....}
+- create a shader to calculate all light info
+- create a descriptor for globalUniform
+- create a new Pipeline using this shader and descriptor (SEE TEACHER LECTURE)
 - Copy the shader done in A16/A17 and use it to "load shader"
  and use it on some "LIGHT OBJECT"
     * Direct light

@@ -38,11 +38,12 @@ namespace Engine{
         /********CALCULATE STATIC MESHES POSITION*************/
         updateMeshesPos(currentFrame);
     }
-
+    //TODO ADD A GRAPHIC PIPELINE WITH ONLY VERTEX/INDEX WITH NO TEXTURE (FOR THE TERRAIN GENERATOR)
     void App::updateMeshesPos(int currentFrame) {
         //SIMPLY UPDATE UNIFOMR BUFFERS OF ALL MESHES
         for (auto mesh : *Mesh::meshes)
         {
+            mesh->move();
             mesh->updateUniformBuffer(currentFrame);
         }
     }

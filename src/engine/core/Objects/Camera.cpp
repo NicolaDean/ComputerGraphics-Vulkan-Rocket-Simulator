@@ -110,8 +110,8 @@ namespace Engine{
 
     glm::mat4 Camera::getViewMatrix(){
         //TODO PUT IF ON CAM TYPE
-        return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
-       // return LookInDirMat(CamPos,glm::vec3(0,1,0));
+        //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
+        return LookInDirMat(CamPos,glm::vec3(1,0,0));
     }
 
 
