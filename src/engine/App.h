@@ -22,6 +22,8 @@ namespace Engine{
         }
 
         void updateScene(uint32_t currentImage);
+        void updateCamera(float dt);
+        void updateMeshesPos(int currentFrame);
         void customInit();
 
         //void addMesh(); -> other idea, add mesh to APP( example a vector) so we can loop through models

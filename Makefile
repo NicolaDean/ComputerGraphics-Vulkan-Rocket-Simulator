@@ -74,7 +74,7 @@ completeCompile: cleanCore fastCompile
 
 cleanCore:
 	rm -r ./src/engine/core/build
-fastCompile:
+fastCompile: #TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE
 	#Check if core is builded or not
 	make -C ./src/engine/core all
 	#Those file are always created:

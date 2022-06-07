@@ -6,6 +6,12 @@
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_ENTITY_H
 
 #include "../../commonLibs.h"
+
+//AXIS
+#define FORWARD_AXIS 2
+#define SIDE_AXIS 0
+#define VERTICAL_AXIS 1
+
 namespace Engine{
     //IDENTITY MATRIX
     const glm::mat4 I = glm::mat4(1);
@@ -45,6 +51,15 @@ namespace Engine{
             return modelMatrix;
         }
 
+
+        /*************MOVABLE METHODS******************/
+        void onW(float dt);
+        void onA(float dt);
+        void onS(float dt);
+        void onD(float dt);
+        void onQ(float dt);
+        void onE(float dt);
+        void customKeys(float dt); //Allow user to add functionality on other keys not covered
     };
 }
 

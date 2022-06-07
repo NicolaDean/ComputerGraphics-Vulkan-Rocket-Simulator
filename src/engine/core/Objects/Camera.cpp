@@ -72,7 +72,7 @@ namespace Engine{
         }
         if(type == LOOK_IN_DIRECTION){
             //TODO FIND HOW DO
-            viewMatrix = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
         }
     }
 
@@ -85,4 +85,34 @@ namespace Engine{
     void Camera::setCamera(Camera* cam){
         currentCam = cam;
     }
+
+    void Camera::onW(float dt) {
+        CamPos -= speed * glm::vec3(CamDir[FORWARD_AXIS]) * dt;
+        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
+    }
+    void Camera::onA(float dt) {
+        CamPos += -speed * glm::vec3(CamDir[SIDE_AXIS]) * dt;
+        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
+    }
+    void Camera::onS(float dt) {
+        CamPos += speed * glm::vec3(CamDir[FORWARD_AXIS]) * dt;
+        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));//TODO PUT THIS IN UPDATE SCENE,NOT HERE
+    }
+    void Camera::onD(float dt) {
+        CamPos += speed * glm::vec3(CamDir[SIDE_AXIS]) * dt;
+        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+    }
+
+    void Camera::onE(float dt) {}
+
+    glm::mat4 Camera::getViewMatrix(){
+        //TODO PUT IF ON CAM TYPE
+        return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
+       // return LookInDirMat(CamPos,glm::vec3(0,1,0));
+    }
+
+
 }

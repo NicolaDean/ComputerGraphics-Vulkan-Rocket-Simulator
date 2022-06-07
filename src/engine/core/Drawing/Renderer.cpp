@@ -132,6 +132,6 @@ namespace Engine{
         auto duration =  std::chrono::duration_cast< std::chrono::microseconds>(stop - start);
 
         //TODO CALCULATE FPS!!!
-        std::cout << "Time taken by function: "<< std::dec<<duration.count() << " microseconds\n";
+        //std::cout << "Time taken by function: "<< std::dec<<duration.count() << " microseconds\n";
     }
 }

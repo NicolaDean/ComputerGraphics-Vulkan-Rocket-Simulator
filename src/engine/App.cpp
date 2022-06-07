@@ -6,26 +6,50 @@
 
 namespace Engine{
 
-    void App::updateScene(uint32_t currentImage) {
-        //DO ONE CYCLE FOR SIMPLY RENDER THINGS AND BEFORE THAT A CYCLE THAT UPDATE ALL THE DYNAMIC OBJECT POSITION(only movable objects)
-        for (auto mesh : *Mesh::meshes) //TODO ACCESS "MOVABLE OBJECTS IN A SEPARATE LOOP"
-        {
-            if(glfwGetKey(window, GLFW_KEY_A)) {
-                mesh->move();
-            }
+    void App::updateCamera(float dt){
+        if(glfwGetKey(window, GLFW_KEY_A)) {
+            Camera::currentCam->onA(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_S)) {
+            Camera::currentCam->onS(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_W)) {
+            Camera::currentCam->onW(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_D)) {
+            Camera::currentCam->onD(dt);
+        }
+    }
+    void App::updateScene(uint32_t currentFrame) {
+        //TODO CREATE A CLASS TO MANAGE TIME
+        static float lastTime = 0.0f;
+        static auto startTime = std::chrono::high_resolution_clock::now();
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+        float deltaT = time - lastTime;
+        lastTime = time;
 
-            if(glfwGetKey(window, GLFW_KEY_S)) {
-                Camera::setCamera(new Camera(LOOK_AT_CAMERA,ORTOGONALE));
-            }
-            if(glfwGetKey(window, GLFW_KEY_W)) {
-                Camera::setCamera(new Camera());
-            }
-            //TODO HERE PUT INPUTS AND CALL THE MESHES METHODS
-            mesh->updateUniformBuffer(currentImage);
+        /********UPDATE CAMERA*************/
+        updateCamera(deltaT);
+
+        /********UPDATE MOVABLE OBJECT*************/
+        //TODO ACCESS "MOVABLE OBJECTS IN A SEPARATE LOOP"
+        //updateEntitys(deltaT);
+        /********CALCULATE STATIC MESHES POSITION*************/
+        updateMeshesPos(currentFrame);
+    }
+
+    void App::updateMeshesPos(int currentFrame) {
+        //SIMPLY UPDATE UNIFOMR BUFFERS OF ALL MESHES
+        for (auto mesh : *Mesh::meshes)
+        {
+            mesh->updateUniformBuffer(currentFrame);
         }
     }
 
     void App::customInit() {
+
+        Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
         //MODEL 1:
         Model* m1 = new Model("./src/Models/cube.obj",
                               "./src/Textures/cube.jpg",bufferManager);

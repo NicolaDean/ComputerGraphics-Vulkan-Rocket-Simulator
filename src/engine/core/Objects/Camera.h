@@ -21,9 +21,16 @@ namespace Engine{
     class Camera:public Entity {
     public:
         static Camera* currentCam;
-
+        /***********CAM SETTINGS VARIABLES*************/
         CameraType type;
         PerspectiveType perspective;
+        /***********CAMERA MOVEMENT VARIABLES***********/
+        glm::vec3 CamPos = glm::vec3(2,2,2);
+        glm::vec3 CamAng;
+        glm::mat3 CamDir = I;
+        float speed =0.75f;
+        float rotation_speed = glm::radians(60.0f);
+        /**********MATRIX*****************/
         glm::mat4 viewMatrix;
         glm::mat4 perspectiveMatrix;
 
@@ -40,7 +47,14 @@ namespace Engine{
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);
         void setPerspective(PerspectiveType p);
-
+        /*************USER INPUT METHODS******************/
+        void onW(float dt);
+        void onA(float dt);
+        void onS(float dt);
+        void onD(float dt);
+        void onQ(float dt);
+        void onE(float dt);
+        glm::mat4 getViewMatrix();
         //void setTarget(Entity* target_model);
         //void setTarget(glm::vec3 target_position);
         //void setUp(glm::vec3 up);

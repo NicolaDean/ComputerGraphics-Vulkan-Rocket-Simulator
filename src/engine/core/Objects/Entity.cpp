@@ -34,6 +34,12 @@ namespace Engine{
         return glm::rotate(I,angle,z_axis);
     }
 
+    void Entity::onW(float dt) {}
+    void Entity::onA(float dt) {}
+    void Entity::onS(float dt) {}
+    void Entity::onD(float dt) {}
+    void Entity::onE(float dt) {}
 
+    void Entity::customKeys(float dt) {}
 
 }

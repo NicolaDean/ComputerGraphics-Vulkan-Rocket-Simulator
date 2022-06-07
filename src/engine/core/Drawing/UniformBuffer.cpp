@@ -28,13 +28,12 @@ namespace Engine{
 
     void UniformBuffer::updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix) {
         static auto startTime = std::chrono::high_resolution_clock::now();
-
         auto currentTime = std::chrono::high_resolution_clock::now();
         float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
         UniformBufferObject ubo{};
         ubo.model = modelMatrix;
-        ubo.view = Camera::currentCam->viewMatrix;//TODO app Camera::perspective and camera customizzation
+        ubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
         ubo.proj = Camera::currentCam->perspectiveMatrix;
 
         void* data;
