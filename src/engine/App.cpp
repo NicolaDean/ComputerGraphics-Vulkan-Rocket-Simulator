@@ -25,10 +25,10 @@ namespace Engine{
         if(glfwGetKey(window, GLFW_KEY_Q)) {
             Camera::currentCam->onQ(dt);
         }
-        if(glfwGetKey(window, GLFW_KEY_UP)) {
+        if(glfwGetKey(window, GLFW_KEY_DOWN)) {
 			Camera::currentCam->onUp(dt);
 		}
-		if(glfwGetKey(window, GLFW_KEY_DOWN)) {
+		if(glfwGetKey(window, GLFW_KEY_UP)) {
 			Camera::currentCam->onDown(dt);
 		}
 
