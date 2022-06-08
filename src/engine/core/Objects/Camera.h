@@ -44,6 +44,7 @@ namespace Engine{
 
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera
+        void updateCamDir();
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);
         void setPerspective(PerspectiveType p);
@@ -61,6 +62,7 @@ namespace Engine{
         void update(float dt){};
         void onLeft(float dt);
         void onRight(float dt);
+
 
         glm::mat4 getViewMatrix();
         //void setTarget(Entity* target_model);
