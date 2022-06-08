@@ -6,6 +6,9 @@ namespace RocketSimulator{
 
     void RocketSimulator::customInit() {
         Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
+        Camera::currentCam->setPosition({1,1,2});
+        Camera::currentCam->setAngle({0.1,0,0});
+
         //MODEL 1:
         Model* m1 = new Model("./src/Models/cube.obj",
                               "./src/Textures/cube.jpg",bufferManager);

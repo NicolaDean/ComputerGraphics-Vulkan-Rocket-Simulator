@@ -25,8 +25,8 @@ namespace Engine{
         CameraType type;
         PerspectiveType perspective;
         /***********CAMERA MOVEMENT VARIABLES***********/
-        glm::vec3 CamPos = glm::vec3(2,2,2);
-        glm::vec3 CamAng = glm::vec3(1,0,0);
+        glm::vec3 CamPos = glm::vec3(1,1.5,2);
+        glm::vec3 CamAng = glm::vec3(0,0,0);
         glm::mat3 CamDir = I;
         float speed =0.55f;
         float rotation_speed = glm::radians(60.0f);
@@ -45,6 +45,11 @@ namespace Engine{
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera
         void updateCamDir();
+        void setPosition(glm::vec3 p){
+            this->CamPos = p;
+            std::cout<<"OOK  CAmera pos setted\n";
+        }
+        void setAngle(glm::vec3 a){this->CamPos = a;}
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);
         void setPerspective(PerspectiveType p);
