@@ -17,8 +17,8 @@ namespace Engine{
     void GraphicPipeline::createGraphicPipeline(VkExtent2D swapChainExtent) {
         //MUST USE PATH RELATIVE TO "Engine" executable
         //LOAD SHADER FILES
-        auto vertShaderCode = readFile("./src/Shaders/compiledShaders/Vert.spv");
-        auto fragShaderCode = readFile("./src/Shaders/compiledShaders/Frag.spv");
+        auto vertShaderCode = readFile("./src/Shaders/compiledShaders/vert_Shader.spv");
+        auto fragShaderCode = readFile("./src/Shaders/compiledShaders/frag_Shader.spv");
 
         //CREATE SHADER MODULES by passing code read from file
         VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);

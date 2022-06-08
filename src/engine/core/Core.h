@@ -98,12 +98,10 @@ namespace Engine{
         virtual void updateScene(uint32_t currentImage)=0;
         virtual void customInit()=0;
 
+        /******FACTORY METHODS********************/
         GraphicPipelineCustom* pipelineFactory(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D);
-
-
-
-
-        //FACTORY:
+        DescriptorManager* descriptorFactory();
+        //TODO ADD FACTORY FOR OTHER THINGS, LIKE MODELS
 
     };
 

@@ -18,7 +18,7 @@ ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.
 MAIN = src/main.cpp src/RocketSimulator/RocketSimulator.cpp src/RocketSimulator/Models/Rocket.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
-SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/RocketSimulator/Models/Rocket.o ./src/main.o
+SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/RocketSimulator/Models/*.o ./src/main.o
 #TODO CHECK HOW DO ACTUAL LIBRARY
 #OS DETECTION
 OSNAME = LINUX
@@ -65,16 +65,24 @@ clean:
 
 run: clean test
 
+###########################FAST COMPILE METHOD###################################################
 
-shaders:
-	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.frag -o $(COMPILED_SHADER)/Frag.spv
-	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.vert -o $(COMPILED_SHADER)/Vert.spv
+MMM := $(shell find ./src/RocketSimulator/Models -name '*.cpp')
+MMM_OBJ = $(MMM:%.cpp=%.o)
 
+./src/RocketSimulator/Models/%.o:./src/RocketSimulator/Models/%.cpp $(MMM)
+	g++ $(CFLAGS)  $(INC) -c $< -o $@
+
+models: $(MMM_OBJ)
+	#EndedModels Compile
 completeCompile: cleanCore fastCompile
 
 cleanCore:
 	rm -r ./src/engine/core/build
-fastCompile: #TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE
+#TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE
+fastCompile:
+	#Compile Rocket Models
+	make -C ./src/RocketSimulator/Models genObj
 	#Check if core is builded or not
 	make -C ./src/engine/core all
 	#Those file are always created:
@@ -87,3 +95,38 @@ fastCompile: #TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE
 
 fastExe: fastCompile
 	./Engine
+
+
+########################SHADER COMPILER############################################
+#Put here the shaders name (in the format of name.x)
+SHADER_NAMES = Shader.x NoTexture.x
+
+FRAGMENTS_NAME 	= $(SHADER_NAMES:%.x=%.frag)
+VERTEXS_NAME 	= $(SHADER_NAMES:%.x=%.vert)
+COMPILED_FRAG_NAMES = $(SHADER_NAMES:%.x=frag_%.spv)
+COMPILED_VERT_NAMES = $(SHADER_NAMES:%.x=vert_%.spv)
+COMPILED_FRAG_INFOLDER = $(SHADER_NAMES:%.x=$(COMPILED_SHADER)/frag%.spv)
+COMPILED_VERT_INFOLDER = $(SHADER_NAMES:%.x=$(COMPILED_SHADER)/vert%.spv)
+
+#Compile CODE FOR FRAGMENT SHADER
+$(COMPILED_SHADER)/frag%.spv: $(SHADER_FOLDER)/%.frag
+	$(GLSLC_PATH)/glslc $< -o $@
+#Compile CODE FOR VERTEX SHADER
+$(COMPILED_SHADER)/vert%.spv: $(SHADER_FOLDER)/%.frag
+	$(GLSLC_PATH)/glslc $< -o $@
+#Compile all Fragments shader
+frag:$(COMPILED_FRAG_INFOLDER)
+	# "Ended Fragment Shader Compilation"
+#Compile all Vertex shader
+vert:$(COMPILED_VERT_INFOLDER)
+	# "Ended Vertex Shader Compilation"
+
+#Global Compile command for shaders
+compile_shader: frag vert
+	# "COMPLETED ALL SHADER COMPILATION"
+
+shaders:
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.frag -o $(COMPILED_SHADER)/fragShader.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.vert -o $(COMPILED_SHADER)/vertShader.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/NoTexture.frag -o $(COMPILED_SHADER)/fragNoTexture.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/NoTexture.vert -o $(COMPILED_SHADER)/vertNoTexture.spv

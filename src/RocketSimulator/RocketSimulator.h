@@ -6,6 +6,7 @@
 
 #include "../engine/App.h"
 #include "Models/Rocket.h"
+#include "Models/Square.h"
 
 namespace RocketSimulator{
     class RocketSimulator: public Engine::App{

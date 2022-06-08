@@ -10,6 +10,7 @@
 #include "../DrawingNew/DescriptorManager.h"
 #include "Entity.h"
 #include "../DrawingNew/GraphicPipelineCustom.h"
+
 namespace Engine{
     class Mesh:public Entity  {
         /*VULKAN BUFFERS AND VARIABLES*/
@@ -47,6 +48,7 @@ namespace Engine{
         void createVertexBuffer();
         void createIndexBuffer();
         void updateUniformBuffer(uint32_t currentImage);
+        virtual void initDescriptor(DescriptorManager* descriptorManager);
         virtual void update(float dt){}
         void close();
 

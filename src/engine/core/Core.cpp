@@ -91,8 +91,8 @@ namespace Engine{
         descManager.createDescriptorSetLayouts();
         descManager.setAsGlobal();
 
-        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/Vert.spv",
-                                                    "./src/Shaders/compiledShaders/Frag.spv",
+        graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/vertShader.spv",
+                                                    "./src/Shaders/compiledShaders/fragShader.spv",
                                                     {&descManager});
         manager.setGraphicPipeline(&graphicPipelineCustom);
 
@@ -244,6 +244,10 @@ namespace Engine{
         pipeline->createGraphicPipeline(VertShader,FragShader,D);
 
         return pipeline;
+    }
+
+    DescriptorManager *Core::descriptorFactory() {
+        return new DescriptorManager(bufferManager,&swapChain);
     }
     /**
      * Print names of all available extensions

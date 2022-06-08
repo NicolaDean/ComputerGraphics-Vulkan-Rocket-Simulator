@@ -53,4 +53,9 @@ namespace Engine{
         vkUnmapMemory(*bufferManager.getAssignedDevice(), vertexBufferMemory);
     }
 
+    void Mesh::initDescriptor(DescriptorManager *descriptorManager) {
+        descriptorManager->pushElementDescriptor({0, UNIFORM, sizeof(UniformBufferObject), nullptr});
+        descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
+    }
+
 }
