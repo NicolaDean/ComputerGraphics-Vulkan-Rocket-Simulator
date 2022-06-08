@@ -106,12 +106,42 @@ namespace Engine{
         std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
     }
 
-    void Camera::onE(float dt) {}
+    void Camera::onSpace(float dt){
+        CamPos += speed * glm::vec3(CamDir[VERTICAL_AXIS]) * dt;
+        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+    }
+    void Camera::onShift(float dt){
+        CamPos -= speed * glm::vec3(CamDir[VERTICAL_AXIS]) * dt;
+        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+    }
+    void Camera::onE(float dt) {
+        CamAng.x += rotation_speed * dt;
+        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+    }
+
+    void Camera::onQ(float dt) {
+        CamAng.x -= rotation_speed * dt;
+        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+    }
+
+    void Camera::onDown(float dt) {
+        CamAng.y += rotation_speed * dt;
+        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+    }
+
+    void Camera::onUp(float dt) {
+        CamAng.y -= rotation_speed * dt;
+        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+    }
 
     glm::mat4 Camera::getViewMatrix(){
+        glm::mat3 CamDir = glm::mat3(glm::rotate(glm::mat4(1.0f), CamAng.y, glm::vec3(0.0f, 1.0f, 0.0f))) *
+                           glm::mat3(glm::rotate(glm::mat4(1.0f), CamAng.x, glm::vec3(1.0f, 0.0f, 0.0f))) *
+                           glm::mat3(glm::rotate(glm::mat4(1.0f), CamAng.z, glm::vec3(0.0f, 0.0f, 1.0f)));
+
         //TODO PUT IF ON CAM TYPE
         //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
-        return LookInDirMat(CamPos,glm::vec3(1,0,0));
+        return LookInDirMat(CamPos,CamAng);
     }
 
 

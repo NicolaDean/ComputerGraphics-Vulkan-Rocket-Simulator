@@ -60,6 +60,10 @@ namespace Engine{
         void onQ(float dt);
         void onE(float dt);
         void customKeys(float dt); //Allow user to add functionality on other keys not covered
+
+        void update(float dt){
+
+        }
     };
 }
 

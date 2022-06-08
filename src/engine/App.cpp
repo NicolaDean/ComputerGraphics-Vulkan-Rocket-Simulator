@@ -19,6 +19,26 @@ namespace Engine{
         if(glfwGetKey(window, GLFW_KEY_D)) {
             Camera::currentCam->onD(dt);
         }
+        if(glfwGetKey(window, GLFW_KEY_E)) {
+            Camera::currentCam->onE(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_Q)) {
+            Camera::currentCam->onQ(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_UP)) {
+			Camera::currentCam->onUp(dt);
+		}
+		if(glfwGetKey(window, GLFW_KEY_DOWN)) {
+			Camera::currentCam->onDown(dt);
+		}
+
+        if(glfwGetKey(window, GLFW_KEY_SPACE)) {
+            Camera::currentCam->onSpace(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
+            Camera::currentCam->onShift(dt);
+        }
+
     }
     void App::updateScene(uint32_t currentFrame) {
         //TODO CREATE A CLASS TO MANAGE TIME
@@ -34,7 +54,10 @@ namespace Engine{
 
         /********UPDATE MOVABLE OBJECT*************/
         //TODO ACCESS "MOVABLE OBJECTS IN A SEPARATE LOOP"
-        //updateEntitys(deltaT);
+        for (auto entity : this->movableEntities)
+        {
+            entity->update(deltaT);
+        }
         /********CALCULATE STATIC MESHES POSITION*************/
         updateMeshesPos(currentFrame);
     }
@@ -50,19 +73,5 @@ namespace Engine{
 
     void App::customInit() {
 
-        Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
-        //MODEL 1:
-        Model* m1 = new Model("./src/Models/cube.obj",
-                              "./src/Textures/cube.jpg",bufferManager);
-        m1->init();
-        m1->initDescriptor(&descManager);
-        Mesh::meshes->push_back(m1);
-
-        //MODEL 2:
-        Model* m2 = new Model("./src/Models/rocket.obj",
-                              "./src/Textures/rocket.jpg",bufferManager);
-        m2->init();
-        m2->initDescriptor(&descManager);
-        Mesh::meshes->push_back(m2);
     }
 }

@@ -33,3 +33,9 @@
     * Direct light
     * Point Light
     * Area Light
+
+##SKYBOX
+- Create a cube object
+- Create 6 images (one for each side)
+- Draw the cube putting all the 6 images as face
+- Scale the cube to cover all the world

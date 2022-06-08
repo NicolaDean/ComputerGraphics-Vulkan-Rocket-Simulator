@@ -26,9 +26,9 @@ namespace Engine{
         PerspectiveType perspective;
         /***********CAMERA MOVEMENT VARIABLES***********/
         glm::vec3 CamPos = glm::vec3(2,2,2);
-        glm::vec3 CamAng;
+        glm::vec3 CamAng = glm::vec3(1,0,0);
         glm::mat3 CamDir = I;
-        float speed =0.75f;
+        float speed =0.55f;
         float rotation_speed = glm::radians(60.0f);
         /**********MATRIX*****************/
         glm::mat4 viewMatrix;
@@ -54,6 +54,10 @@ namespace Engine{
         void onD(float dt);
         void onQ(float dt);
         void onE(float dt);
+        void onSpace(float dt);
+        void onShift(float dt);
+        void onUp(float dt);
+        void onDown(float dt);
         glm::mat4 getViewMatrix();
         //void setTarget(Entity* target_model);
         //void setTarget(glm::vec3 target_position);

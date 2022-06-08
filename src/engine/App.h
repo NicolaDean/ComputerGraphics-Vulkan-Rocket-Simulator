@@ -5,6 +5,10 @@
 #ifndef COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_APP_H
 #include "core/Core.h"
+#include "core/Objects/Mesh.h"
+#include "core/Objects/Model.h"
+#include "core/Objects/Camera.h"
+
 namespace Engine{
     /**
      * App class will contail all engine method public to the user (us)
@@ -16,15 +20,22 @@ namespace Engine{
 
 
     public:
-        App(int width,int h,std::string win_name):Core(width,h,win_name){
-            //Some Code....
+        std::vector<Entity*> movableEntities;
 
+        App(int width,int h,std::string win_name):Core(width,h,win_name){
+            movableEntities = std::vector<Entity*>();
         }
 
         void updateScene(uint32_t currentImage);
         void updateCamera(float dt);
         void updateMeshesPos(int currentFrame);
         void customInit();
+
+
+        void subscribeMovable(Entity *  entity){
+            movableEntities.push_back(entity);
+        }
+        //TODO DO AN UNSUBSCRIBE METHOD
 
         //void addMesh(); -> other idea, add mesh to APP( example a vector) so we can loop through models
     };

@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 #include "../engine/App.h"
+#include "Models/Rocket.h"
 
 namespace RocketSimulator{
     class RocketSimulator: public Engine::App{
@@ -14,9 +15,7 @@ namespace RocketSimulator{
             //Some Code....
         }
 
-        void loop(){
-            std::cout<<"Banana\n";
-        }
+        void customInit();
     };
 }
 
