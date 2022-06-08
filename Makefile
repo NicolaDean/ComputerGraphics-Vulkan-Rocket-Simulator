@@ -15,7 +15,7 @@ COMPILED_SHADER = $(SHADER_FOLDER)/compiledShaders
 #TODO modify the script, if we add more subfolder
 ENGINE_FOLDER = src/engine
 ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.cpp
-MAIN = src/main.cpp
+MAIN = src/main.cpp src/RocketSimulator/RocketSimulator.cpp src/RocketSimulator/Models/Rocket.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
 SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/RocketSimulator/Models/Rocket.o ./src/main.o
