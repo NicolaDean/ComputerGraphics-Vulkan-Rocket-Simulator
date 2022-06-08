@@ -31,6 +31,12 @@ namespace Engine{
 		if(glfwGetKey(window, GLFW_KEY_UP)) {
 			Camera::currentCam->onDown(dt);
 		}
+        if(glfwGetKey(window, GLFW_KEY_LEFT)) {
+            Camera::currentCam->onLeft(dt);
+        }
+        if(glfwGetKey(window, GLFW_KEY_RIGHT)) {
+            Camera::currentCam->onRight(dt);
+        }
 
         if(glfwGetKey(window, GLFW_KEY_SPACE)) {
             Camera::currentCam->onSpace(dt);
