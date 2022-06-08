@@ -17,11 +17,10 @@ namespace Engine{
  * @return first person matrix
  */
     glm::mat4 LookInDirMat(glm::vec3 Pos, glm::vec3 Angs) {
-
         //INVERSE TRANSFORMATION
         glm::mat4 T_inv = glm::translate(I,-Pos);
-        glm::mat4 Ry_inv = y_rotation(-Angs.x);
-        glm::mat4 Rx_inv = x_rotation(-Angs.y);
+        glm::mat4 Ry_inv = y_rotation(-Angs.y);
+        glm::mat4 Rx_inv = x_rotation(-Angs.x);
         glm::mat4 Rz_inv = z_rotation(-Angs.z);
 
         glm::mat4 out = Rz_inv * Rx_inv * Ry_inv * T_inv;
@@ -149,11 +148,12 @@ namespace Engine{
                            glm::mat3(glm::rotate(glm::mat4(1.0f), CamAng.x, glm::vec3(1.0f, 0.0f, 0.0f))) *
                            glm::mat3(glm::rotate(glm::mat4(1.0f), CamAng.z, glm::vec3(0.0f, 0.0f, 1.0f)));
     }
+
     glm::mat4 Camera::getViewMatrix(){
         updateCamDir();
         //TODO PUT IF ON CAM TYPE
-        return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
-        //return LookInDirMat(CamPos,CamAng);
+        //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
+        return LookInDirMat(CamPos,CamAng);
     }
 
 
