@@ -9,7 +9,7 @@
 #include "../Geometry/Vertex.h"
 #include "../DrawingNew/DescriptorManager.h"
 #include "Entity.h"
-
+#include "../DrawingNew/GraphicPipelineCustom.h"
 namespace Engine{
     class Mesh:public Entity  {
         /*VULKAN BUFFERS AND VARIABLES*/
@@ -23,14 +23,14 @@ namespace Engine{
         BufferManager bufferManager;
 
     protected:
-        //Vetices and Indexes
+        /****VERTEX AND INDEX FOR TRIANGLES*****/
         std::vector<Vertex> vertices;
         std::vector<uint32_t> indices;
 
-        //DESCRIPTOR AND UNIFORM BUFFERS OF MY MODEL
+        /******VULKAN COMPONENTS*****************/
         UniformBufferManager uniformBufferManager;
         std::vector<VkDescriptorSet> descriptorSets;
-
+        GraphicPipelineCustom* pipeline;
 
     public:
         static std::vector<Mesh*>* meshes;
@@ -70,6 +70,13 @@ namespace Engine{
         }
         std::vector<uint32_t> getIndices(){
             return indices;
+        }
+
+        GraphicPipelineCustom* getPipeline(){
+            return pipeline;
+        }
+        void bindPipeline(GraphicPipelineCustom* pip){
+            pipeline = pip;
         }
 
     };

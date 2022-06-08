@@ -105,10 +105,6 @@ namespace Engine{
         renderer.createSyncObjects();
     }
 
-    void Core::loop() {
-        //USER MUST OVERRIDE THIS FUNCTION
-        std::cout<<"Original\n";
-    }
 
     void Core::appLoop() {
 
@@ -241,6 +237,14 @@ namespace Engine{
 
     }
 
+    GraphicPipelineCustom* Core::pipelineFactory(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D)
+    {
+        GraphicPipelineCustom* pipeline = new GraphicPipelineCustom(logicDeviceManager.getDevice(),&swapChain);
+        pipeline->setRenderPass(graphicPipelineCustom.getRenderPass());
+        pipeline->createGraphicPipeline(VertShader,FragShader,D);
+
+        return pipeline;
+    }
     /**
      * Print names of all available extensions
      */

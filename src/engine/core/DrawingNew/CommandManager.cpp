@@ -82,12 +82,14 @@ namespace Engine{
     }
 
     void CommandManager::populateCommandBuffers(int currentImage) {
-        //BIND PIPELINE TO COMMAND BUFFER
-        vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
-                          graphicPipeline->getGraphicPipeline());
+
 
         for (auto mesh : *Mesh::meshes) // access by reference to avoid copying
         {
+            //TODO CHECK IF I CAN DO BETTER THAN BINDING PIPELINE ON EACH MODEL
+            //BIND PIPELINE TO COMMAND BUFFER
+            vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
+                              mesh->getPipeline()->getGraphicPipeline());
             //BIND VERTEX BAFFER
             VkBuffer vertexBuffers[] = {mesh->getVertexBuffer()};
             VkDeviceSize offsets[] = {0};

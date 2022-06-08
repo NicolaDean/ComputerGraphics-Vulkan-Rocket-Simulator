@@ -31,6 +31,10 @@ namespace Engine{
         VkShaderModule createShaderModule(const std::vector<char>& code);
 
 
+        void setRenderPass(VkRenderPass renderP){
+            renderPass = renderP;
+        }
+
         VkRenderPass getRenderPass(){
             return renderPass;
         }

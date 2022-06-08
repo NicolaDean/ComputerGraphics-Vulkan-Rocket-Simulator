@@ -84,14 +84,8 @@ namespace Engine{
         void cleanupSwapChain();
 
     public:
-        virtual void updateScene(uint32_t currentImage)=0;
-        virtual void customInit()=0;
-
+        /****VULKAN HELEPR METHODS****/
         void run();
-        void loop();
-        /**
-        * Recreate the swapchain, called if old swap chain is no more usefull (eg window resize)
-        */
         void recreateSwapChain();
         void resetResizeFlag(){
             framebufferResized = false;
@@ -99,6 +93,14 @@ namespace Engine{
         bool getResizeFlag() {
             return framebufferResized;
         }
+
+        /*******USERS METHODS********************/
+        virtual void updateScene(uint32_t currentImage)=0;
+        virtual void customInit()=0;
+
+        GraphicPipelineCustom* pipelineFactory(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D);
+
+
 
 
         //FACTORY:
