@@ -42,10 +42,12 @@ namespace Engine{
     public:
         Rocket(BufferManager bufferManager):Model("./src/Models/rocket.obj",
                                                   "./src/Textures/rocket.jpg",bufferManager){
-
-
+            std::cout<<"ROCKET COSTRUITO\n";
         }
-        void update(float dt);
+        void launch(){
+            std::cout<<"LAUNCHED\n";
+        }
+        virtual void update(float dt);
         void trajectory(glm::vec3 target, float highMax, float vAcc);
         void updateAcceleration(float dt);
     };

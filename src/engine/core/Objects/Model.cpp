@@ -59,8 +59,4 @@ namespace Engine{
             }
         }
     }
-
-    void Model::update(float dt) {
-        std::cout<<"Model update"<<"\n";
-    }
 }

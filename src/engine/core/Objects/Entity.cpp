@@ -42,8 +42,4 @@ namespace Engine{
 
     void Entity::customKeys(float dt) {}
 
-    void Entity::update(float dt){
-        std::cout<<"Entity update"<<"\n";
-    }
-
 }

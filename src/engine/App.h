@@ -20,10 +20,9 @@ namespace Engine{
 
 
     public:
-        std::vector<Entity*> movableEntities;
-
+        std::vector<Entity*>* movableEntities;
         App(int width,int h,std::string win_name):Core(width,h,win_name){
-            movableEntities = std::vector<Entity*>();
+            movableEntities = new  std::vector<Entity*>();
         }
 
         void updateScene(uint32_t currentImage);
@@ -32,8 +31,8 @@ namespace Engine{
         void customInit();
 
 
-        void subscribeMovable(Entity *  entity){
-            movableEntities.push_back(entity);
+        void subscribeMovable(Mesh *  entity){
+            movableEntities->push_back(entity);
         }
         //TODO DO AN UNSUBSCRIBE METHOD
 

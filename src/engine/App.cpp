@@ -54,7 +54,7 @@ namespace Engine{
 
         /********UPDATE MOVABLE OBJECT*************/
         //TODO ACCESS "MOVABLE OBJECTS IN A SEPARATE LOOP"
-        for (auto entity : this->movableEntities)
+        for (auto entity : *movableEntities)
         {
             entity->update(deltaT);
         }

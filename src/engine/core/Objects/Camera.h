@@ -58,6 +58,7 @@ namespace Engine{
         void onShift(float dt);
         void onUp(float dt);
         void onDown(float dt);
+        void update(float dt){};
         glm::mat4 getViewMatrix();
         //void setTarget(Entity* target_model);
         //void setTarget(glm::vec3 target_position);

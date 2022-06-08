@@ -60,6 +60,7 @@ namespace Engine{
 
     /* Update movement */
     void Rocket::update(float dt) {
+        //std::cout<<"Rocket update\n";
         if(!launched){
             return;
         }

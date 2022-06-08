@@ -18,22 +18,19 @@ namespace Engine{
     public:
         Model():Mesh(){}
         Model(std::string model_path,std::string text_path,BufferManager buffManager):Mesh(buffManager){
+            std::cout<<model_path<<"\n";
             modelPath = model_path;
             texture = Texture(text_path,buffManager);
         }
 
         void init();
+        virtual void update(float dt){std::cout<<"MODEL\n";}
         void initDescriptor(DescriptorManager* descriptorManager);
         Texture* getTexture(){
             return &texture;
         }
 
         void loadModel();
-        void customUpdate(float ft){
-
-        }
-
-        void update(float dt);
     };
 }
 
