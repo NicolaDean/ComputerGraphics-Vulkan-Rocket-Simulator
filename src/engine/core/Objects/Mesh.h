@@ -47,6 +47,7 @@ namespace Engine{
         void createVertexBuffer();
         void createIndexBuffer();
         void updateUniformBuffer(uint32_t currentImage);
+        void update(float dt);
         void close();
 
         /********************GETTER SETTER********************************/

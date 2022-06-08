@@ -12,8 +12,9 @@ namespace Engine{
     public:
         Rocket(BufferManager bufferManager):Model("./src/Models/rocket.obj",
                                                   "./src/Textures/rocket.jpg",bufferManager){
-
+            std::cout<<"Created a Rocket";
         }
+        void update(float dt);
     };
 }
 

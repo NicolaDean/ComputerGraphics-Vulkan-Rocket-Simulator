@@ -32,6 +32,8 @@ namespace Engine{
         void customUpdate(float ft){
 
         }
+
+        void update(float dt);
     };
 }
 

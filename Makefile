@@ -18,7 +18,7 @@ ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.
 MAIN = src/main.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
-SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/main.o
+SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/RocketSimulator/Models/Rocket.o ./src/main.o
 #TODO CHECK HOW DO ACTUAL LIBRARY
 #OS DETECTION
 OSNAME = LINUX
@@ -79,6 +79,7 @@ fastCompile: #TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE
 	make -C ./src/engine/core all
 	#Those file are always created:
 	g++ $(CFLAGS)  $(INC) -c ./src/engine/App.cpp -o ./src/engine/App.o
+	g++ $(CFLAGS)  $(INC) -c ./src/RocketSimulator/Models/Rocket.cpp -o ./src/RocketSimulator/Models/Rocket.o
 	g++ $(CFLAGS)  $(INC) -c ./src/RocketSimulator/RocketSimulator.cpp -o ./src/RocketSimulator/RocketSimulator.o
 	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./src/main.o
 	#Link all .o files and compile Engine

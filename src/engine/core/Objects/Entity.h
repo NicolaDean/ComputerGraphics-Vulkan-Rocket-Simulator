@@ -31,9 +31,6 @@ namespace Engine{
         glm::vec3 orientation = glm::vec3(0,0,1);
         glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-        bool WASD_movement;
-        bool updateMovement;
-
     public:
         Entity(){
 
@@ -48,6 +45,7 @@ namespace Engine{
         }
 
         glm::mat4 getModelMatrix(){
+            modelMatrix =glm::translate(glm::mat4(1.0f),pos) * glm::scale(glm::mat4(1.0f),glm::vec3(0.03));
             return modelMatrix;
         }
 
@@ -61,9 +59,7 @@ namespace Engine{
         void onE(float dt);
         void customKeys(float dt); //Allow user to add functionality on other keys not covered
 
-        void update(float dt){
-
-        }
+        void update(float dt);
     };
 }
 

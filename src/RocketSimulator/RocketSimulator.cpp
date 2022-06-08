@@ -19,6 +19,6 @@ namespace RocketSimulator{
         m2->initDescriptor(&descManager);
 
         Mesh::meshes->push_back(m2);
-        this->subscribeMovable(m2);
+        this->subscribeMovable(m1);
     }
 }

@@ -53,4 +53,8 @@ namespace Engine{
         vkUnmapMemory(*bufferManager.getAssignedDevice(), vertexBufferMemory);
     }
 
+    void Mesh::update(float dt) {
+        std::cout<<"Mesh update"<<"\n";
+    }
+
 }

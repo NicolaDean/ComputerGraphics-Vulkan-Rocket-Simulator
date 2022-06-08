@@ -9,5 +9,7 @@ namespace Engine{
 
     void Rocket::update(float dt) {
 
+        this->pos += glm::vec3(0,1,1) * dt;
+        std::cout<<"BANANA";
     }
 }
