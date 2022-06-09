@@ -14,8 +14,6 @@ namespace Engine{
         bool deleted=false;
         bool launched = false;
 
-        glm::vec3 pos = glm::vec3(0);
-
         // Rotation around its axis
         float roll= 0.0f;
         float rspe= 0.0f;

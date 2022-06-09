@@ -29,7 +29,11 @@ namespace Engine{
         //MESH WORLD INFO
         glm::vec3 pos = glm::vec3(1,1,1);
         glm::vec3 orientation = glm::vec3(0,0,1);
+        glm::mat3 directionMat = I;
+        float scalingFactor = 1;
+        //Vulkan World Matrix
         glm::mat4 modelMatrix = glm::mat4(1.0f);
+
 
     public:
         Entity(){
@@ -45,11 +49,23 @@ namespace Engine{
         }
 
         glm::mat4 getModelMatrix(){
-            modelMatrix =glm::translate(glm::mat4(1.0f),pos) * glm::scale(glm::mat4(1.0f),glm::vec3(0.03));
+            //TODO PUT translate * rotate * scale (in the right order, as for camera)
+            modelMatrix =glm::translate(glm::mat4(1.0f),pos) * glm::scale(glm::mat4(1.0f),glm::vec3(scalingFactor));
             return modelMatrix;
         }
 
+        /*************MODEL SCAL POS ROT***************/
+        void setScale(float s){
+            scalingFactor = s;
+        }
 
+        void setPos(glm::vec3 p){
+            pos = p;
+        }
+
+        void setAngles(glm::vec3 a){
+            orientation = a;
+        }
         /*************MOVABLE METHODS******************/
         void onW(float dt);
         void onA(float dt);

@@ -61,8 +61,9 @@ namespace Engine{
     /* Update movement */
     void Rocket::update(float dt) {
 
-        pos += glm::vec3 (0,1,0)*dt;
-        //std::cout<<"Rocket update\n";
+        //pos += glm::vec3 (0,1,0)*dt;
+        //std::cout<<"Rocket: ("<<pos.x<<","<<pos.y<<","<<pos.z<<")\n";
+
         if(!launched){
             return;
         }

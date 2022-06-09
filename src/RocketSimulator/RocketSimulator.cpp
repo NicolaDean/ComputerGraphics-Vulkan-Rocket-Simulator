@@ -40,25 +40,20 @@ namespace RocketSimulator{
         Model* m1 = new Model("./src/Models/Desert/cactus01.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
+        m1->setScale(0.08);
+        m1->setPos(glm::vec3(0.8f,1.0f,1.0f));
         m1->bindPipeline(&graphicPipelineCustom);
         m1->initDescriptor(&descManager);
-
         Mesh::meshes->push_back(m1);
-        /*m1 = new Model("./src/Models/Desert/cactus02.obj",
+
+
+        m1 = new Model("./src/Models/Desert/cactus02.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
         m1->bindPipeline(&graphicPipelineCustom);
         m1->initDescriptor(&descManager);
-
-        Mesh::meshes->push_back(m1);
-        Mesh::meshes->push_back(m1);*/
-
-        m1 = new Model("./src/Models/Desert/cactus03.obj",
-                              "./src/Textures/desert.jpeg",bufferManager);
-        m1->init();
-        m1->bindPipeline(&graphicPipelineCustom);
-        m1->initDescriptor(&descManager);
-
+        m1->setPos(glm::vec3(1.2f,1.0f,1.0f));
+        m1->setScale(0.08);
         Mesh::meshes->push_back(m1);
 
         //MODEL 2:
@@ -67,6 +62,8 @@ namespace RocketSimulator{
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
 
+        m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
+        m2->setScale(0.03);
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->launch();
