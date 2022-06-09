@@ -37,8 +37,25 @@ namespace RocketSimulator{
         //GraphicPipelineCustom* skyBoxPipeline = pipelineFactory();
        /****************LOAD ALL MODELS OF THE APP**********************************/
         //MODEL 1:
-        Model* m1 = new Model("./src/Models/cube.obj",
-                              "./src/Textures/cube.jpg",bufferManager);
+        Model* m1 = new Model("./src/Models/Desert/cactus01.obj",
+                              "./src/Textures/desert.jpeg",bufferManager);
+        m1->init();
+        m1->bindPipeline(&graphicPipelineCustom);
+        m1->initDescriptor(&descManager);
+
+        Mesh::meshes->push_back(m1);
+
+        /*m1 = new Model("./src/Models/Desert/cactus02.obj",
+                              "./src/Textures/desert.jpeg",bufferManager);
+        m1->init();
+        m1->bindPipeline(&graphicPipelineCustom);
+        m1->initDescriptor(&descManager);
+
+        Mesh::meshes->push_back(m1);
+        Mesh::meshes->push_back(m1);*/
+
+        m1 = new Model("./src/Models/Desert/cactus03.obj",
+                              "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
         m1->bindPipeline(&graphicPipelineCustom);
         m1->initDescriptor(&descManager);
@@ -56,10 +73,10 @@ namespace RocketSimulator{
         m2->launch();
 
         //Square test
-        Square* s1 = new Square(bufferManager);
+        /*Square* s1 = new Square(bufferManager);
         s1->init();
         s1->initDescriptor(terrainDescriptor);
         s1->bindPipeline(terrainPipeline);
-        Mesh::meshes->push_back(s1);
+        Mesh::meshes->push_back(s1);*/
     }
 }
