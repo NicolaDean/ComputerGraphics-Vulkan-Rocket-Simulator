@@ -44,7 +44,6 @@ namespace RocketSimulator{
         m1->initDescriptor(&descManager);
 
         Mesh::meshes->push_back(m1);
-        std::cout<<"aa";
         /*m1 = new Model("./src/Models/Desert/cactus02.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
