@@ -1,14 +1,14 @@
 CFLAGS = -std=c++17 -O2
 
 FOLDER_PATH = ./src/RocketSimulator/Models
-BUILD_PATH	= ./build/RocketSimulator/Models
+BUILD_PATH	= ../../../build/RocketSimulator/Models/
 #TODO PUT BUILD_PATH INTO THE .o file generation
 
 SOURCES := $(shell find ./ -name '*.cpp')
-OBJECTS = $(SOURCES:%.cpp=%.o)
+OBJECTS = $(SOURCES:%.cpp=$(BUILD_PATH)%.o)
 
-%.o:%.cpp $(SOURCES)
-	echo $(SOURCES)
+$(BUILD_PATH)%.o:%.cpp $(SOURCES)
+	mkdir -p $(BUILD_PATH)
 	g++ $(CFLAGS)  $(INC) -c $< -o $@
 
 genObj:$(OBJECTS)

@@ -18,7 +18,7 @@ ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.
 MAIN = src/main.cpp src/RocketSimulator/RocketSimulator.cpp src/RocketSimulator/Models/Rocket.cpp
 #SOURCE COMPOSITION
 SOURCES = $(MAIN) $(ENGINE)
-SOURCES_O =  $(ENGINE_FOLDER)/core/build/*.o $(ENGINE_FOLDER)/core/build/*/*.o $(ENGINE_FOLDER)/App.o  ./src/RocketSimulator/RocketSimulator.o ./src/RocketSimulator/Models/*.o ./src/main.o
+SOURCES_O =  ./build/engine/*.o ./build/engine/*/*.o ./build/engine/*/*/*.o ./build/RocketSimulator/*.o ./build/RocketSimulator/*/*.o ./src/main.o
 #TODO CHECK HOW DO ACTUAL LIBRARY
 #OS DETECTION
 OSNAME = LINUX
@@ -66,29 +66,21 @@ clean:
 run: clean test
 
 ###########################FAST COMPILE METHOD###################################################
-
-MMM := $(shell find ./src/RocketSimulator/Models -name '*.cpp')
-MMM_OBJ = $(MMM:%.cpp=%.o)
-
-./src/RocketSimulator/Models/%.o:./src/RocketSimulator/Models/%.cpp $(MMM)
-	g++ $(CFLAGS)  $(INC) -c $< -o $@
-
-models: $(MMM_OBJ)
-	#EndedModels Compile
 completeCompile: cleanCore fastCompile
 
 cleanCore:
-	rm -r ./src/engine/core/build
-#TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE
+	rm -r ./build/engine
+
+cleanAll:
+	rm -r ./build
+
+#TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE (Almost done)
 fastCompile:
-	#Compile Rocket Models
-	make -C ./src/RocketSimulator/Models genObj
 	#Check if core is builded or not
-	make -C ./src/engine/core all
-	#Those file are always created:
-	g++ $(CFLAGS)  $(INC) -c ./src/engine/App.cpp -o ./src/engine/App.o
-	g++ $(CFLAGS)  $(INC) -c ./src/RocketSimulator/Models/Rocket.cpp -o ./src/RocketSimulator/Models/Rocket.o
-	g++ $(CFLAGS)  $(INC) -c ./src/RocketSimulator/RocketSimulator.cpp -o ./src/RocketSimulator/RocketSimulator.o
+	make -C ./src/engine genObj
+	#Check if Rocket Simulator
+	make -C ./src/RocketSimulator genObj
+	#Compile the main object
 	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./src/main.o
 	#Link all .o files and compile Engine
 	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)

@@ -14,6 +14,8 @@ namespace RocketSimulator{
      */
     void RocketSimulator::customInit() {
 
+
+
         /****************CAMERA SETTINGS*******************************************/
         Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
         Camera::currentCam->setPosition({1,1,2});
@@ -40,12 +42,11 @@ namespace RocketSimulator{
         Model* m1 = new Model("./src/Models/Desert/cactus01.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
-        m1->setScale(0.08);
+        m1->setScale(0.07);
         m1->setPos(glm::vec3(0.8f,1.0f,1.0f));
         m1->bindPipeline(&graphicPipelineCustom);
         m1->initDescriptor(&descManager);
         Mesh::meshes->push_back(m1);
-
 
         m1 = new Model("./src/Models/Desert/cactus02.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
@@ -67,7 +68,9 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->launch();
-
+        PerlinNoise tmp = PerlinNoise(200,200);
+        tmp.PerlinNoise2D(8);
+        tmp.savePerlinNoiseAsImage2D();
         //Square test
         /*Square* s1 = new Square(bufferManager);
         s1->init();
