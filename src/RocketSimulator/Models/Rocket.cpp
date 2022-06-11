@@ -60,11 +60,15 @@ namespace Engine{
 
     /* Update movement */
     void Rocket::update(float dt) {
-        setUpdated();
+        setUpdated();//Set the "hasBeenUpdated" flag to update the matrix
 
+        //TEST ORIENTATION CHANGES
         orientation += glm::vec3(0.0f,1.0f,0.0f)*dt;
+        //NEW METHOD TO PRINT VEC3 (we can add in Printer all print of class helper methods)
+        //Printer::print("Rocket orientation",orientation);
+
+        //TEST THE MOVEMENTS
         //pos += glm::vec3 (0,1,0)*dt;
-        //std::cout<<"Rocket: ("<<pos.x<<","<<pos.y<<","<<pos.z<<")\n";
 
         if(!launched){
             return;

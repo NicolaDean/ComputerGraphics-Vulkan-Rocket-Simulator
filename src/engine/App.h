@@ -8,6 +8,7 @@
 #include "core/Objects/Mesh.h"
 #include "core/Objects/Model.h"
 #include "core/Objects/Camera.h"
+#include "core/Utils/printHelper.h"
 
 namespace Engine{
     /**

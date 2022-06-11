@@ -5,7 +5,7 @@
 #ifndef COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_ROCKET_H
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_ROCKET_H
 #include "../../engine/core/Objects/Model.h"
-
+#include "../../engine/core/Utils/printHelper.h"
 namespace Engine{
     class Rocket:public Model {
 //Set renderer? renderer = renderer;
