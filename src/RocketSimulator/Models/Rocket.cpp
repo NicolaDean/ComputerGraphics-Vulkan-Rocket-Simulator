@@ -60,7 +60,9 @@ namespace Engine{
 
     /* Update movement */
     void Rocket::update(float dt) {
+        setUpdated();
 
+        orientation += glm::vec3(0.0f,1.0f,0.0f)*dt;
         //pos += glm::vec3 (0,1,0)*dt;
         //std::cout<<"Rocket: ("<<pos.x<<","<<pos.y<<","<<pos.z<<")\n";
 

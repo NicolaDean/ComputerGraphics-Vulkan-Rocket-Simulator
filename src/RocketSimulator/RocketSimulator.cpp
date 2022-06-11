@@ -14,8 +14,6 @@ namespace RocketSimulator{
      */
     void RocketSimulator::customInit() {
 
-
-
         /****************CAMERA SETTINGS*******************************************/
         Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
         Camera::currentCam->setPosition({1,1,2});
@@ -65,11 +63,12 @@ namespace RocketSimulator{
 
         m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
         m2->setScale(0.03);
+        m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->launch();
         PerlinNoise tmp = PerlinNoise(200,200);
-        tmp.PerlinNoise2D(8);
+        tmp.PerlinNoise2D(4);
         tmp.savePerlinNoiseAsImage2D();
         //Square test
         /*Square* s1 = new Square(bufferManager);

@@ -28,12 +28,13 @@ namespace Engine{
     protected:
         //MESH WORLD INFO
         glm::vec3 pos = glm::vec3(1,1,1);
-        glm::vec3 orientation = glm::vec3(0,0,1);
+        glm::vec3 orientation = glm::vec3(0,0,0);
         glm::mat3 directionMat = I;
         float scalingFactor = 1;
         //Vulkan World Matrix
         glm::mat4 modelMatrix = glm::mat4(1.0f);
 
+        bool hasBeenUpdated;
 
     public:
         Entity(){
@@ -49,23 +50,46 @@ namespace Engine{
         }
 
         glm::mat4 getModelMatrix(){
-            //TODO PUT translate * rotate * scale (in the right order, as for camera)
-            modelMatrix =glm::translate(glm::mat4(1.0f),pos) * glm::scale(glm::mat4(1.0f),glm::vec3(scalingFactor));
+
+            //TODO CHECK ROTATIONS ORDER
+            if(hasBeenUpdated){
+                glm::mat4 transform;
+                transform = glm::translate(I,pos);
+                transform = glm::rotate(transform, orientation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+                transform = glm::rotate(transform, orientation.x, glm::vec3(0.0f, 1.0f, 0.0f));
+                transform = glm::rotate(transform, orientation.z, glm::vec3(0.0f, 1.0f, 0.0f));
+                transform =  glm::scale(transform,glm::vec3(scalingFactor));
+
+                modelMatrix = transform;
+
+            }
+
             return modelMatrix;
         }
 
+        void setUpdated(){
+            hasBeenUpdated = true;
+        }
+
+        void resetUpdateFlag(){
+            hasBeenUpdated = false;
+        }
         /*************MODEL SCAL POS ROT***************/
         void setScale(float s){
+            setUpdated();
             scalingFactor = s;
         }
 
         void setPos(glm::vec3 p){
+            setUpdated();
             pos = p;
         }
 
         void setAngles(glm::vec3 a){
+            setUpdated();
             orientation = a;
         }
+
         /*************MOVABLE METHODS******************/
         void onW(float dt);
         void onA(float dt);

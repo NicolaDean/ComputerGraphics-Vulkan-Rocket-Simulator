@@ -33,13 +33,13 @@ namespace Engine{
         }
     }
     void PerlinNoise::PerlinNoise2D(int nOctaves){
-        srand(10373);
+        srand(233);
         float bias = 1.5f;
         //Octaves are the varius functions with frequency on power of 2
         for(int x=0;x<width;x++){
             for(int y=0;y<height;y++){
                 float fNoise = 0.0f;
-                float fScale = 20.0f; //Scale the noise
+                float fScale = 200.0f; //Scale the noise
                 float fScaleAcc = 0.0f;
 
                 for(int o=0; o<nOctaves;o++) {
@@ -113,7 +113,7 @@ namespace Engine{
         //HEADER DATA
         outdata<<"P2"<<std::endl;
         outdata<<height<<" "<<width<<std::endl;
-        outdata<<270<<std::endl;
+        outdata<<500<<std::endl;
         //PIXEL DATA
         int count = 0;
         for(int x=0;x<width;x++){
