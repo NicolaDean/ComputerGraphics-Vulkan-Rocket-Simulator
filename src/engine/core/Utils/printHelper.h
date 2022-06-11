@@ -18,6 +18,9 @@ namespace Engine{
             std::cout<<name<<": ("<<v.x<<","<<v.y<<","<<v.z<<")\n";
         }
 
+        static void print(std::string name,Vertex v){
+            std::cout<<name<<": ("<<v.pos.x<<","<<v.pos.y<<","<<v.pos.z<<")\n";
+        }
         //TODO add print of other usefull things
 
     };

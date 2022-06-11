@@ -62,6 +62,8 @@ namespace Engine{
     void Rocket::update(float dt) {
         setUpdated();//Set the "hasBeenUpdated" flag to update the matrix
 
+        //Can apply simple trajectory equation
+        //https://en.wikipedia.org/wiki/Projectile_motion#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
         //TEST ORIENTATION CHANGES
         orientation += glm::vec3(0.0f,1.0f,0.0f)*dt;
         //NEW METHOD TO PRINT VEC3 (we can add in Printer all print of class helper methods)

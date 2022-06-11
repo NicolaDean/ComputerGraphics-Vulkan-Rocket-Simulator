@@ -46,14 +46,23 @@ namespace RocketSimulator{
         m1->initDescriptor(&descManager);
         Mesh::meshes->push_back(m1);
 
-        m1 = new Model("./src/Models/Desert/cactus02.obj",
+        /*m1 = new Model("./src/Models/Desert/cactus02.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
         m1->bindPipeline(&graphicPipelineCustom);
         m1->initDescriptor(&descManager);
         m1->setPos(glm::vec3(1.2f,1.0f,1.0f));
         m1->setScale(0.08);
-        Mesh::meshes->push_back(m1);
+        Mesh::meshes->push_back(m1);*/
+
+        //PLANE
+
+        Plane* p = new Plane(10,10,10,10,bufferManager);
+        p->init();
+        p->initDescriptor(terrainDescriptor);
+        p->bindPipeline(terrainPipeline);
+        p->setPos(glm::vec3(-1.0f,1.0f,-1.0f));
+        Mesh::meshes->push_back(p);
 
         //MODEL 2:
         Rocket* m2 = new Rocket(bufferManager);
