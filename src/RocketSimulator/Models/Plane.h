@@ -9,21 +9,22 @@
 
 namespace Engine {
     class Plane : public Mesh {
-        int width;
-        int height;
+        int SIZE;
 
         int resolutionX;
         int resolutionY;
 
     public:
-        Plane(int x, int y,int resX,int resY,BufferManager buffManager) : Mesh(buffManager) {
-            width = x;
-            height = y;
+        Plane(int size,int resX,int resY,BufferManager buffManager) : Mesh(buffManager) {
+            SIZE = size;
             resolutionX = resX;
             resolutionY = resY;
         };
 
         void generatePlane();
+
+        virtual float getHeight(int x, int y)=0;
+        virtual glm::vec3 getColor(int x, int y)=0;
 
         void init();
 

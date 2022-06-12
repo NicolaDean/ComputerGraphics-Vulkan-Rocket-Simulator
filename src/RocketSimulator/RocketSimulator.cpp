@@ -57,11 +57,11 @@ namespace RocketSimulator{
 
         //PLANE
 
-        Plane* p = new Plane(10,10,10,10,bufferManager);
+        ProceduralTerrain * p = new ProceduralTerrain(60,100,100,bufferManager);
         p->init();
         p->initDescriptor(terrainDescriptor);
         p->bindPipeline(terrainPipeline);
-        p->setPos(glm::vec3(-1.0f,1.0f,-1.0f));
+        p->setPos(glm::vec3(-1.0f,-0.5f,-1.0f));
         Mesh::meshes->push_back(p);
 
         //MODEL 2:

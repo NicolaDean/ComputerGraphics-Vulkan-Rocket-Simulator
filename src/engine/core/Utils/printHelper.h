@@ -6,6 +6,7 @@
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_PRINTHELPER_H
 
 #include "../../commonLibs.h"
+#include "../Geometry/Vertex.h"
 namespace Engine{
     class Printer {
 

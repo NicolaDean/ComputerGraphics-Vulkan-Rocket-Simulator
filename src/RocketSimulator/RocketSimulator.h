@@ -9,7 +9,7 @@
 #include "Models/Square.h"
 #include "Models/Plane.h"
 #include "Utils/PerlinNoise.h"
-
+#include "Models/ProceduralTerrain.h"
 namespace RocketSimulator{
     class RocketSimulator: public Engine::App{
 
