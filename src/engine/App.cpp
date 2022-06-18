@@ -44,6 +44,18 @@ namespace Engine{
         if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
             Camera::currentCam->onShift(dt);
         }
+        if(glfwGetKey(window, GLFW_KEY_P)){
+            float inc = Camera::currentCam->farPlane + 0.1;
+            Camera::currentCam->setFarPlane(inc);
+            std::cout<<"ADD ZOOM -> " <<Camera::currentCam->farPlane<<"\n";
+        }
+
+        if(glfwGetKey(window, GLFW_KEY_M)){
+            float inc = Camera::currentCam->farPlane - 0.1;
+            if(inc < 0 ) inc = 0;
+            Camera::currentCam->setFarPlane(inc);
+            std::cout<<"REMOVE ZOOM -> " <<Camera::currentCam->farPlane<<"\n";
+        }
 
     }
     void App::updateScene(uint32_t currentFrame) {

@@ -24,6 +24,8 @@ namespace Engine{
         /***********CAM SETTINGS VARIABLES*************/
         CameraType type;
         PerspectiveType perspective;
+        float nearPlane = 0.1f;
+        float farPlane  = 10.0f;
         /***********CAMERA MOVEMENT VARIABLES***********/
         glm::vec3 CamPos = glm::vec3(1,1.5,2);
         glm::vec3 CamAng = glm::vec3(0,0,0);
@@ -53,6 +55,8 @@ namespace Engine{
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);
         void setPerspective(PerspectiveType p);
+        void setNearPlane(float n){nearPlane = n;};
+        void setFarPlane(float f){farPlane = f;};
         /*************USER INPUT METHODS******************/
         void onW(float dt);
         void onA(float dt);
@@ -70,6 +74,7 @@ namespace Engine{
 
 
         glm::mat4 getViewMatrix();
+        glm::mat4 getPerspectiveMatric();
         //void setTarget(Entity* target_model);
         //void setTarget(glm::vec3 target_position);
         //void setUp(glm::vec3 up);

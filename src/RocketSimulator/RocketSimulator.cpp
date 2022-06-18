@@ -18,6 +18,8 @@ namespace RocketSimulator{
         Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
         Camera::currentCam->setPosition({1,1,2});
         Camera::currentCam->setAngle({0.1,0,0});
+        Camera::currentCam->setNearPlane(0.1);
+        Camera::currentCam->setFarPlane(21.0);
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
 
         //Descriptor For Terrain: (Only Uniform Buffer, No Texture)
@@ -47,12 +49,11 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(m1);
 
         //PLANE
-
-        ProceduralTerrain * p = new ProceduralTerrain(10,10,10,bufferManager);
+        ProceduralTerrain * p = new ProceduralTerrain(100,200,200,bufferManager);
         p->init();
         p->initDescriptor(terrainDescriptor);
         p->bindPipeline(terrainPipeline);
-        p->setPos(glm::vec3(-1.0f,-0.5f,-1.0f));
+        p->setPos(glm::vec3(-15.0f,-0.5f,-15.0f));
         Mesh::meshes->push_back(p);
 
         //MODEL 2:

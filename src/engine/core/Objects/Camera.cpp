@@ -56,7 +56,7 @@ namespace Engine{
         switchType(type);
 
         //DEFINE CAMERA PERSPECTIVE
-        perspectiveMatrix = glm::perspective(glm::radians(45.0f), Constants::swapWidth / (float) Constants::swapHeight, 0.1f, 10.0f);
+        perspectiveMatrix = glm::perspective(glm::radians(45.0f), Constants::swapWidth / (float) Constants::swapHeight, nearPlane, farPlane);
         perspectiveMatrix[1][1] *= -1;
 
         setCamera(this);
@@ -73,6 +73,13 @@ namespace Engine{
             //TODO FIND HOW DO
             viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
         }
+    }
+
+    glm::mat4 Camera::getPerspectiveMatric() {
+        //DEFINE CAMERA PERSPECTIVE
+        perspectiveMatrix = glm::perspective(glm::radians(45.0f), Constants::swapWidth / (float) Constants::swapHeight, nearPlane, farPlane);
+        perspectiveMatrix[1][1] *= -1;
+        return perspectiveMatrix;
     }
 
     void Camera::setPerspective(PerspectiveType p){
@@ -150,6 +157,8 @@ namespace Engine{
     }
 
     glm::mat4 Camera::getViewMatrix(){
+
+
         updateCamDir();
         //TODO PUT IF ON CAM TYPE
         //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);

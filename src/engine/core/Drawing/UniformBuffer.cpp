@@ -34,7 +34,7 @@ namespace Engine{
         UniformBufferObject ubo{};
         ubo.model = modelMatrix;
         ubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
-        ubo.proj = Camera::currentCam->perspectiveMatrix;
+        ubo.proj = Camera::currentCam->getPerspectiveMatric();
 
         void* data;
         vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
