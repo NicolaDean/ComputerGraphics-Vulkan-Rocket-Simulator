@@ -19,6 +19,7 @@ namespace RocketSimulator{
         }
 
         void customInit();
+        void customClose(){};
     };
 }
 

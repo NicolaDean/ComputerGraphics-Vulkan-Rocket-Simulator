@@ -14,6 +14,7 @@ namespace Engine{
     }
 
     void Mesh::close() {
+        uniformBufferManager.clean();
         vkDestroyBuffer(*bufferManager.getAssignedDevice(), indexBuffer, nullptr);
         vkFreeMemory(*bufferManager.getAssignedDevice(), indexBufferMemory, nullptr);
         vkDestroyBuffer(*bufferManager.getAssignedDevice(), vertexBuffer, nullptr);

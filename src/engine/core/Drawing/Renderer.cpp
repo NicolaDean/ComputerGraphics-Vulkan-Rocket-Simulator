@@ -56,12 +56,12 @@ namespace Engine{
         //std::cout<<"ImageIndex->" <<imageIndex<<"\n";
         VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
-        /*if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
             app->recreateSwapChain();
             return;
         } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
             throw std::runtime_error("failed to acquire swap chain image!");
-        }*/
+        }
 
         //UPDATE UNIFORM BUFFER
 
@@ -70,6 +70,10 @@ namespace Engine{
                             VK_TRUE, UINT64_MAX);
         }
         imagesInFlight[imageIndex] = inFlightFences[currentFrame];
+
+        //vkResetCommandBuffer(*manager->getCommandBuffers(imageIndex), /*VkCommandBufferResetFlagBits*/ 0);
+        //commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
+        //manager->recordCommandBuffer(imageIndex);
 
         app->updateScene(imageIndex);
         //manager->updateBufferManager(imageIndex);
@@ -89,9 +93,7 @@ namespace Engine{
 
         vkResetFences(device, 1, &inFlightFences[currentFrame]);
 
-        //vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);
-        //commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
-        //manager->recordCommandBuffers();
+
 
 
         if (vkQueueSubmit(logicDeviceManager->getGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {

@@ -26,8 +26,8 @@ namespace RocketSimulator{
         terrainDescriptor->createDescriptorSetLayouts();
         //
         //Descriptor For GlobalUniformBuffer : (Only GlobalUniformBuffer)
-        DescriptorManager* globalUniformDescriptor = descriptorFactory();
-        globalUniformDescriptor->pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
+        //DescriptorManager* globalUniformDescriptor = descriptorFactory();
+        //globalUniformDescriptor->pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
 
         /****************CUSTOM PIPELINES******************************************/
         std::cout<<"Creating new Terrain Pipeline\n";
@@ -46,18 +46,9 @@ namespace RocketSimulator{
         m1->initDescriptor(&descManager);
         Mesh::meshes->push_back(m1);
 
-        /*m1 = new Model("./src/Models/Desert/cactus02.obj",
-                              "./src/Textures/desert.jpeg",bufferManager);
-        m1->init();
-        m1->bindPipeline(&graphicPipelineCustom);
-        m1->initDescriptor(&descManager);
-        m1->setPos(glm::vec3(1.2f,1.0f,1.0f));
-        m1->setScale(0.08);
-        Mesh::meshes->push_back(m1);*/
-
         //PLANE
 
-        ProceduralTerrain * p = new ProceduralTerrain(60,100,100,bufferManager);
+        ProceduralTerrain * p = new ProceduralTerrain(10,10,10,bufferManager);
         p->init();
         p->initDescriptor(terrainDescriptor);
         p->bindPipeline(terrainPipeline);

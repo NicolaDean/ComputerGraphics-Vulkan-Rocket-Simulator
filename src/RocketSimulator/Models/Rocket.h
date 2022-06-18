@@ -46,6 +46,7 @@ namespace Engine{
             std::cout<<"LAUNCHED\n";
         }
         virtual void update(float dt);
+        void close();
         void trajectory(glm::vec3 target, float highMax, float vAcc);
         void updateAcceleration(float dt);
     };

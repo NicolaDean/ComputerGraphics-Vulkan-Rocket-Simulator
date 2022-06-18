@@ -18,6 +18,12 @@ namespace Engine{
         VkDevice* device;
         SwapChain* swapChain;
 
+        /** FOR RECREATION **/
+
+        std::string vertexShader;
+        std::string fragmentShader;
+        std::vector<DescriptorManager *> descriptors;
+
     public:
         GraphicPipelineCustom(){};
         GraphicPipelineCustom(VkDevice * dev,SwapChain * swap){
@@ -27,8 +33,12 @@ namespace Engine{
 
         void createGraphicPipeline(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D);
         void createRenderPass(DepthImage depthImage);
+        void close();
+        void closeRenderPass();
 
+        void recreate(SwapChain * swap);
         VkShaderModule createShaderModule(const std::vector<char>& code);
+
 
 
         void setRenderPass(VkRenderPass renderP){

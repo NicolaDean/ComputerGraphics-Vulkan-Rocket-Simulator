@@ -9,7 +9,15 @@
 namespace Engine{
 
 
+    void GraphicPipelineCustom::recreate(SwapChain * swap) {
+        swapChain = swap;
+        createGraphicPipeline(vertexShader,fragmentShader,descriptors);
+    }
     void GraphicPipelineCustom::createGraphicPipeline(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D) {
+
+        descriptors = D;
+        vertexShader = VertShader;
+        fragmentShader = FragShader;
         //MUST USE PATH RELATIVE TO "Engine" executable
         //LOAD SHADER FILES
         auto vertShaderCode = readFile(VertShader);
@@ -289,5 +297,14 @@ namespace Engine{
         if (vkCreateRenderPass(*device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
             throw std::runtime_error("failed to create render pass!");
         }
+    }
+
+    void GraphicPipelineCustom::close(){
+        vkDestroyPipeline(*device, graphicsPipeline, nullptr);
+        vkDestroyPipelineLayout(*device, pipelineLayout, nullptr);
+    }
+
+    void GraphicPipelineCustom::closeRenderPass(){
+        vkDestroyRenderPass(*device, renderPass, nullptr);
     }
 }

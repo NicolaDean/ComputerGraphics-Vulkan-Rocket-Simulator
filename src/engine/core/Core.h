@@ -39,14 +39,14 @@ namespace Engine{
         DeviceManager devicesManager;
         LogicDeviceManager logicDeviceManager;
         WindowsSurface windowsSurface;
-        CommandBuffer commandBuffer;
         FrameBuffer frameBuffer;
-        VertexBuffer vertexBuffer;
         TextureManager textureManager;
         DepthImage depthImage;
-        GraphicPipeline graphicPipeline;
         Renderer renderer;
     protected:
+        std::vector<GraphicPipelineCustom*> userPipelines;
+        std::vector<DescriptorManager*> userDescriptors;
+
         GLFWwindow* window;
         BufferManager bufferManager; //TODO PUT THIS CLASS STATIC SO TO REMOVE ALL ITS PASSAGES
         GraphicPipelineCustom graphicPipelineCustom;
@@ -75,6 +75,10 @@ namespace Engine{
         void main();
         void appLoop();
         void close();
+        void cleanMeshes();
+        void closeUserPipelines();
+        void closeUserDescriptors();
+        void recreateUserPipelines();
         void createInstance();
         void printExtensionNames();
         static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
@@ -97,7 +101,7 @@ namespace Engine{
         /*******USERS METHODS********************/
         virtual void updateScene(uint32_t currentImage)=0;
         virtual void customInit()=0;
-
+        virtual void customClose()=0;
         /******FACTORY METHODS********************/
         GraphicPipelineCustom* pipelineFactory(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D);
         DescriptorManager* descriptorFactory();

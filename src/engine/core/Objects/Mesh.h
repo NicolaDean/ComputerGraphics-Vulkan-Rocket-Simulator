@@ -50,7 +50,7 @@ namespace Engine{
         void updateUniformBuffer(uint32_t currentImage);
         virtual void initDescriptor(DescriptorManager* descriptorManager);
         virtual void update(float dt){}
-        void close();
+        virtual void close() = 0;
 
         /********************GETTER SETTER********************************/
         UniformBufferManager* getUniformBufferManager(){

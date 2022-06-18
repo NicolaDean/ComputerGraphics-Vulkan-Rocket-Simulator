@@ -9,6 +9,14 @@ namespace Engine{
     DescriptorManager* DescriptorManager::globalDescriptor = new DescriptorManager();
     VkDescriptorPool DescriptorManager::descriptorPool;
 
+
+    void DescriptorManager::closeDescriptorPool(){
+        vkDestroyDescriptorPool(*device, DescriptorManager::descriptorPool, nullptr);
+    }
+    void DescriptorManager::close() {
+        //TODO CLOSE DESCRIPTOR POOL
+        vkDestroyDescriptorSetLayout(*device, descriptorSetLayout, nullptr);
+    }
     void DescriptorManager::setAsGlobal() {
         DescriptorManager::setAsGlobal(this);
     }
@@ -37,6 +45,7 @@ namespace Engine{
             throw std::runtime_error("failed to create descriptor set layout!");
         }
     }
+
 
     void DescriptorManager::createDescriptorSets(){
         descriptorSets = createAndGetDescriptorSets(&uniformBufferManager);

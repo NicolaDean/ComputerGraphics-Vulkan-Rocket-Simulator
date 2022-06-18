@@ -85,10 +85,60 @@ fastCompile:
 	#Link all .o files and compile Engine
 	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)
 
+fastCompileV2: EngineGen RocketGen
+	#Compile the main object
+	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./src/main.o
+    #Link all .o files and compile Engine
+	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)
+	#END COMPILATION
+
 fastExe: fastCompile
-	./Engine
 
+########################ENGINE PROJECT#############################################
+FOLDER_PATH_E = ./src/engine/
+BUILD_PATH_E	= ./build/engine/
+BUILD_PATH_CORE_E	= ./build/engine/core
+#TODO PUT BUILD_PATH INTO THE .o file generation
 
+SOURCES_E := $(shell find ./$(FOLDER_PATH_E) -name '*.cpp')
+OBJECTS_E = $(SOURCES_E: ./src/engine/%.cpp=$(BUILD_PATH_E)%.o)
+
+createFolderE:
+	mkdir -p $(BUILD_PATH_E)
+	mkdir -p $(BUILD_PATH_CORE_E)
+	mkdir -p $(BUILD_PATH_CORE_E)/Device
+	mkdir -p $(BUILD_PATH_CORE_E)/Drawing
+	mkdir -p $(BUILD_PATH_CORE_E)/DrawingNew
+	mkdir -p $(BUILD_PATH_CORE_E)/Geometry
+	mkdir -p $(BUILD_PATH_CORE_E)/GraphicPipeline
+	mkdir -p $(BUILD_PATH_CORE_E)/Objects
+	mkdir -p $(BUILD_PATH_CORE_E)/Presentation
+	mkdir -p $(BUILD_PATH_CORE_E)/Utils
+
+$(BUILD_PATH_E)%.o:%.cpp $(SOURCES_E)
+	g++ $(CFLAGS)  $(INC) -c $< -o $@
+
+EngineGen:createFolderE $(OBJECTS_E)
+	#ENDED Compilation of ./src/engine
+########################ROCKET PROJECT#############################################
+FOLDER_PATH_R = ./src/RocketSimulator/
+BUILD_PATH_R	= ./build/RocketSimulator/
+#TODO PUT BUILD_PATH INTO THE .o file generation
+
+SOURCES_R := $(shell find ./$(FOLDER_PATH_R) -name '*.cpp')
+OBJECTS_R = $(SOURCES_R:./src/RocketSimulator/%.cpp=$(BUILD_PATH_R)%.o)
+
+createFolderR:
+	mkdir -p $(BUILD_PATH_R)
+	mkdir -p $(BUILD_PATH_R)/Models
+	mkdir -p $(BUILD_PATH_R)/Utils
+	mkdir -p $(BUILD_PATH_R)/Terrain
+
+$(BUILD_PATH_R)%.o:%.cpp $(SOURCES_R)
+	g++ $(CFLAGS)  $(INC) -c $< -o $@
+
+RocketGen:createFolderR $(OBJECTS_R)
+	#ENDED Compilation of ./src/RocketSimulator/
 ########################SHADER COMPILER############################################
 #Put here the shaders name (in the format of name.x)
 SHADER_NAMES = Shader.x NoTexture.x

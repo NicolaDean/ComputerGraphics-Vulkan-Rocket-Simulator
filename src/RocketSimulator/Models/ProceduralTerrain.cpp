@@ -10,7 +10,7 @@ namespace Engine{
     float ProceduralTerrain::getNoise(int x, int y) {
         srand(x*1023 + y*435 + seed);
         float noise = ((float)rand() / (float)RAND_MAX)*2.0f - 1.0f;
-        std::cout<<"NOISE: "<<noise<<"\n";
+        //std::cout<<"NOISE: "<<noise<<"\n";
         return noise;
     }
 
@@ -19,16 +19,39 @@ namespace Engine{
         return terrainSmoothing(x,y)*0.5;
     }
 
+    glm::vec3 ProceduralTerrain::calculateNormal(int x, int z) {
+        float heightL = getHeightMod(x - 1, z);
+        float heightR = getHeightMod(x + 1, z);
+        float heightD = getHeightMod(x, z - 1);
+        float heightU = getHeightMod(x, z + 1);
+        glm::vec3 normal = glm::vec3(heightL - heightR, 2.0f, heightD - heightU);
+        normal = glm::normalize(normal);
+        return normal;
+    }
+
+    float ProceduralTerrain::getHeightMod(int x, int z) {
+        x = x < 0 ? 0 : x;
+        z = z < 0 ? 0 : z;
+        x = x >=  SIZE ? SIZE - 1 : x;
+        z = z >= SIZE ? SIZE - 1 : z;
+        return getHeight(x,z);
+    }
+
     //TODO CREATE A GRADIENT CLASS FOR COLORS
     glm::vec3 ProceduralTerrain::getColor(int x, int y) {
-        float noise = getNoise(x,y);
+        return calculateNormal(x,y);
+        /*float noise = getNoise(x,y);
         //#abc32f	(171,195,47)
         glm::vec3 C1 = ColorGradient::getColor(171,195,47);
         //	#607c3c	(96,124,60)
         glm::vec3 C2 = ColorGradient::getColor(96,124,60);
         //45% red, 35% green and 20% blue.
         return ColorGradient::getColor(glm::vec3(0.45,0.35,0.2),glm::vec3(0.66,0.5,0.2),noise);
-        return glm::vec3(0.45,0.35,0.2);
+        return glm::vec3(0.45,0.35,0.2);*/
+    }
+    void ProceduralTerrain::close() {
+        Mesh::close();
+        std::cout<<"Terrain closing:\n";
     }
 
     float ProceduralTerrain::terrainSmoothing(int x, int y) {

@@ -99,9 +99,10 @@ namespace Engine{
         customInit();
 
         Camera::setCamera(new Camera());
+        manager.createCommandBuffers();
         manager.recordCommandBuffers();
         //Create Renderer (to draw Frames)
-        renderer = Renderer(&logicDeviceManager,&manager,&swapChain,&graphicPipeline);
+        renderer = Renderer(&logicDeviceManager,&manager,&swapChain);
         renderer.createSyncObjects();
     }
 
@@ -119,7 +120,9 @@ namespace Engine{
     }
 
 
+
     void Core::recreateSwapChain() {
+
         //printf("Recreated swapchain");
         //TODO CHECK WHY CRASH NOW
         //Minimization
@@ -139,39 +142,56 @@ namespace Engine{
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Graphic Pipeline
-        //graphicPipeline = GraphicPipeline(logicDeviceManager.getDevice(),bufferManager);
-        //graphicPipeline.createRenderPass(swapChain.getSwapChainImageFormat(),depthImage);
-        //graphicPipeline.createGraphicPipeline(swapChain.getSwapChainExtent());
+       // recreateUserPipelines();
         //Depth resource
         depthImage.createDepthResources(swapChain.getSwapChainExtent(),textureManager);
         //Create Frame Buffer
-        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipeline.getRenderPass(),depthImage.getDepthImageView());
+        frameBuffer.createFrameBuffer(*logicDeviceManager.getDevice(),swapChain.getSwapChainImageViews(),swapChain.getSwapChainExtent(),graphicPipelineCustom.getRenderPass(),depthImage.getDepthImageView());
+
     }
+
     void Core::cleanupSwapChain() {
         depthImage.close();
         //Close Frame Buffer
         frameBuffer.close(*logicDeviceManager.getDevice());
-        //Close Graphic Pipeline
-        //graphicPipeline.close();
+        //Close Graphic Pipelines
+        closeUserPipelines();
         //Close SwapChain and ImageView
         swapChain.close(*logicDeviceManager.getDevice());
     }
 
-    void Core::close(){
+    void Core::customClose(){
 
+    }
+
+    void Core::cleanMeshes(){
+
+        int i=0;
+        for (auto mesh : *Mesh::meshes) // access by reference to avoid copying
+        {
+            std::cout<<"Closing mesh: "<<i<<"\n";
+            mesh->close();
+            i++;
+        }
+    }
+
+    void Core::close(){
         //TODO CHECK THE CLEANUP METHODS, A VK BUFFER IS MISSING...
         cleanupSwapChain();
+        customClose();
+        manager.close();
         //Uniform Buffer
-        graphicPipeline.closeUniformBuffer();
         textureManager.close();
         //LayoutSet and Pool Descriptor
-        //graphicPipeline.closeDescriptor();
+        descManager.closeDescriptorPool();
+        descManager.close();
+        closeUserDescriptors();
         //Vertex and Index Buffer
-        vertexBuffer.close();
+        cleanMeshes();
         //Close All Semaphore
         renderer.close();
         //Close Command Pool
-        commandBuffer.close();
+        //commandBuffer.close();
         //Destroy Device
         logicDeviceManager.clean();
         //Destroy Window surface
@@ -237,17 +257,51 @@ namespace Engine{
 
     }
 
+    void Core::closeUserPipelines() {
+        std::cout<<"CLOSE USER PIPELINES\n";
+        for(auto p : userPipelines){
+            p->close();
+        }
+        graphicPipelineCustom.close();
+        graphicPipelineCustom.closeRenderPass();
+    }
+
+    void Core::recreateUserPipelines() {
+
+        std::cout<<"RECREATE USER PIPELINES\n";
+        //Recreate render pass
+        graphicPipelineCustom.createRenderPass(depthImage);
+        graphicPipelineCustom.recreate(&swapChain);
+        std::cout<<"MAIN PIPELINE RECREATED\n";
+        //Recreate all the graphics pipelines
+        for(auto p : userPipelines){
+            p->setRenderPass(graphicPipelineCustom.getRenderPass());
+            p->recreate(&swapChain);
+        }
+
+        std::cout<<"COMPLETED RECREATION OF USER PIPELINES\n";
+    }
     GraphicPipelineCustom* Core::pipelineFactory(const std::string& VertShader, const std::string& FragShader,std::vector<DescriptorManager *> D)
     {
         GraphicPipelineCustom* pipeline = new GraphicPipelineCustom(logicDeviceManager.getDevice(),&swapChain);
         pipeline->setRenderPass(graphicPipelineCustom.getRenderPass());
         pipeline->createGraphicPipeline(VertShader,FragShader,D);
+        std::cout<<"CREATING -> "<<VertShader<<"\n";
+        userPipelines.push_back(pipeline);
 
         return pipeline;
     }
 
     DescriptorManager *Core::descriptorFactory() {
-        return new DescriptorManager(bufferManager,&swapChain);
+        DescriptorManager *tmp = new DescriptorManager(bufferManager,&swapChain);
+        userDescriptors.push_back(tmp);
+        return tmp;
+    }
+
+    void Core::closeUserDescriptors(){
+        for(auto d : userDescriptors){
+            d->close();
+        }
     }
     /**
      * Print names of all available extensions

@@ -22,6 +22,12 @@ namespace Engine{
 
 
 
+    void Model::close() {
+        Mesh::close();
+        texture.clean();
+        std::cout<<"Close model "<<modelPath<<"\n";
+    }
+
     void Model::loadModel() {
         tinyobj::attrib_t attrib;
         std::vector<tinyobj::shape_t> shapes;

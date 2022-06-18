@@ -58,6 +58,10 @@ namespace Engine{
         pos.y += dv;
     }
 
+    void Rocket::close() {
+        Model::close();
+        std::cout<<"Rocket closing:";
+    }
     /* Update movement */
     void Rocket::update(float dt) {
         setUpdated();//Set the "hasBeenUpdated" flag to update the matrix

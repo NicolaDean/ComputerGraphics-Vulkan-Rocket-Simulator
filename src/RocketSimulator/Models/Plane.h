@@ -9,6 +9,7 @@
 
 namespace Engine {
     class Plane : public Mesh {
+    protected:
         int SIZE;
 
         int resolutionX;

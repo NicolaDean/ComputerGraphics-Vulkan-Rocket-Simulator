@@ -56,7 +56,9 @@ namespace Engine{
             uniformBufferManager = UniformBufferManager(manager);
         }
 
-        void setAsGlobal();
+        void close();
+        void closeDescriptorPool();
+            void setAsGlobal();
         static void setAsGlobal(DescriptorManager* d);
 
         //User push descriptors info

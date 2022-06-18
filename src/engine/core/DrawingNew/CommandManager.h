@@ -34,9 +34,11 @@ namespace Engine{
         }
 
 
+        void close();
         void createCommandPool(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
         void createCommandBuffers();
         void recordCommandBuffers();
+        void recordCommandBuffer(int currentImage);
         void populateCommandBuffers(int currentImage);
 
         void setModel(Model m1){

@@ -22,15 +22,13 @@ namespace Engine{
         LogicDeviceManager *logicDeviceManager;
         SwapChain * swapChainCopy;
         CommandManager * manager;
-        GraphicPipeline* graphicPipelineCopy;
 
     public:
         Renderer(){};
-        Renderer(LogicDeviceManager * logicDevice,CommandManager * cb,SwapChain * sc,GraphicPipeline* g){
+        Renderer(LogicDeviceManager * logicDevice,CommandManager * cb,SwapChain * sc){
             logicDeviceManager = logicDevice;
             swapChainCopy = sc;
             manager = cb;
-            graphicPipelineCopy = g;
         };
 
         void createSyncObjects();
