@@ -71,9 +71,9 @@ namespace Engine{
         }
         imagesInFlight[imageIndex] = inFlightFences[currentFrame];
 
-        //vkResetCommandBuffer(*manager->getCommandBuffers(imageIndex), /*VkCommandBufferResetFlagBits*/ 0);
+        vkResetCommandBuffer(*manager->getCommandBuffers(imageIndex), /*VkCommandBufferResetFlagBits*/ 0);
         //commandBufferCopy->recordCommandBuffer(currentFrame, imageIndex,*swapChainCopy,*graphicPipelineCopy);
-        //manager->recordCommandBuffer(imageIndex);
+        manager->recordCommandBuffer(imageIndex);
 
         app->updateScene(imageIndex);
         //manager->updateBufferManager(imageIndex);
@@ -92,8 +92,6 @@ namespace Engine{
         submitInfo.pSignalSemaphores = signalSemaphores;
 
         vkResetFences(device, 1, &inFlightFences[currentFrame]);
-
-
 
 
         if (vkQueueSubmit(logicDeviceManager->getGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {

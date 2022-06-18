@@ -110,7 +110,7 @@ namespace Engine{
 
             vkCmdBindDescriptorSets(commandBuffers[currentImage],
                                     VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                    graphicPipeline->getPipelineLayout(), 0, 1, &(descriptorSets[currentImage]),
+                                    mesh->getPipeline()->getPipelineLayout(), 0, 1, &(descriptorSets[currentImage]),
                                     0, nullptr);
 
 

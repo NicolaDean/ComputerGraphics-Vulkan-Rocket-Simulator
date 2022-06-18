@@ -142,7 +142,7 @@ namespace Engine{
         swapChain.createSwapChain(devicesManager.getSelectedDevice(),*logicDeviceManager.getDevice(),windowsSurface.getSurface(),window);
         swapChain.createImageViews(*logicDeviceManager.getDevice());
         //Graphic Pipeline
-       // recreateUserPipelines();
+        recreateUserPipelines();
         //Depth resource
         depthImage.createDepthResources(swapChain.getSwapChainExtent(),textureManager);
         //Create Frame Buffer
