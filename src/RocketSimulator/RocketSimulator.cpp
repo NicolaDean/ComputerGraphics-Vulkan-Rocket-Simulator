@@ -49,7 +49,7 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(m1);
 
         //PLANE
-        ProceduralTerrain * p = new ProceduralTerrain(100,200,200,bufferManager);
+        ProceduralTerrain * p = new ProceduralTerrain(50,100,100,bufferManager);
         p->init();
         p->initDescriptor(terrainDescriptor);
         p->bindPipeline(terrainPipeline);
