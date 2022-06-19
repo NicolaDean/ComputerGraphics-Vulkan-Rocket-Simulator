@@ -67,7 +67,10 @@ namespace Engine{
         vkCmdBeginRenderPass(commandBuffers[currentImage], &renderPassInfo,
                              VK_SUBPASS_CONTENTS_INLINE);
 
-        populateCommandBuffers(currentImage);
+        //Populate MESHES (3d Models...)
+        populateCommandBuffers(currentImage,*Mesh::meshes);
+        //Populate UI
+        populateUIcommandBuffers(currentImage);
 
         vkCmdEndRenderPass(commandBuffers[currentImage]);
 
@@ -87,10 +90,39 @@ namespace Engine{
 
         vkDestroyCommandPool(*device, commandPool, nullptr);
     }
-    void CommandManager::populateCommandBuffers(int currentImage) {
+
+    void CommandManager::populateUIcommandBuffers(int currentImage) {
+        for (auto mesh : UImanager::getUI()) // access by reference to avoid copying
+        {
+            //TODO CHECK IF I CAN DO BETTER THAN BINDING PIPELINE ON EACH MODEL
+            //BIND PIPELINE TO COMMAND BUFFER
+            vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
+                              mesh->getPipeline()->getGraphicPipeline());
+            //BIND VERTEX BAFFER
+            VkBuffer vertexBuffers[] = {mesh->getVertexBuffer()};
+            VkDeviceSize offsets[] = {0};
+            vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
+            //BIND INDEX BUFFER
+            vkCmdBindIndexBuffer(commandBuffers[currentImage], mesh->getIndexBuffer(), 0,
+                                 VK_INDEX_TYPE_UINT32);
+
+            //BIND DESCRIPTOR SET
+            //TODO GET DESCRIPTOR FROM MODEL
+            std::vector<VkDescriptorSet> descriptorSets = *(mesh->getDescriptorSet());
+
+            vkCmdBindDescriptorSets(commandBuffers[currentImage],
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    mesh->getPipeline()->getPipelineLayout(), 0, 1, &(descriptorSets[currentImage]),
+                                    0, nullptr);
 
 
-        for (auto mesh : *Mesh::meshes) // access by reference to avoid copying
+            //DRAW COMMAND
+            vkCmdDrawIndexed(commandBuffers[currentImage],
+                             static_cast<uint32_t>(mesh->getIndices().size()), 1, 0, 0, 0);
+        }
+    }
+    void CommandManager::populateCommandBuffers(int currentImage,std::vector<Mesh*> meshes) {
+        for (auto mesh : meshes) // access by reference to avoid copying
         {
             //TODO CHECK IF I CAN DO BETTER THAN BINDING PIPELINE ON EACH MODEL
             //BIND PIPELINE TO COMMAND BUFFER

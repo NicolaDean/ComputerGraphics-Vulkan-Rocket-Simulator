@@ -87,6 +87,9 @@ namespace Engine{
             mesh->move();
             mesh->updateUniformBuffer(currentFrame);
         }
+        for(auto mesh : UImanager::interface.getUI()){
+            mesh->updateUniformBuffer(currentFrame);
+        }
     }
 
     void App::customInit() {

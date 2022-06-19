@@ -172,3 +172,5 @@ shaders:
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.vert -o $(COMPILED_SHADER)/vertShader.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/NoTexture.frag -o $(COMPILED_SHADER)/fragNoTexture.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/NoTexture.vert -o $(COMPILED_SHADER)/vertNoTexture.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/UIshader.frag -o $(COMPILED_SHADER)/fragUIshader.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/UIshader.vert -o $(COMPILED_SHADER)/vertUIshader.spv

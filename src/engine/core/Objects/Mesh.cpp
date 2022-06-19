@@ -26,6 +26,10 @@ namespace Engine{
         this->uniformBufferManager.update(currentImage,getModelMatrix());//TODO remove swapChainExtent From updateUniform buffer
     }
 
+    void Mesh::updateUniformBufferAbsolutePos(uint32_t currentImage) {
+        this->uniformBufferManager.updateAbsolute(currentImage,getModelMatrix());//TODO remove swapChainExtent From updateUniform buffer
+    }
+
     void Mesh::createIndexBuffer() {
         VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 

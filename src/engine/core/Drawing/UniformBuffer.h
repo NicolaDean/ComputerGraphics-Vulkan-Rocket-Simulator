@@ -34,6 +34,7 @@ namespace Engine {
         void close();
         void createUniformBuffers();
         void updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix);
+        void updateUniformBufferAbsolutePos(uint32_t currentImage,glm::mat4 modelMatrix);
         void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer &buffer,
                      VkDeviceMemory &bufferMemory);
 

@@ -20,6 +20,12 @@ namespace Engine{
         }
     }
 
+    void UniformBufferManager::updateAbsolute(uint32_t currentImage,glm::mat4 modelMatrix) {
+        //UPDATE UNIFORM BUFFER OF ALL DESCRIPTOR SETS
+        for(int i=0;i<uniformBuffers.size();i++){
+            uniformBuffers[i].updateUniformBufferAbsolutePos(currentImage,modelMatrix);
+        }
+    }
     void UniformBufferManager::clean() {
         for(int i=0;i<uniformBuffers.size();i++){
             uniformBuffers[i].close();

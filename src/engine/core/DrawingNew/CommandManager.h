@@ -9,6 +9,7 @@
 #include "GraphicPipelineCustom.h"
 #include "../Objects/Mesh.h"
 #include "../Objects/Model.h"
+#include "../../UI/UImanager.h"
 namespace Engine{
     class CommandManager {
         VkCommandPool commandPool;
@@ -39,7 +40,8 @@ namespace Engine{
         void createCommandBuffers();
         void recordCommandBuffers();
         void recordCommandBuffer(int currentImage);
-        void populateCommandBuffers(int currentImage);
+        void populateCommandBuffers(int currentImage,std::vector<Mesh*> meshes);
+        void populateUIcommandBuffers(int currentImage);
 
         void setModel(Model m1){
             M1 = m1;

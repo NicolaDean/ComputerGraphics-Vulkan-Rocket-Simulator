@@ -3,7 +3,7 @@
 //
 
 #include "DescriptorManager.h"
-#define NUM_OF_DESCRIPTOR_SET_GROUP 3
+#define NUM_OF_DESCRIPTOR_SET_GROUP 5
 
 namespace Engine{
     DescriptorManager* DescriptorManager::globalDescriptor = new DescriptorManager();

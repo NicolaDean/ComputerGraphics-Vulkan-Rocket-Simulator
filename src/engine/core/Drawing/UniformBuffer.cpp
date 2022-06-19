@@ -41,4 +41,23 @@ namespace Engine{
         memcpy(data, &ubo, sizeof(ubo));
         vkUnmapMemory(*device, uniformBuffersMemory[currentImage]);
     }
+
+    void UniformBuffer::updateUniformBufferAbsolutePos(uint32_t currentImage,glm::mat4 modelMatrix){
+        static auto startTime = std::chrono::high_resolution_clock::now();
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+        UniformBufferObject ubo{};
+        ubo.model = modelMatrix;
+        ubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
+
+        //ONLY MODEL MATRIX
+
+        //TODO clean up this code
+
+        void* data;
+        vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
+        memcpy(data, &ubo, sizeof(ubo));
+        vkUnmapMemory(*device, uniformBuffersMemory[currentImage]);
+    }
 }

@@ -1,7 +1,5 @@
 #include "RocketSimulator.h"
 
-using namespace Engine;
-
 namespace RocketSimulator{
 
     /***
@@ -16,7 +14,7 @@ namespace RocketSimulator{
 
         /****************CAMERA SETTINGS*******************************************/
         Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
-        Camera::currentCam->setPosition({1,1,2});
+        Camera::currentCam->setPosition({1,1,-1});
         Camera::currentCam->setAngle({0.1,0,0});
         Camera::currentCam->setNearPlane(0.1);
         Camera::currentCam->setFarPlane(21.0);
@@ -36,8 +34,23 @@ namespace RocketSimulator{
        GraphicPipelineCustom* terrainPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertNoTexture.spv",
                                                    "./src/Shaders/compiledShaders/fragNoTexture.spv",
                                                    {terrainDescriptor});
+
+       GraphicPipelineCustom* UIpipeline = pipelineFactory("./src/Shaders/compiledShaders/vertUIshader.spv",
+                                                                 "./src/Shaders/compiledShaders/fragUIshader.spv",
+                                                                 {&descManager});
         //GraphicPipelineCustom* skyBoxPipeline = pipelineFactory();
        /****************LOAD ALL MODELS OF THE APP**********************************/
+
+       //TODO CREATE AN AREA WHERE PUT UI COMPONENTS
+       button = UIcomponent(0.5,0.5,0.05,0.05,"./src/Textures/desert.jpeg",bufferManager);
+       button.init();
+       button.bindPipeline(UIpipeline);
+       button.initDescriptor(&descManager);
+       button.setPos(glm::vec3(0.9,1,1));
+       //Mesh::meshes->push_back(&button);
+       UImanager::addComponent(&button);
+       std::cout<<"aa";
+
         //MODEL 1:
         Model* m1 = new Model("./src/Models/Desert/cactus01.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
@@ -72,10 +85,10 @@ namespace RocketSimulator{
         tmp.PerlinNoise2D(4);
         tmp.savePerlinNoiseAsImage2D();
         //Square test
-        /*Square* s1 = new Square(bufferManager);
+       /* Square* s1 = new Square(bufferManager);
         s1->init();
-        s1->initDescriptor(terrainDescriptor);
-        s1->bindPipeline(terrainPipeline);
+        s1->initDescriptor(&descManager);
+        s1->bindPipeline(UIpipeline);
         Mesh::meshes->push_back(s1);*/
     }
 }

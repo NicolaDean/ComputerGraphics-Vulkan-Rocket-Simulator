@@ -38,7 +38,9 @@ namespace Engine{
             return (uniformBuffers[buffer].getUniformBuffer());
         }
 
+        /*******UPDATE METHOD****/
         void update(uint32_t currentImage,glm::mat4 modelMatrix);
+        void updateAbsolute(uint32_t currentImage,glm::mat4 modelMatrix);
     };
 }
 

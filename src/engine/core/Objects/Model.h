@@ -24,8 +24,9 @@ namespace Engine{
         }
 
         void init();
-        virtual void update(float dt){std::cout<<"MODEL\n";}
         void initDescriptor(DescriptorManager* descriptorManager);
+        virtual void update(float dt){std::cout<<"MODEL\n";}
+
         void close();
         Texture* getTexture(){
             return &texture;
