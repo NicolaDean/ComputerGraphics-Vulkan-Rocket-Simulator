@@ -94,8 +94,12 @@ namespace Engine{
         graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/vertShader.spv",
                                                     "./src/Shaders/compiledShaders/fragShader.spv",
                                                     {&descManager});
+        GraphicPipelineCustom* UIpipeline = pipelineFactory("./src/Shaders/compiledShaders/vertUIshader.spv",
+                                                            "./src/Shaders/compiledShaders/fragUIshader.spv",
+                                                            {&descManager});
         manager.setGraphicPipeline(&graphicPipelineCustom);
 
+        UImanager::init(bufferManager,UIpipeline,&descManager);
         customInit();
 
         Camera::setCamera(new Camera());
@@ -173,6 +177,8 @@ namespace Engine{
             mesh->close();
             i++;
         }
+
+        UImanager::close();
     }
 
     void Core::close(){

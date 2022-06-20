@@ -42,4 +42,21 @@ namespace Engine{
         Mesh::close();
         texture.clean();
     }
+
+    void UIcomponent::initVertices(float x, float y, float w, float h) {
+        /*vertices.push_back(Vertex::vertexFactory(-w,-h,-(near_plane),1,0,0,1,1));
+        vertices.push_back(Vertex::vertexFactory(w,-h,-(near_plane),1,0,0,0,1));
+        vertices.push_back(Vertex::vertexFactory(w,h,-(near_plane),1,0,0,0,0));
+        vertices.push_back(Vertex::vertexFactory(-w,h,-(near_plane),1,0,0,1,0));
+        */
+
+
+
+        std::cout<<"WIDTH: "<<w<<"\n";
+
+        vertices.push_back(Vertex::vertexFactory(-w+x,-h+y,-(0.2),1,0,0,1,1));
+        vertices.push_back(Vertex::vertexFactory(w+x,-h+y,-(0.2),1.0f,0.0f,0.0f,0,1));
+        vertices.push_back(Vertex::vertexFactory(w+x,h+y,-(0.2),0.0f,1.0f,0.0f,0,0));
+        vertices.push_back(Vertex::vertexFactory(-w+x,h+y,-(0.2),0.0f,1.0f,0.0f,1,0));
+    }
 }

@@ -19,7 +19,6 @@ namespace Engine{
 
     protected:
 
-
     public:
         std::vector<Entity*>* movableEntities;
         App(int width,int h,std::string win_name):Core(width,h,win_name){

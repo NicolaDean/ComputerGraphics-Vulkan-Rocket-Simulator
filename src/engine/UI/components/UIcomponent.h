@@ -16,44 +16,34 @@ namespace Engine{
         float width;
         float height;
 
+        float near_plane = 0.2;
         bool visible = false;
 
         Engine::Texture texture;
     public:
         UIcomponent(){};
-        UIcomponent(int x,int y,int w,int h,std::string text_path,Engine::BufferManager bufferManager): Engine::Mesh(bufferManager){
+        UIcomponent(float x,float y,float w,float h,std::string text_path,BufferManager bufferManager): Mesh(bufferManager){
             x_pos = x;
             y_pos = y;
             width = w;
             height = h;
 
+            initVertices(x,y,w,h);
            /* vertices ={
-                    {{-0.5f,-0.5f,0.0f},{1.0f,0.0f,0.0f},{0,0}},
-                    {{0.5f,-0.5f,0.0f},{1.0f,0.0f,0.0f},{1,0}},
-                    {{0.5f,0.5f,0.0f},{0.0f,1.0f,0.0f},{1,1}},
-                    {{-0.5f,0.5f,0.0f},{0.0f,1.0f,0.0f},{0,1}},
-            };*/
-
-            vertices ={
                     {{-0.05f,-0.02f,-0.2f},{1.0f,0.0f,0.0f},{1,1}},
                     {{0.05f,-0.02f,-0.2f},{1.0f,0.0f,0.0f},{0,1}},
                     {{0.05f,0.02f,-0.2f},{0.0f,1.0f,0.0f},{0,0}},
                     {{-0.05f,0.02f,-0.2f},{0.0f,1.0f,0.0f},{1,0}},
-            };
-
-
-            /*vertices ={
-                     {{-width,-height,-0.2f},{1.0f,0.0f,0.0f},{1,1}},
-                    {{width,-height,-0.2f},{1.0f,0.0f,0.0f},{0,1}},
-                    {{width,height,-0.2f},{0.0f,1.0f,0.0f},{0,0}},
-                    {{width,height,-0.2f},{0.0f,1.0f,0.0f},{1,0}},
             };*/
+
             indices = {0, 1, 2, 2, 3, 0};
 
             texture = Texture(text_path,bufferManager);
 
             setPos(glm::vec3(0.5,0.5,0));
         }
+
+        void initVertices(float x,float y,float w,float h);
 
         /************UI METHODS*****************/
         void setVisible(){visible = true;}

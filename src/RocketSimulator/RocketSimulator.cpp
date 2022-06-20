@@ -35,21 +35,11 @@ namespace RocketSimulator{
                                                    "./src/Shaders/compiledShaders/fragNoTexture.spv",
                                                    {terrainDescriptor});
 
-       GraphicPipelineCustom* UIpipeline = pipelineFactory("./src/Shaders/compiledShaders/vertUIshader.spv",
-                                                                 "./src/Shaders/compiledShaders/fragUIshader.spv",
-                                                                 {&descManager});
+
         //GraphicPipelineCustom* skyBoxPipeline = pipelineFactory();
        /****************LOAD ALL MODELS OF THE APP**********************************/
 
-       //TODO CREATE AN AREA WHERE PUT UI COMPONENTS
-       button = UIcomponent(0.5,0.5,0.05,0.05,"./src/Textures/desert.jpeg",bufferManager);
-       button.init();
-       button.bindPipeline(UIpipeline);
-       button.initDescriptor(&descManager);
-       button.setPos(glm::vec3(0.9,1,1));
-       //Mesh::meshes->push_back(&button);
-       UImanager::addComponent(&button);
-       std::cout<<"aa";
+       UImanager::addButton("./src/Textures/UI/launch.png",-0.09f,-0.065f,0.02f,0.02f);
 
         //MODEL 1:
         Model* m1 = new Model("./src/Models/Desert/cactus01.obj",

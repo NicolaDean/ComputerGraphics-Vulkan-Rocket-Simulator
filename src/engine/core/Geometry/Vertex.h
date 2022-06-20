@@ -17,6 +17,16 @@ namespace Engine{
         glm::vec3 norm;
         glm::vec2 texCoord;
 
+        static Vertex vertexFactory(float x,float y,float z,float nx,float ny,float nz,float u,float v){
+            Vertex vertex;
+
+            vertex.pos = glm::vec3 (x,y,z);
+            vertex.norm = glm::vec3(nx,ny,nz);
+            vertex.texCoord = glm::vec2(u,v);
+
+            return vertex;
+        }
+
         static VkVertexInputBindingDescription getBindingDescription() {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = 0;
