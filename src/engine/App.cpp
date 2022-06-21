@@ -87,8 +87,18 @@ namespace Engine{
             mesh->move();
             mesh->updateUniformBuffer(currentFrame);
         }
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        bool click = false;
+        glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+        if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            click = true;
+        }
         for(auto mesh : UImanager::interface.getUI()){
             mesh->updateUniformBuffer(currentFrame);
+            if(click) {
+               mesh->isClicked(xpos,ypos);
+            }
         }
     }
 

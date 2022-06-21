@@ -16,19 +16,23 @@ namespace Engine{
         float width;
         float height;
 
+        void (*action)();
+
         float near_plane = 0.2;
         bool visible = false;
+
 
         Engine::Texture texture;
     public:
         UIcomponent(){};
-        UIcomponent(float x,float y,float w,float h,std::string text_path,BufferManager bufferManager): Mesh(bufferManager){
+        UIcomponent(float x,float y,float w,float h,std::string text_path,void (*a)(),BufferManager bufferManager): Mesh(bufferManager){
             x_pos = x;
             y_pos = y;
             width = w;
             height = h;
 
-            initVertices(x,y,w,h);
+            action = a;
+            initVertices(x,y,w/(float)2,h/(float)2);
            /* vertices ={
                     {{-0.05f,-0.02f,-0.2f},{1.0f,0.0f,0.0f},{1,1}},
                     {{0.05f,-0.02f,-0.2f},{1.0f,0.0f,0.0f},{0,1}},

@@ -7,7 +7,14 @@
 namespace Engine{
 
 
-    bool UIcomponent::isClicked(float x, float y) {
+    bool UIcomponent::isClicked(float X, float Y) {
+        float screen_width = SwapChain::getSwapChainExtent().width;
+        float screen_height = SwapChain::getSwapChainExtent().height;
+        //NORMALIZE COORDINATE
+        float x = (2.0f * X) / screen_width - 1.0f;
+        float y = 1.0f - (2.0f * Y) / screen_height;
+
+
         //horizontal    interval ( minX < x < maxX)
         float minX = x_pos - width/(float)2;
         float maxX = x_pos + width/(float)2;
@@ -23,8 +30,13 @@ namespace Engine{
         if(x>minX && x<maxX) betweenX = true;
         if(y>minY && y<maxY) betweenY = true;
 
+        bool clicked = betweenX && betweenY;
+        if(clicked){
+            std::cout<<"Clicked\n";
+            //action();
+        }
         //Return true if point inside rectangle
-        return betweenX && betweenY;
+        return clicked;
     }
 
     void UIcomponent::init() {
@@ -44,19 +56,12 @@ namespace Engine{
     }
 
     void UIcomponent::initVertices(float x, float y, float w, float h) {
-        /*vertices.push_back(Vertex::vertexFactory(-w,-h,-(near_plane),1,0,0,1,1));
-        vertices.push_back(Vertex::vertexFactory(w,-h,-(near_plane),1,0,0,0,1));
-        vertices.push_back(Vertex::vertexFactory(w,h,-(near_plane),1,0,0,0,0));
-        vertices.push_back(Vertex::vertexFactory(-w,h,-(near_plane),1,0,0,1,0));
-        */
-
-
-
         std::cout<<"WIDTH: "<<w<<"\n";
 
-        vertices.push_back(Vertex::vertexFactory(-w+x,-h+y,-(0.2),1,0,0,1,1));
-        vertices.push_back(Vertex::vertexFactory(w+x,-h+y,-(0.2),1.0f,0.0f,0.0f,0,1));
-        vertices.push_back(Vertex::vertexFactory(w+x,h+y,-(0.2),0.0f,1.0f,0.0f,0,0));
-        vertices.push_back(Vertex::vertexFactory(-w+x,h+y,-(0.2),0.0f,1.0f,0.0f,1,0));
+        //WRITE VERTEX IN COUNTER CLOCKWISE ORDER
+        vertices.push_back(Vertex::vertexFactory(-w+x,h+y,0,0.0f,1.0f,0.0f,1,0));
+        vertices.push_back(Vertex::vertexFactory(w+x,h+y,0,0.0f,1.0f,0.0f,0,0));
+        vertices.push_back(Vertex::vertexFactory(w+x,-h+y,0,1.0f,0.0f,0.0f,0,1));
+        vertices.push_back(Vertex::vertexFactory(-w+x,-h+y,0,1,0,0,1,1));
     }
 }

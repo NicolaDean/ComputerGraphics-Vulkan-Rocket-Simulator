@@ -137,7 +137,7 @@ namespace Engine{
         rasterizer.lineWidth = 1.0f;
         //IMPORTANT TODO CHECK ON TUTORIAL, PROF HAVE PUT THIS IN THE FUNCTION HEADER TO CUSTOMIZE IT
         rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-        rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+        rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE; //TODO BACK CULLING PROBLEM
         rasterizer.depthBiasEnable = VK_FALSE;
 
         /**
