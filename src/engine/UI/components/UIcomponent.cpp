@@ -33,7 +33,7 @@ namespace Engine{
         bool clicked = betweenX && betweenY;
         if(clicked){
             std::cout<<"Clicked\n";
-            //action();
+            action();
         }
         //Return true if point inside rectangle
         return clicked;

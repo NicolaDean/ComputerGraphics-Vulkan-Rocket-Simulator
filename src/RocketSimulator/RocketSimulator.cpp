@@ -39,7 +39,7 @@ namespace RocketSimulator{
         //GraphicPipelineCustom* skyBoxPipeline = pipelineFactory();
        /****************LOAD ALL MODELS OF THE APP**********************************/
 
-       UImanager::addButton("./src/Textures/UI/launch.png", nullptr,0.0f,0.0f,0.5f,0.5f);
+       UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,0.0f,0.0f,0.5f,0.5f);
        //void (*action)() = onLaunchClick();
         //func(this->onLaunchClick);
         //MODEL 1:
