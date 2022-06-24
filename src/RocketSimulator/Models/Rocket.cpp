@@ -117,7 +117,9 @@ namespace Engine{
         followMat = null;
 
         */
+
         ttl -= dt;
+
         // If timeout elapsed in this delta
         // update first for timeout with propulsion and
         // then turn off propulsion and update for the remaining time
@@ -126,7 +128,8 @@ namespace Engine{
             updateAcceleration(timeout);
             dt -= timeout;
             timeout = 0;
-            verticalAcceleration[0] = verticalAcceleration[1] = 0;
+            verticalAcceleration[0] = 0;
+            verticalAcceleration[1] = 0;
         } else {
             timeout -= dt;
         }
