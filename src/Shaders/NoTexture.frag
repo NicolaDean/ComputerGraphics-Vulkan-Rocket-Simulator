@@ -1,5 +1,7 @@
 #version 450
 
+layout(binding = 1) uniform sampler2D texSampler;
+
 layout(location = 0) in vec3 fragViewDir;
 layout(location = 1) flat in vec3 fragColor;
 layout(location = 2) in vec2 fragTexCoord;
@@ -44,7 +46,7 @@ void main() {
 
     //outColor = vec4(clamp(ambient, vec3(0.0f), vec3(1.0f)), 1.0f);//a
 
-    outColor = vec4(diffuseToon,1.0);
+    //outColor = vec4(diffuseToon,1.0);
     //outColor = vec4(diffusee * color, 1.0);
-    //outColor = vec4(fragColor,1.0f);
+    outColor = vec4(fragColor,1.0f);
 }
