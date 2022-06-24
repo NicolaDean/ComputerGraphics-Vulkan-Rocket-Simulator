@@ -92,7 +92,11 @@ fastCompileV2: EngineGen RocketGen
 	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)
 	#END COMPILATION
 
+FastExeMac: fastExe
+	./engine
+
 fastExe: fastCompile
+
 
 ########################ENGINE PROJECT#############################################
 FOLDER_PATH_E = ./src/engine/

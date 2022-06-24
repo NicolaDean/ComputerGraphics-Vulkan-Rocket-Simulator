@@ -18,7 +18,7 @@ namespace Engine{
 
     void Rocket::trajectory(glm::vec3 target, float highMax, float vAcc) {
 
-        float gravity = 9.81; //we can set global variables and one of these is gravity
+        float gravity = 0.001; //we can set global variables and one of these is gravity
         target = target +pos;
         highMax -= pos.y;
         if(highMax <= 0 || highMax < target.y){
@@ -37,6 +37,7 @@ namespace Engine{
         float xAcceleration     = isZero ? isZero / (pow(a2g,2) - 4 * aag1yh) : 1 / (2 * a2g);
         verticalAcceleration[0]  = glm::length(htg) / highMax * aag * xAcceleration;
         verticalAcceleration[1]  = vAcc + gravity;
+
     };
 
     /* MAYBE BETTER IN UTILS */
@@ -46,16 +47,19 @@ namespace Engine{
 
     /* Update the accelerating components */
     void Rocket::updateAcceleration(float dt) {
-        float g = 9.81;
-        verticalVelocity.x += (verticalAcceleration.x    ) * dt;
-        verticalVelocity.y += (verticalAcceleration.y - g) * dt;
-        if(verticalVelocity.y < TERM_VEL)
-            verticalVelocity.y = TERM_VEL;
-        float dh = verticalVelocity.x * dt - (verticalAcceleration.x    ) / 2 * pow(dt,2);
-        float dv = verticalVelocity.y * dt - (verticalAcceleration.y - g) / 2 * pow(dt,2);
-        pos.x += dh * hdir.y;
-        pos.z += dh * hdir.x;
-        pos.y += dv;
+        float g = 0.001;
+        verticalVelocity[0] += (verticalAcceleration[0]    ) * dt;
+        verticalVelocity[1] += (verticalAcceleration[1] - g) * dt;
+        if(verticalVelocity[1] < TERM_VEL){
+            verticalVelocity[1] = TERM_VEL;
+
+        }
+        float dh = verticalVelocity[0] * dt - (verticalAcceleration[0]    ) / 2 * pow(dt,2);
+        float dv = verticalVelocity[1] * dt - (verticalAcceleration[1] - g) / 2 * pow(dt,2);
+        pos[0] += dh * hdir[1];
+        pos[2] += dh * hdir[0];
+        pos[1] += dv;
+
     }
 
     void Rocket::close() {
@@ -68,17 +72,26 @@ namespace Engine{
 
         //Can apply simple trajectory equation
         //https://en.wikipedia.org/wiki/Projectile_motion#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
-        //TEST ORIENTATION CHANGES
-        orientation += glm::vec3(0.0f,1.0f,0.0f)*dt;
+
         //NEW METHOD TO PRINT VEC3 (we can add in Printer all print of class helper methods)
         //Printer::print("Rocket orientation",orientation);
 
         //TEST THE MOVEMENTS
         //pos += glm::vec3 (0,1,0)*dt;
 
+
+        //check if clicked launch button
+        /*
         if(!launched){
             return;
         }
+         */
+
+
+        //TEST ORIENTATION CHANGES
+        //pos += glm::vec3(0.0f,1.0f,0.0f)*dt;
+
+
         /*TODO Convert in C++
         //const pos_old = [...pos];
         //const {floor: floor0} = this._globals.collision.findFloorHeight(...pos_old);
@@ -97,45 +110,45 @@ namespace Engine{
         */
         ttl  -= dt;
         // If timeout elapsed in this delta
-        // update first for timeout with propulsion an
+        // update first for timeout with propulsion and
         // then turn off propulsion and update for the remaining time
+
         if(timeout && timeout < dt) {
             updateAcceleration(timeout);
             dt -= timeout;
             timeout = 0;
             verticalAcceleration.x = verticalAcceleration.y = 0;
         }
-        else
+        else{
             timeout -= dt;
+        }
+
+
         updateAcceleration(dt);
+
+       // pos += glm::vec3(0.0f,1.0f,0.0f)*dt;
+
         if(!timeout)
             rspe += RSPE_ACC * dt;
         if(rspe > RSPE_MAX)
             rspe = RSPE_MAX;
         roll += rspe * dt;
         /*TODO NEED TO FIND FLOOR AND HEIGHT FOR COLLISION
-        float floor;
-        float height;
+        float height=1.0f;
 
-        // If out of bounds
-        if(floor == null) {
-            position(...pos_old);
-            verticalVelocity.x = 0;
-            verticalAcceleration.x = 0;
-            verticalAcceleration.y = 0;
-        }
+
 
         // If floor collision warp up
-        if(pos.y < height) {
-            pos.y = height + hscale * EXPLS_OFFSET;
+        if(pos[1] < height) {
+            pos[1] = height + hscale * EXPLS_OFFSET;
             deleted = true;
             //Add explosion after deleting the rocket
             //TODO
         }
-         */
 
-        /*
-         * TODO pitchTatget find correct function atan2
+
+
+         * TODO pitch Tatget find correct function atan2
 
         float pitchTarget = - M_PI / 2 - glm::atan(verticalVelocity);
         if(abs(pitchTarget - pitch) > PITCH_ANI){

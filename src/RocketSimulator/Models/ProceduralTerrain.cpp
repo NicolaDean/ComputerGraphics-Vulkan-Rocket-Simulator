@@ -8,9 +8,10 @@
 namespace Engine{
 
     float ProceduralTerrain::getNoise(int x, int y) {
-        srand(x*1023 + y*435 + seed);
+
+        srand(x*100023 + y*40035 + seed);
         float noise = ((float)rand() / (float)RAND_MAX)*2.0f - 1.0f;
-        //std::cout<<"NOISE: "<<noise<<"\n";
+        std::cout<<"NOISE: "<<noise<<"\n";
         return noise;
     }
 

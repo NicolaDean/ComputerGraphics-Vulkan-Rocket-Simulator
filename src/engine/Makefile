@@ -8,7 +8,7 @@ BUILD_PATH_UI	= ../../build/engine/UI
 #TODO PUT BUILD_PATH INTO THE .o file generation
 
 SOURCES := $(shell find ./ -name '*.cpp')
-SOURCESMAC = $(SOURCES:.//%.cpp=./%.cpp)
+SOURCESMAC := $(SOURCES:.//%.cpp=./%.cpp)
 
 OBJECTS = $(SOURCESMAC:./%.cpp=$(BUILD_PATH)%.o)
 
@@ -25,12 +25,11 @@ createFolder:
 	mkdir -p $(BUILD_PATH_CORE)/Utils
 	mkdir -p $(BUILD_PATH_UI)
 	mkdir -p $(BUILD_PATH_UI)/components
-	echo $(SOURCES)
+	echo $(SOURCESMAC)
 
-$(BUILD_PATH)%.o:%.cpp $(SOURCESMAC)
+$(BUILD_PATH)%.o:%.cpp $(SOURCES)
 	g++ $(CFLAGS)  $(INC) -c $< -o $@
 
 genObj:createFolder $(OBJECTS)
-
 	#ENDED Compilation of ./src/engine
 
