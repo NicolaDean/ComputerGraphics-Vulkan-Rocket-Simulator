@@ -9,27 +9,32 @@
 namespace Engine{
     float PITCH_ANI = 0.05f;
     float TERM_VEL  = -2.5;
-    float RSPE_MAX = .005;
+    float RSPE_MAX = 0.005;
     float RSPE_ACC = 1e-6;
     float EXPLS_SCALE = 6;
     float EXPLS_OFFSET = 1;
     float TOUT_LIGHT_FADE = 500;
     float MAX_LIGHT = 0.6f;
+    float gravity=0.001f;
+    float startHeight = 1.0f;
+
 
     void Rocket::trajectory(glm::vec3 target, float highMax, float vAcc) {
 
-        float gravity = 0.001; //we can set global variables and one of these is gravity
         target = target +pos;
-        highMax -= pos.y;
-        if(highMax <= 0 || highMax < target.y){
+        highMax -= pos[1];
+        if(highMax <= 0 || highMax < target[1]){
             std::cout<<"Invalid trajectory height\n";
         }
 
-        glm::vec2 htg      = glm::vec2(target.z, target.x);
+        //Setting start height for landing
+        startHeight=pos[1];
+
+        glm::vec2 htg      = glm::vec2(target[2], target[0]);
         hdir     = glm::normalize(htg);
         float aag      = vAcc * (vAcc + gravity);
         timeout  = glm::sqrt(2 * gravity * highMax / aag);
-        float aag1yh   = aag * (1 - target.y / highMax);
+        float aag1yh   = aag * (1 - target[1] / highMax);
         float r_aag1yh = sqrt(aag1yh);
         ttl      = timeout * (vAcc + gravity + r_aag1yh) / gravity ;
         float a2g      = vAcc * 2 + gravity;
@@ -37,7 +42,9 @@ namespace Engine{
         float xAcceleration     = isZero ? isZero / (pow(a2g,2) - 4 * aag1yh) : 1 / (2 * a2g);
         verticalAcceleration[0]  = glm::length(htg) / highMax * aag * xAcceleration;
         verticalAcceleration[1]  = vAcc + gravity;
-
+        std::cout<<"X vertical acc:\n"<<verticalAcceleration[0]<<"\n";
+        std::cout<<"Y vertical acc:\n"<<verticalAcceleration[1]<<"\n";
+         launched=true;
     };
 
     /* MAYBE BETTER IN UTILS */
@@ -59,6 +66,8 @@ namespace Engine{
         pos[0] += dh * hdir[1];
         pos[2] += dh * hdir[0];
         pos[1] += dv;
+       //std::cout<<"dx: "<<dh<<"\n";
+       // std::cout<<"dy: "<<dv<<"\n";
 
     }
 
@@ -68,7 +77,7 @@ namespace Engine{
     }
     /* Update movement */
     void Rocket::update(float dt) {
-        setUpdated();//Set the "hasBeenUpdated" flag to update the matrix
+    if (launched) {
 
         //Can apply simple trajectory equation
         //https://en.wikipedia.org/wiki/Projectile_motion#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
@@ -108,58 +117,75 @@ namespace Engine{
         followMat = null;
 
         */
-        ttl  -= dt;
+        ttl -= dt;
         // If timeout elapsed in this delta
         // update first for timeout with propulsion and
         // then turn off propulsion and update for the remaining time
 
-        if(timeout && timeout < dt) {
+        if (timeout && timeout < dt) {
             updateAcceleration(timeout);
             dt -= timeout;
             timeout = 0;
-            verticalAcceleration.x = verticalAcceleration.y = 0;
-        }
-        else{
+            verticalAcceleration[0] = verticalAcceleration[1] = 0;
+        } else {
             timeout -= dt;
         }
 
-
         updateAcceleration(dt);
 
-       // pos += glm::vec3(0.0f,1.0f,0.0f)*dt;
-
-        if(!timeout)
+        if (!timeout) {
             rspe += RSPE_ACC * dt;
-        if(rspe > RSPE_MAX)
+        }
+        if (rspe > RSPE_MAX) {
             rspe = RSPE_MAX;
+        }
         roll += rspe * dt;
-        /*TODO NEED TO FIND FLOOR AND HEIGHT FOR COLLISION
-        float height=1.0f;
+        //TODO NEED TO FIND FLOOR AND HEIGHT FOR COLLISION
 
 
 
         // If floor collision warp up
-        if(pos[1] < height) {
-            pos[1] = height + hscale * EXPLS_OFFSET;
-            deleted = true;
-            //Add explosion after deleting the rocket
-            //TODO
+        if (pos[1] < startHeight) {
+            launched=false;
         }
 
 
 
-         * TODO pitch Tatget find correct function atan2
+        //TODO pitch Target find correct function atan2
 
-        float pitchTarget = - M_PI / 2 - glm::atan(verticalVelocity);
+        /*float pitchTarget = - M_PI / 2 - glm::atan(verticalVelocity);
         if(abs(pitchTarget - pitch) > PITCH_ANI){
                      pitch += PITCH_ANI * sgn(pitchTarget - pitch);
 
          }
         else{
                      pitch = pitchTarget;
-
          }
-                */
+         -------------
+         THE UPDATE THESE MATRIXES
+
+        get worldMatrix() {
+            if(this._wrldMat == null)
+                this._wrldMat = matrix.Mat4.transl(...this._pos)
+            .mul(this._pitchyaw)
+                    .mul(matrix.Mat4.rotZ(this._roll))
+                    .mul(matrix.Mat4.scale(this._hvscale[0], this._hvscale[0], this._hvscale[1]));
+            return this._wrldMat;
+        }
+
+        get followMatrix() {
+            if(this._followMat == null)
+                this._followMat = matrix.Mat4.transl(...this._pos)
+            .mul(this._pitchyaw)
+                    .mul(matrix.Mat4.scale(this._hvscale[0], this._hvscale[0], this._hvscale[1]));
+            return this._followMat;
+        }
+
+         */
+
+
+    }
+
     }
 
 
