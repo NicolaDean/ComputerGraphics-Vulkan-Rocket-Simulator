@@ -24,6 +24,7 @@ namespace RocketSimulator{
         DescriptorManager* terrainDescriptor = descriptorFactory();
         terrainDescriptor->pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
         terrainDescriptor->createDescriptorSetLayouts();
+
         //
         //Descriptor For GlobalUniformBuffer : (Only GlobalUniformBuffer)
         //DescriptorManager* globalUniformDescriptor = descriptorFactory();
@@ -34,7 +35,9 @@ namespace RocketSimulator{
        GraphicPipelineCustom* terrainPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertNoTexture.spv",
                                                    "./src/Shaders/compiledShaders/fragNoTexture.spv",
                                                    {terrainDescriptor});
-
+        GraphicPipelineCustom* skyboxPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertSkybox.spv",
+                                                                 "./src/Shaders/compiledShaders/fragSkybox.spv",
+                                                                 {&descManager});
 
         //GraphicPipelineCustom* skyBoxPipeline = pipelineFactory();
        /****************LOAD ALL MODELS OF THE APP**********************************/
@@ -42,15 +45,16 @@ namespace RocketSimulator{
        UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,0.0f,0.0f,0.5f,0.5f);
        //void (*action)() = onLaunchClick();
         //func(this->onLaunchClick);
+
         //MODEL 1:
-        Model* m1 = new Model("./src/Models/Desert/cactus01.obj",
+       /* Model* m1 = new Model("./src/Models/Desert/cactus01.obj",
                               "./src/Textures/desert.jpeg",bufferManager);
         m1->init();
         m1->setScale(0.07);
         m1->setPos(glm::vec3(0.8f,1.0f,1.0f));
         m1->bindPipeline(&graphicPipelineCustom);
         m1->initDescriptor(&descManager);
-        Mesh::meshes->push_back(m1);
+        Mesh::meshes->push_back(m1);*/
 
         //PLANE
         ProceduralTerrain * p = new ProceduralTerrain(50,100,100,bufferManager);
@@ -75,6 +79,13 @@ namespace RocketSimulator{
         PerlinNoise tmp = PerlinNoise(200,200);
         tmp.PerlinNoise2D(4);
         tmp.savePerlinNoiseAsImage2D();
+
+        /*Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
+        sky->init();
+        sky->initDescriptor(&descManager);
+        sky->bindPipeline(skyboxPipeline);
+        Mesh::meshes->push_back(sky);*/
+
         //Square test
        /* Square* s1 = new Square(bufferManager);
         s1->init();

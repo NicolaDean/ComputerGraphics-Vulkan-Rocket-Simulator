@@ -47,6 +47,6 @@ void main() {
     //outColor = vec4(clamp(ambient, vec3(0.0f), vec3(1.0f)), 1.0f);//a
 
     //outColor = vec4(diffuseToon,1.0);
-    //outColor = vec4(diffusee * color, 1.0);
-    outColor = vec4(fragColor,1.0f);
+    outColor = vec4(diffusee * color, 1.0);
+    //outColor = vec4(fragColor,1.0f);
 }

@@ -28,6 +28,4 @@ void main() {
     fragViewDir  = (ubo.view[3]).xyz - (ubo.model * vec4(pos,  1.0)).xyz;
     fragNorm     = norm;
     fragTexCoord = texCoord;
-
-
 }

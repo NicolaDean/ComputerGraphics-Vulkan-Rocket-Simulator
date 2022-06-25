@@ -10,7 +10,7 @@
 #include "BufferManager.h"
 
 namespace Engine {
-    VkImageView createImageView(VkDevice* device,VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
+    VkImageView createImageView(VkDevice* device,VkImage image, VkFormat format,VkImageViewType type, VkImageAspectFlags aspectFlags,int layerCount);
     class TextureManager {
 
         VkImage textureImage;
@@ -29,15 +29,22 @@ namespace Engine {
         }
 
         void close();
+
+        /**********************SKYBOX TEXTURE****************************/
+        void createCubicTexture(std::string imageName);
+        void createImageSkybox(uint32_t width, uint32_t height, VkImage &image,VkDeviceMemory &imageMemory);
+        void createTextureImageViewSkybox();
+        /*********************CREATE IMAGE METHOD**************************/
         void createTextureImage(std::string imageName);
         void createTextureImageView();
         void createTextureSampler();
-        //UTILS FUNCTIONS:
-        void
-        createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage,
-                    VkMemoryPropertyFlags properties, VkImage &image, VkDeviceMemory &imageMemory);
-        void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
-        void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
+        void createImage(uint32_t width, uint32_t height, VkFormat format,
+                         VkImageTiling tiling, VkImageUsageFlags usage,
+                         VkMemoryPropertyFlags properties, VkImage &image, VkDeviceMemory &imageMemory);
+
+        /***************UTILS******************************/
+        void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout,int layerCount);
+        void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height,int layerCount);
 
 
         //Getter

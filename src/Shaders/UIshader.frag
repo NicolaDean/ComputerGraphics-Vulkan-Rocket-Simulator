@@ -12,5 +12,4 @@ void main() {
     vec3 color = vec3(1,0.35,0.2); // yellow
     const vec3  diffColor = texture(texSampler, fragTexCoord).rgb;
     outColor = vec4(diffColor, 1.0);
-    //outColor = vec4(color, 1.0);
 }

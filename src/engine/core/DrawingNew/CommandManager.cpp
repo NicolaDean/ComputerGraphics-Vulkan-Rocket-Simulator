@@ -122,6 +122,7 @@ namespace Engine{
         }
     }
     void CommandManager::populateCommandBuffers(int currentImage,std::vector<Mesh*> meshes) {
+        int i=0;
         for (auto mesh : meshes) // access by reference to avoid copying
         {
             //TODO CHECK IF I CAN DO BETTER THAN BINDING PIPELINE ON EACH MODEL
@@ -131,6 +132,8 @@ namespace Engine{
             //BIND VERTEX BAFFER
             VkBuffer vertexBuffers[] = {mesh->getVertexBuffer()};
             VkDeviceSize offsets[] = {0};
+            std::cout<<"MODEL RENDERING:"<<i<<"\n";
+            i++;
             vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
            //BIND INDEX BUFFER
             vkCmdBindIndexBuffer(commandBuffers[currentImage], mesh->getIndexBuffer(), 0,

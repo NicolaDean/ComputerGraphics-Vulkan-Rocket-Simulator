@@ -53,6 +53,7 @@ namespace Engine{
         virtual void update(float dt){}
         virtual void close() = 0;
 
+
         /********************GETTER SETTER********************************/
         UniformBufferManager* getUniformBufferManager(){
             return &uniformBufferManager;
@@ -61,6 +62,9 @@ namespace Engine{
             return &descriptorSets;
         }
 
+        void setBufferManager(BufferManager bufferMng){
+            bufferManager = bufferMng;
+        }
         VkBuffer getVertexBuffer(){
             return vertexBuffer;
         }

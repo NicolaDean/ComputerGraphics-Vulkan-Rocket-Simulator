@@ -7,10 +7,13 @@
 #include "../engine/App.h"
 #include "Models/Rocket.h"
 #include "Models/Square.h"
-#include "Models/Plane.h"
+#include "Terrain/Plane.h"
+#include "Lights/Skybox.h"
 #include "Utils/PerlinNoise.h"
-#include "Models/ProceduralTerrain.h"
+#include "Terrain/ProceduralTerrain.h"
 #include "../engine/UI/components/UIcomponent.h"
+
+
 using namespace Engine;
 
 namespace RocketSimulator{

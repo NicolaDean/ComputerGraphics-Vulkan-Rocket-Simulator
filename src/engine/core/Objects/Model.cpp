@@ -29,6 +29,7 @@ namespace Engine{
     }
 
     void Model::loadModel() {
+        //TODO CONVERT THIS FUNCTION INTO A STATIC METHOD (like an OBJ system)
         tinyobj::attrib_t attrib;
         std::vector<tinyobj::shape_t> shapes;
         std::vector<tinyobj::material_t> materials;

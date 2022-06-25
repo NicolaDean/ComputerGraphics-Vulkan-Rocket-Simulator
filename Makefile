@@ -39,32 +39,6 @@ ifeq ($(OSNAME),MAC)
     LDFLAGS = -lglfw -lvulkan -ldl -lpthread
 endif
 
-#Precompiled header allow to fast up the compile time (by precompiling some static non changing code)
-#For example when Engine will be done we can put Engine and App compiler so we can include Engine as a PRECOMPILED HEADER
-#https://gcc.gnu.org/onlinedocs/gcc/Precompiled-Headers.html
-Precompile: $(PRECOMPILE).cpp
-	g++ -std=c++17 $(PRECOMPILE).h
-	#g++ $(CFLAGS) -o $(PRECOMPILE).h.gch $(PRECOMPILE).h
-
-Engine:  $(MAIN)  clean
-	echo OS:$(OSNAME)
-	g++ -g  $(CFLAGS)  $(INC) -o Engine $(SOURCES) $(LDFLAGS)
-	echo "Ended Compilation"
-
-.PHONY: test clean debug Precompile
-
-test: Engine
-	./Engine
-
-debug:
-	g++ -g $(CFLAGS) $(INC) -o Engine $(SOURCES) $(LDFLAGS)
-	gdb ./Engine
-
-clean:
-	rm -f Engine
-
-run: clean test
-
 ###########################FAST COMPILE METHOD###################################################
 completeCompile: cleanCore fastCompile
 
@@ -85,23 +59,25 @@ fastCompile:
 	#Link all .o files and compile Engine
 	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)
 
+#10 seconds full compilation
 fastCompileV2: EngineGen RocketGen
 	#Compile the main object
-	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./src/main.o
+	g++ $(CFLAGS)  $(INC) -c ./src/main.cpp -o ./build/main.o
     #Link all .o files and compile Engine
-	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(SOURCES_O)  $(LDFLAGS)
+	g++ -g  $(CFLAGS)  $(INC) -L ./src/engine/core/build/ -l Core -o Engine  $(OBJECTS_E)  $(OBJECTS_R) ./build/main.o $(LDFLAGS)
 	#END COMPILATION
 
-fastExe: fastCompile
+fastExe: fastCompileV2
 
 ########################ENGINE PROJECT#############################################
-FOLDER_PATH_E = ./src/engine/
-BUILD_PATH_E	= ./build/engine/
-BUILD_PATH_CORE_E	= ./build/engine/core
+FOLDER_PATH_E=./src/engine/
+BUILD_PATH_E=./build/engine/
+BUILD_PATH_CORE_E=./build/engine/core
+BUILD_PATH_UI	= ./build/engine/UI
 #TODO PUT BUILD_PATH INTO THE .o file generation
 
-SOURCES_E := $(shell find ./$(FOLDER_PATH_E) -name '*.cpp')
-OBJECTS_E = $(SOURCES_E: ./src/engine/%.cpp=$(BUILD_PATH_E)%.o)
+SOURCES_E:= $(shell find $(FOLDER_PATH_E) -name '*.cpp')
+OBJECTS_E=$(SOURCES_E:$(FOLDER_PATH_E)%.cpp=$(BUILD_PATH_E)%.o)
 
 createFolderE:
 	mkdir -p $(BUILD_PATH_E)
@@ -114,8 +90,10 @@ createFolderE:
 	mkdir -p $(BUILD_PATH_CORE_E)/Objects
 	mkdir -p $(BUILD_PATH_CORE_E)/Presentation
 	mkdir -p $(BUILD_PATH_CORE_E)/Utils
+	mkdir -p $(BUILD_PATH_UI)
+	mkdir -p $(BUILD_PATH_UI)/components
 
-$(BUILD_PATH_E)%.o:%.cpp $(SOURCES_E)
+$(BUILD_PATH_E)%.o:$(FOLDER_PATH_E)%.cpp $(SOURCES_E)
 	g++ $(CFLAGS)  $(INC) -c $< -o $@
 
 EngineGen:createFolderE $(OBJECTS_E)
@@ -125,20 +103,24 @@ FOLDER_PATH_R = ./src/RocketSimulator/
 BUILD_PATH_R	= ./build/RocketSimulator/
 #TODO PUT BUILD_PATH INTO THE .o file generation
 
-SOURCES_R := $(shell find ./$(FOLDER_PATH_R) -name '*.cpp')
+SOURCES_R := $(shell find $(FOLDER_PATH_R) -name '*.cpp')
 OBJECTS_R = $(SOURCES_R:./src/RocketSimulator/%.cpp=$(BUILD_PATH_R)%.o)
 
 createFolderR:
 	mkdir -p $(BUILD_PATH_R)
-	mkdir -p $(BUILD_PATH_R)/Models
-	mkdir -p $(BUILD_PATH_R)/Utils
-	mkdir -p $(BUILD_PATH_R)/Terrain
+	mkdir -p $(BUILD_PATH_R)Models
+	mkdir -p $(BUILD_PATH_R)Utils
+	mkdir -p $(BUILD_PATH_R)Terrain
+	mkdir -p $(BUILD_PATH_R)Lights
 
-$(BUILD_PATH_R)%.o:%.cpp $(SOURCES_R)
+$(BUILD_PATH_R)%.o:$(FOLDER_PATH_R)%.cpp $(SOURCES_R)
 	g++ $(CFLAGS)  $(INC) -c $< -o $@
 
 RocketGen:createFolderR $(OBJECTS_R)
 	#ENDED Compilation of ./src/RocketSimulator/
+
+banana:
+	echo $(OBJECTS_E)
 ########################SHADER COMPILER############################################
 #Put here the shaders name (in the format of name.x)
 SHADER_NAMES = Shader.x NoTexture.x
@@ -174,3 +156,5 @@ shaders:
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/NoTexture.vert -o $(COMPILED_SHADER)/vertNoTexture.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/UIshader.frag -o $(COMPILED_SHADER)/fragUIshader.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/UIshader.vert -o $(COMPILED_SHADER)/vertUIshader.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Skybox.frag -o $(COMPILED_SHADER)/fragSkybox.spv
+	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Skybox.vert -o $(COMPILED_SHADER)/vertSkybox.spv

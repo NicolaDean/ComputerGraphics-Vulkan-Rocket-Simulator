@@ -12,11 +12,14 @@
 namespace Engine{
     class Model: public Mesh {
 
+    protected:
         std::string modelPath;
         Texture texture;
 
     public:
-        Model():Mesh(){}
+        Model():Mesh(){};
+        Model(BufferManager buff):Mesh(buff){};
+
         Model(std::string model_path,std::string text_path,BufferManager buffManager):Mesh(buffManager){
             std::cout<<model_path<<"\n";
             modelPath = model_path;

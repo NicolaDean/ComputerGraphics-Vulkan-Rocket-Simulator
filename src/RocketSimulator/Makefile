@@ -12,6 +12,7 @@ createFolder:
 	mkdir -p $(BUILD_PATH)/Models
 	mkdir -p $(BUILD_PATH)/Utils
 	mkdir -p $(BUILD_PATH)/Terrain
+	mkdir -p $(BUILD_PATH)/Lights
 
 $(BUILD_PATH)%.o:%.cpp $(SOURCES)
 	g++ $(CFLAGS)  $(INC) -c $< -o $@

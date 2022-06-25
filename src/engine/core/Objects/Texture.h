@@ -20,11 +20,13 @@ namespace Engine{
             textureManager = TextureManager(bufferMng);
         }
 
-        void load(){
-            textureManager.createTextureImage(name);
-            textureManager.createTextureImageView();
-            textureManager.createTextureSampler();
+        Texture(std::string n,int layer,BufferManager bufferMng ){
+            name = n;
+            textureManager = TextureManager(bufferMng);
         }
+
+        void load();
+        void loadCubic();
 
         void clean(){
             textureManager.close();
