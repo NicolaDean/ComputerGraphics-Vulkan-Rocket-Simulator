@@ -5,7 +5,9 @@ BUILD_PATH	= ../../build/RocketSimulator/
 #TODO PUT BUILD_PATH INTO THE .o file generation
 
 SOURCES := $(shell find ./ -name '*.cpp')
-OBJECTS = $(SOURCES:./%.cpp=$(BUILD_PATH)%.o)
+SOURCESMAC := $(SOURCES:.//%.cpp=./%.cpp)
+
+OBJECTS = $(SOURCESMAC:./%.cpp=$(BUILD_PATH)%.o)
 
 createFolder:
 	mkdir -p $(BUILD_PATH)

@@ -49,6 +49,7 @@ namespace Engine{
             modelMatrix =glm::translate(glm::mat4(1.0f),pos) * glm::scale(glm::mat4(1.0f),glm::vec3(0.03));
         }
 
+        //If the Entity is modified this method recalculates the model matrix
         glm::mat4 getModelMatrix(){
 
             //TODO CHECK ROTATIONS ORDER
@@ -61,7 +62,7 @@ namespace Engine{
                 transform =  glm::scale(transform,glm::vec3(scalingFactor));
 
                 modelMatrix = transform;
-
+                hasBeenUpdated=false;
             }
 
             return modelMatrix;

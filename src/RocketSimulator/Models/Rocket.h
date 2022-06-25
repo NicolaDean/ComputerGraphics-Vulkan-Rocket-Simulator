@@ -44,6 +44,7 @@ namespace Engine{
         }
         void launch(){
             std::cout<<"LAUNCHED\n";
+
         }
         virtual void update(float dt);
         void close();
