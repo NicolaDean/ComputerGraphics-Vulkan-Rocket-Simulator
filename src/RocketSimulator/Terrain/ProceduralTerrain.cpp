@@ -7,16 +7,15 @@
 
 namespace Engine{
 
+    //Retrieves noise from PerlinNoise2Da
     float ProceduralTerrain::getNoise(int x, int y) {
-        srand(x*10243 + y*4345 + seed);
-        float noise = ((float)rand() / (float)RAND_MAX)*2.0f - 1.0f;
-        //std::cout<<"NOISE: "<<noise<<"\n";
-        return noise;
+        return noises.getNoise(x,y);
     }
 
+    //Get Terrain Height based on neighboirs noise and height
     float ProceduralTerrain::getHeight(int x, int y) {
         //TODO add the Interpolation code and add light so we can use single color
-        return terrainSmoothing(x,y)*0.5;
+        return terrainSmoothing(x,y)*1;
     }
 
     glm::vec3 ProceduralTerrain::calculateNormal(int x, int z) {
@@ -57,13 +56,13 @@ namespace Engine{
     float ProceduralTerrain::terrainSmoothing(int x, int y) {
         //DO AVERAGE ON NEAR VERTEX HEIGHT
         //TOP VERTEX
-        float topLeft = getNoise(x-1,y-1);
+        float topLeft   = getNoise(x-1,y-1);
         float topCenter = getNoise(x,y-1);
-        float topRight = getNoise(x+1,y-1);
+        float topRight  = getNoise(x+1,y-1);
         //BOTTOM
-        float bottomLeft = getNoise(x-1,y+1);
-        float bottomCenter = getNoise(x,y+1);
-        float bottomRight = getNoise(x+1,y+1);
+        float bottomLeft    = getNoise(x-1,y+1);
+        float bottomCenter  = getNoise(x,y+1);
+        float bottomRight   = getNoise(x+1,y+1);
         //SIDE
         float left  = getNoise(x-1,y);
         float right = getNoise(x+1,y);
