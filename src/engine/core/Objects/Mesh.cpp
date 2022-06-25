@@ -23,7 +23,12 @@ namespace Engine{
 
     void Mesh::updateUniformBuffer(uint32_t currentImage) {
 
-        this->uniformBufferManager.update(currentImage,getModelMatrix());//TODO remove swapChainExtent From updateUniform buffer
+        if(notCalculate){
+            this->uniformBufferManager.update(currentImage,Camera::currentCam->getPerspectiveMatric() * Camera::currentCam->getCamPosTranslate());
+        }else{
+            this->uniformBufferManager.update(currentImage,getModelMatrix());//TODO remove swapChainExtent From updateUniform buffer
+        }
+
     }
 
     void Mesh::updateUniformBufferAbsolutePos(uint32_t currentImage) {

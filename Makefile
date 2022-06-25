@@ -46,7 +46,7 @@ completeCompile: cleanCore fastCompile
 cleanCore:
 	rm -r ./build/engine
 
-cleanAll:
+clean:
 	rm -r ./build
 
 #TODO PUT OBJECTS INTO ENGINE FOLDER WITH ITS OWN MAKEFILE (Almost done)

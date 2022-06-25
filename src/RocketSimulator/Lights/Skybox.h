@@ -16,6 +16,9 @@ namespace Engine{
             modelPath = "./src/Models/SkyBoxCube.obj";
             texture = Texture(texturePath,buff);
             texturePath = texturePath;
+
+            notCalculateWorldMatrix();
+            modelMatrix = Camera::currentCam->getPerspectiveMatric() * Camera::currentCam->getCamPosTranslate();
         }
 
         void init();

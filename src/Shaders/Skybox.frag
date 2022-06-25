@@ -8,6 +8,6 @@ layout(location = 0) out vec4 outColor;
 
 layout(binding = 1) uniform samplerCube texSampler;
 void main() {
-   // outColor = texture(texSampler, fragTexCoord);
-    outColor = vec4(1,0,0,1);
+    outColor = texture(texSampler, fragTexCoord);
+    //outColor = vec4(1,0,0,1);
 }

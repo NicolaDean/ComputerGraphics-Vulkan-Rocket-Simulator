@@ -157,8 +157,6 @@ namespace Engine{
     }
 
     glm::mat4 Camera::getViewMatrix(){
-
-
         updateCamDir();
         //TODO PUT IF ON CAM TYPE
         //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);

@@ -21,11 +21,12 @@ namespace Engine{
     class Camera:public Entity {
     public:
         static Camera* currentCam;
+
         /***********CAM SETTINGS VARIABLES*************/
         CameraType type;
         PerspectiveType perspective;
         float nearPlane = 0.1f;
-        float farPlane  = 10.0f;
+        float farPlane  = 200.0f;
         /***********CAMERA MOVEMENT VARIABLES***********/
         glm::vec3 CamPos = glm::vec3(1,1.5,2);
         glm::vec3 CamAng = glm::vec3(0,0,0);
@@ -39,10 +40,14 @@ namespace Engine{
         //Contain a pointer to a target to look
         Entity* CameraTarget;
 
+        glm::mat4 getCamPosTranslate(){
+            return glm::transpose(glm::mat4(CamDir));
+        }
         /*************CAMERA CONSTRUCTORS********************/
         Camera();
         Camera(CameraType t,PerspectiveType p);
         static void setCamera(Camera* cam);
+
 
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera

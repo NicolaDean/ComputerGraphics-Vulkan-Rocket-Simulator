@@ -36,6 +36,9 @@ namespace Engine{
 
         bool hasBeenUpdated;
 
+        bool notCalculate = false;
+
+
     public:
         Entity(){
 
@@ -52,6 +55,7 @@ namespace Engine{
         //If the Entity is modified this method recalculates the model matrix
         glm::mat4 getModelMatrix(){
 
+            if(notCalculate) return modelMatrix;
             //TODO CHECK ROTATIONS ORDER
             if(hasBeenUpdated){
                 glm::mat4 transform;
@@ -67,12 +71,15 @@ namespace Engine{
             return modelMatrix;
         }
 
+        /*****************FLAG SET RESET********************/
         void setUpdated(){
             hasBeenUpdated = true;
         }
-
         void resetUpdateFlag(){
             hasBeenUpdated = false;
+        }
+        void notCalculateWorldMatrix(){
+            notCalculate = true;
         }
         /*************MODEL SCAL POS ROT***************/
         void setScale(float s){
