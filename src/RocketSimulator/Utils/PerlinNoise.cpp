@@ -7,33 +7,32 @@
 
 namespace Engine{
 
-    void PerlinNoise::PerlinNoise1D(int nOctaves){
-        srand(10373);
-        //Octaves are the varius functions with frequency on power of 2
-        for(int x=0;x<width;x++){
-            float fNoise = 0.0f;
-            float fScale = 1.0f; //Scale the noise
-            float fScaleAcc = 0.0f;
+    float PerlinNoise::getNoise(int x, int y) {
 
-            for(int o=0; o<nOctaves;o++){
-                int nPitch = width >> o; //Divide the factor by 2 each octave (1 1/2 1/4 1/8...)
-                int nSample1 = (x/ nPitch) * nPitch;
-                int nSample2 = (nSample1 + nPitch) %width;
+        //CHECK IF THIS POINT IS OUTSIDE THE GRID
+        if(x<0 || x >= width) return 0;
+        if(y<0 || y >= height) return 0;
 
-                //Calculate how far into the pitch are we
-                float fBlend = (float)(x - nSample1) / (float)nPitch;
+        float res = noiseSeed2D[y*width +x]; //Dynamic programming (have value already stored)
 
-                //Calculate Linear interpolation
-                float fSample = (1.0f - fBlend) * noiseSeed[nSample1] + fBlend*noiseSeed[nSample2];
-                fNoise += fSample*fScale; //Accumulate noise on width
-                fScaleAcc +=fScale; //Calculate current scale
-                fScale = fScale/2; //Decrease the scale of 1/2 for the next octave  (1 1/2 1/4 1/8...)
-            }
-            perlinNoise[x] = fNoise / fScaleAcc; //(Divide by scale to be 0 and 1
+        return res;
+    }
+
+    void PerlinNoise::init() {
+        noiseSeed2D = new float[width * height];
+        perlinNoise2D = new float[width * height];
+
+        srand(SEED);
+
+        //Initialize Noises Vector
+        for(int i=0;i<width*height;i++) {
+            //noiseSeed2D[i] = (float)rand() / (float)RAND_MAX;
+            noiseSeed2D[i] = ((float)rand() / (float)RAND_MAX)*2.0f - 1.0f; //Values between -1 and 1
         }
     }
-    void PerlinNoise::PerlinNoise2D(int nOctaves){
-        srand(233);
+
+    void PerlinNoise::generate2DPerlinNoise(int nOctaves){
+
         float bias = 1.5f;
         //Octaves are the varius functions with frequency on power of 2
         for(int x=0;x<width;x++){
@@ -70,39 +69,9 @@ namespace Engine{
 
         std::cout<<"Ended Perlin Noise:\n";
     }
-    void PerlinNoise::savePerlinNoiseAsImage() {
-            std::ofstream outdata; // outdata is like cin
-            int i; // loop index
-            int num[5] = {4, 3, 6, 7, 12}; // list of output values
-
-            outdata.open("./build/perlinNoise.bpm"); // opens the file
-            if( !outdata ) { // file couldn't be opened
-                std::cout << "Error: file could not be opened" << std::endl;
-                return;
-            }
-
-            //HEADER DATA
-            outdata<<"P1"<<std::endl;
-            outdata<<3<<" "<<width<<std::endl;
-            //PIXEL DATA
-            for(int x=0;x<width;x++){
-                int force = (perlinNoise[x] * height);
-                int y=0;
-                for(y =0;y<force;y++){
-                    outdata<<1<<" ";
-                }
-                for(int i = y;i<height-1;i++){
-                    outdata<<0<<" ";
-                }
-                outdata<<0<<std::endl;
-                //outdata << 0<<" "<<1<<" "<<0<<""<<0<<" "<<1<<" "<<1<< std::endl;
-            }
-            outdata.close();
-        }
-
 
     void PerlinNoise::savePerlinNoiseAsImage2D() {
-        std::cout<<"BANANA\n";
+        std::cout<<"Saving Perling Noise\n";
         std::ofstream outdata; // outdata is like cin
         outdata.open("./build/perlinNoise.pgm"); // opens the file
         if( !outdata ) { // file couldn't be opened

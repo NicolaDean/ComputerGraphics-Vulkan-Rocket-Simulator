@@ -1,18 +1,20 @@
-CFLAGS = -std=c++17 -g
 #REMOVE -g and replace vis -O2 for release (now is debug)
-STB_INCLUDE_PATH = ./src/headers/
+#RELEASE MODE:
+#CFLAGS = -std=c++17 -O2
+#DEBUG MODE:
+CFLAGS = -std=c++17 -g
 
+#Project headers folder and flags#########################################
+STB_INCLUDE_PATH = ./src/headers/
 INC=-I ./headers -I $(STB_INCLUDE_PATH)
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
+
+###################SHADER INFO:############################################
 GLSLC_PATH = /usr/local/bin
-
-PRECOMPILE =  ./src/engine/commonLibs
-
-#SHADER INFO:
 SHADER_FOLDER = ./src/Shaders
 COMPILED_SHADER = $(SHADER_FOLDER)/compiledShaders
 
-#SOURCES PATHS
+#SOURCES PATHS########################################################################
 #TODO modify the script, if we add more subfolder
 ENGINE_FOLDER = src/engine
 ENGINE = $(ENGINE_FOLDER)/*.cpp $(ENGINE_FOLDER)/*/*.cpp $(ENGINE_FOLDER)/*/*/*.cpp
@@ -21,7 +23,7 @@ MAIN = src/main.cpp src/RocketSimulator/RocketSimulator.cpp src/RocketSimulator/
 SOURCES = $(MAIN) $(ENGINE)
 SOURCES_O =  ./build/engine/*.o ./build/engine/*/*.o ./build/engine/*/*/*.o ./build/RocketSimulator/*.o ./build/RocketSimulator/*/*.o ./src/main.o
 #TODO CHECK HOW DO ACTUAL LIBRARY
-#OS DETECTION
+#####################OS DETECTION#############################################################################
 OSNAME = LINUX
 UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
@@ -41,10 +43,7 @@ ifeq ($(OSNAME),MAC)
 endif
 
 ###########################FAST COMPILE METHOD###################################################
-completeCompile: cleanCore fastCompile
-
-cleanCore:
-	rm -r ./build/engine
+completeCompile: clean fastCompileV2
 
 clean:
 	rm -r ./build
@@ -102,7 +101,7 @@ EngineGen:createFolderE $(OBJECTS_E)
 	#ENDED Compilation of ./src/engine
 ########################ROCKET PROJECT#############################################
 FOLDER_PATH_R = ./src/RocketSimulator/
-BUILD_PATH_R	= ./build/RocketSimulator/
+BUILD_PATH_R= ./build/RocketSimulator/
 #TODO PUT BUILD_PATH INTO THE .o file generation
 
 SOURCES_R := $(shell find $(FOLDER_PATH_R) -name '*.cpp')
@@ -124,33 +123,7 @@ RocketGen:createFolderR $(OBJECTS_R)
 banana:
 	echo $(OBJECTS_E)
 ########################SHADER COMPILER############################################
-#Put here the shaders name (in the format of name.x)
-SHADER_NAMES = Shader.x NoTexture.x
-
-FRAGMENTS_NAME 	= $(SHADER_NAMES:%.x=%.frag)
-VERTEXS_NAME 	= $(SHADER_NAMES:%.x=%.vert)
-COMPILED_FRAG_NAMES = $(SHADER_NAMES:%.x=frag_%.spv)
-COMPILED_VERT_NAMES = $(SHADER_NAMES:%.x=vert_%.spv)
-COMPILED_FRAG_INFOLDER = $(SHADER_NAMES:%.x=$(COMPILED_SHADER)/frag%.spv)
-COMPILED_VERT_INFOLDER = $(SHADER_NAMES:%.x=$(COMPILED_SHADER)/vert%.spv)
-
-#Compile CODE FOR FRAGMENT SHADER
-$(COMPILED_SHADER)/frag%.spv: $(SHADER_FOLDER)/%.frag
-	$(GLSLC_PATH)/glslc $< -o $@
-#Compile CODE FOR VERTEX SHADER
-$(COMPILED_SHADER)/vert%.spv: $(SHADER_FOLDER)/%.frag
-	$(GLSLC_PATH)/glslc $< -o $@
-#Compile all Fragments shader
-frag:$(COMPILED_FRAG_INFOLDER)
-	# "Ended Fragment Shader Compilation"
-#Compile all Vertex shader
-vert:$(COMPILED_VERT_INFOLDER)
-	# "Ended Vertex Shader Compilation"
-
-#Global Compile command for shaders
-compile_shader: frag vert
-	# "COMPLETED ALL SHADER COMPILATION"
-
+#TODO automatize the shader compilation like for c++
 shaders:
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.frag -o $(COMPILED_SHADER)/fragShader.spv
 	$(GLSLC_PATH)/glslc $(SHADER_FOLDER)/Shader.vert -o $(COMPILED_SHADER)/vertShader.spv

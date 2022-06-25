@@ -8,13 +8,21 @@
 
 #include "Plane.h"
 #include "../Utils/ColorGradient.h"
+#include "../Utils/PerlinNoise.h"
+
 namespace Engine{
     class ProceduralTerrain:public Plane {
 
-        int seed = 11111;
+        int seed = 2222;
+        PerlinNoise noises = PerlinNoise();
+        float * heights;
+
     public:
         ProceduralTerrain(int size,int resX,int resY,BufferManager buffManager) : Plane(size,resX,resY,buffManager){
-
+            noises = PerlinNoise(resX,resY);
+            noises.setSeed(seed); //TODO PUT A BUTTON THAT CHANGE SEED
+            noises.init();
+            noises.generate2DPerlinNoise(4);
         }
 
         float getHeight(int x, int y);

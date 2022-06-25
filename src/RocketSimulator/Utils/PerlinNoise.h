@@ -10,10 +10,12 @@
 #include <iostream>
 #include <fstream>
 
+
 namespace Engine{
     class PerlinNoise {
         int width;
         int height;
+        int SEED;
     public:
         //srand (time(NULL));
         float* noiseSeed = nullptr;
@@ -22,33 +24,22 @@ namespace Engine{
         float* noiseSeed2D = nullptr;
         float* perlinNoise2D = nullptr;
 
+
+        PerlinNoise(){}
         PerlinNoise(int X, int Y){
-
-            width=X;
-            height=Y;
-
-            noiseSeed = new float [width];
-            perlinNoise = new float[width];
-
-            noiseSeed2D = new float[width * height];
-            perlinNoise2D = new float[width * height];
-
-            for(int i=0;i<width;i++) {
-                noiseSeed[i] = (float)rand() / (float)RAND_MAX;
-            }
-
-            for(int i=0;i<width*height;i++) {
-                noiseSeed2D[i] = (float)rand() / (float)RAND_MAX;
-            }
-
+            width=X+1;
+            height=Y+1;
         }
 
-        void PerlinNoise1D(int nOctaves);
-        void PerlinNoise2D(int nOctaves);
+        /**************UTILS************************/
+        void setSeed(int s){SEED = s;};
+        float getNoise(int x,int y);
 
-        //https://en.wikipedia.org/wiki/Netpbm
-        void savePerlinNoiseAsImage();
+        void init();
+        /**************PERLIN NOISE******************/
+        void generate2DPerlinNoise(int nOctaves);
         void savePerlinNoiseAsImage2D();
+        //https://en.wikipedia.org/wiki/Netpbm
     };
 }
 
