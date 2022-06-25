@@ -12,6 +12,6 @@ namespace Engine{
         std::cout<<"Loading SkyBox Textures\n";
         texture.loadCubic();
         std::cout<<"SkyBox Loaded\n";
-
+        Mesh::init();
     }
 }

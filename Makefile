@@ -1,4 +1,5 @@
-CFLAGS = -std=c++17 -O2
+CFLAGS = -std=c++17 -g
+#REMOVE -g and replace vis -O2 for release (now is debug)
 STB_INCLUDE_PATH = ./src/headers/
 
 INC=-I ./headers -I $(STB_INCLUDE_PATH)
@@ -68,7 +69,8 @@ fastCompileV2: EngineGen RocketGen
 	#END COMPILATION
 
 fastExe: fastCompileV2
-
+run: fastCompileV2
+all: run
 ########################ENGINE PROJECT#############################################
 FOLDER_PATH_E=./src/engine/
 BUILD_PATH_E=./build/engine/

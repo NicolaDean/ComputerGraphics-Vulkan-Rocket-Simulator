@@ -132,7 +132,7 @@ namespace Engine{
             //BIND VERTEX BAFFER
             VkBuffer vertexBuffers[] = {mesh->getVertexBuffer()};
             VkDeviceSize offsets[] = {0};
-            std::cout<<"MODEL RENDERING:"<<i<<"\n";
+            //std::cout<<"MODEL RENDERING:"<<i<<"\n";
             i++;
             vkCmdBindVertexBuffers(commandBuffers[currentImage], 0, 1, vertexBuffers, offsets);
            //BIND INDEX BUFFER

@@ -62,7 +62,6 @@ namespace Engine{
                 transform =  glm::scale(transform,glm::vec3(scalingFactor));
 
                 modelMatrix = transform;
-                hasBeenUpdated=false;
             }
 
             return modelMatrix;

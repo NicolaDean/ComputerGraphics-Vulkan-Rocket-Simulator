@@ -42,7 +42,7 @@ namespace RocketSimulator{
         //GraphicPipelineCustom* skyBoxPipeline = pipelineFactory();
        /****************LOAD ALL MODELS OF THE APP**********************************/
 
-       UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.7f,0.7f,0.5f,0.5f);
+       UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,0.0f,0.0f,0.5f,0.5f);
        //void (*action)() = onLaunchClick();
         //func(this->onLaunchClick);
 
@@ -75,19 +75,18 @@ namespace RocketSimulator{
         m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
-        //Sets trajectory of the rocket and launches
-        // TODO Set target and speed with GUI
-        m2->trajectory(glm::vec3(7.0f,1.0f,3.0f),3.0f,10.0f);
+        m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,100.0f);
         m2->launch();
         PerlinNoise tmp = PerlinNoise(200,200);
         tmp.PerlinNoise2D(4);
         tmp.savePerlinNoiseAsImage2D();
 
-        /*Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
+        Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
+        std::cout<<"ADDRESS:" <<sky<<"\n";
         sky->init();
         sky->initDescriptor(&descManager);
         sky->bindPipeline(skyboxPipeline);
-        Mesh::meshes->push_back(sky);*/
+        Mesh::meshes->push_back(sky);
 
         //Square test
        /* Square* s1 = new Square(bufferManager);
