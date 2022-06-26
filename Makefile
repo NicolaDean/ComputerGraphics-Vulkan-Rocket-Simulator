@@ -68,6 +68,7 @@ fastCompileV2: EngineGen RocketGen
 	#END COMPILATION
 
 fastExe: fastCompileV2
+fastExeMAC: fastCompileV2
 	./Engine
 run: fastCompileV2
 all: run

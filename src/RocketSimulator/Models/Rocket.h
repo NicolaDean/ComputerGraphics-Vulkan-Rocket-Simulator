@@ -13,6 +13,7 @@ namespace Engine{
         bool explosion = false;
         bool deleted=false;
         bool launched = false;
+        bool landing=false;
 
         // Rotation around its axis
         float roll= 0.0f;
@@ -32,7 +33,10 @@ namespace Engine{
         glm::vec2 verticalVelocity    = glm::vec2(0, 0);
         float pitch= - M_PI / 2;
 
-
+        float maxHeight=0.0f;
+        float offsetHeight=0.0f;
+        float startHeight = 1.0f;
+        float landingFactor=1.0f;
 
         // Horizontal and vertical scale
         float hscale  = 1;
@@ -48,7 +52,7 @@ namespace Engine{
         }
         virtual void update(float dt);
         void close();
-        void trajectory(glm::vec3 target, float highMax, float vAcc);
+        void trajectory(glm::vec3 target, float heightMax, float vAcc);
         void updateAcceleration(float dt);
     };
 }

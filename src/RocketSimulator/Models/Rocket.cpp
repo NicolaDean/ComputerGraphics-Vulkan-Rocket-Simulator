@@ -16,16 +16,17 @@ namespace Engine{
     float TOUT_LIGHT_FADE = 500;
     float MAX_LIGHT = 0.6f;
     float gravity=0.1f;
-    float startHeight = 1.0f;
 
 
-    void Rocket::trajectory(glm::vec3 target, float highMax, float vAcc) {
+    void Rocket::trajectory(glm::vec3 target, float heightMax, float vAcc) {
+        maxHeight=heightMax;
+        offsetHeight = heightMax - pos[1];
 
-        target = target +pos;
-        highMax -= pos[1];
-        if(highMax <= 0 || highMax < target[1]){
+        if(offsetHeight <= 0 || offsetHeight < target[1]){
             std::cout<<"Invalid trajectory height\n";
+            return;
         }
+
 
         //Setting start height for landing
         startHeight=pos[1];
@@ -33,14 +34,14 @@ namespace Engine{
         glm::vec2 htg      = glm::vec2(target[2], target[0]);
         hdir     = glm::normalize(htg);
         float aag      = vAcc * (vAcc + gravity);
-        timeout  = glm::sqrt(2 * gravity * highMax / aag);
-        float aag1yh   = aag * (1 - target[1] / highMax);
+        timeout  = glm::sqrt(2 * gravity * heightMax / aag);
+        float aag1yh   = aag * (1 - target[1] / heightMax);
         float r_aag1yh = sqrt(aag1yh);
         ttl      = timeout * (vAcc + gravity + r_aag1yh) / gravity ;
         float a2g      = vAcc * 2 + gravity;
         float isZero   = a2g - 2 * r_aag1yh;
         float xAcceleration     = isZero ? isZero / (pow(a2g,2) - 4 * aag1yh) : 1 / (2 * a2g);
-        verticalAcceleration[0]  = glm::length(htg) / highMax * aag * xAcceleration;
+        verticalAcceleration[0]  = glm::length(htg) / heightMax * aag * xAcceleration;
         verticalAcceleration[1]  = vAcc + gravity;
         std::cout<<"X vertical acc:\n"<<verticalAcceleration[0]<<"\n";
         std::cout<<"Y vertical acc:\n"<<verticalAcceleration[1]<<"\n";
@@ -174,7 +175,25 @@ namespace Engine{
 
         //ON X is the vertical position
         //setAngles(glm::vec3(hdir[0],hdir[0],roll));
-        setAngles(glm::vec3(hdir[0],hdir[0],roll));
+        if(pos[1]>=maxHeight+startHeight){
+            std::cout<<"POS Y"<<pos[1]<<"\n";
+            std::cout<<"X"<<hdir[0]<< "\n";
+            std::cout<<"Y"<<ttl<< "\n";
+
+            landingFactor=hdir[0]/offsetHeight;
+            landing=true;
+        }
+
+        if(landing==false){
+            setAngles(glm::vec3(hdir[0],hdir[0],roll));
+        }else{
+            if(orientation[1]-landingFactor>0){
+                orientation -= glm::vec3(landingFactor,landingFactor,0);
+            }
+            else{
+                setAngles(glm::vec3(0,0,roll));
+            }
+        }
 
 
 
