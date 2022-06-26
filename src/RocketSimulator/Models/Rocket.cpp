@@ -156,35 +156,27 @@ namespace Engine{
 
         //TODO pitch Target find correct function atan2
 
-        /*float pitchTarget = - M_PI / 2 - glm::atan(verticalVelocity);
+        float pitchTarget = - M_PI / 2 - atan2(verticalVelocity[1],verticalVelocity[0]);
+        //std::cout<<"IF :"<<abs(pitchTarget-pitch)<<"\n";
+
         if(abs(pitchTarget - pitch) > PITCH_ANI){
                      pitch += PITCH_ANI * sgn(pitchTarget - pitch);
+            //std::cout<<"SIGN :"<<sgn(pitchTarget - pitch)<<"\n";
 
-         }
-        else{
+         }else{
                      pitch = pitchTarget;
-         }
-         -------------
-         THE UPDATE THESE MATRIXES
+            //std::cout<<"TARGET :"<<(pitchTarget)<<"\n";
 
-        get worldMatrix() {
-            if(this._wrldMat == null)
-                this._wrldMat = matrix.Mat4.transl(...this._pos)
-            .mul(this._pitchyaw)
-                    .mul(matrix.Mat4.rotZ(this._roll))
-                    .mul(matrix.Mat4.scale(this._hvscale[0], this._hvscale[0], this._hvscale[1]));
-            return this._wrldMat;
         }
+        std::cout<<"PITCH:"<<pitch<<"\n";
+        std::cout<<"ROLL:"<<pitch<<"\n";
+        std::cout<<"HDIR:"<<hdir[1]<<"\n";
 
-        get followMatrix() {
-            if(this._followMat == null)
-                this._followMat = matrix.Mat4.transl(...this._pos)
-            .mul(this._pitchyaw)
-                    .mul(matrix.Mat4.scale(this._hvscale[0], this._hvscale[0], this._hvscale[1]));
-            return this._followMat;
-        }
 
-         */
+        //ON X is the vertical position
+        //setAngles(glm::vec3(-pitch,hdir[0],-roll));
+        setAngles(glm::vec3(hdir[0],hdir[0],roll));
+
 
 
     }
