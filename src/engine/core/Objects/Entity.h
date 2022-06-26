@@ -60,9 +60,9 @@ namespace Engine{
             if(hasBeenUpdated){
                 glm::mat4 transform;
                 transform = glm::translate(I,pos);
-                transform = glm::rotate(transform, orientation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-                transform = glm::rotate(transform, orientation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-                transform = glm::rotate(transform, orientation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+                transform = glm::rotate(transform, orientation[1], glm::vec3(0.0f, 1.0f, 0.0f));
+                transform = glm::rotate(transform, orientation[0], glm::vec3(1.0f, 0.0f, 0.0f));
+                transform = glm::rotate(transform, orientation[2], glm::vec3(0.0f, 0.0f, 1.0f));
                 transform =  glm::scale(transform,glm::vec3(scalingFactor));
 
                 modelMatrix = transform;
