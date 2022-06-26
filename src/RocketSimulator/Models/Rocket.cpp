@@ -177,10 +177,8 @@ namespace Engine{
         //setAngles(glm::vec3(hdir[0],hdir[0],roll));
         if(pos[1]>=maxHeight+startHeight){
             std::cout<<"POS Y"<<pos[1]<<"\n";
-            std::cout<<"X"<<hdir[0]<< "\n";
-            std::cout<<"Y"<<ttl<< "\n";
-
-            landingFactor=hdir[0]/offsetHeight;
+            std::cout<<"Landing"<<"\n";
+            landingFactor=hdir[0]/600;
             landing=true;
         }
 
