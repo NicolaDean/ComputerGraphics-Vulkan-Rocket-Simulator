@@ -44,6 +44,7 @@ namespace Engine{
         SwapChain * swapChain;
         BufferManager bufferManager;
     public:
+        static int MAX_NUM_OF_ENTITY; //TODO ADD AN EXEPTION IN DESCRIPTOR SET TO AVOID ENTITY OVERFLOW
         static DescriptorManager* globalDescriptor;
         static VkDescriptorPool descriptorPool; //STATIC BECAUSE ALL DESCRIPTOR USE SAME DESCRIPTOR POOL
 
@@ -81,6 +82,10 @@ namespace Engine{
 
         void updateBufferManager(uint32_t currentImage){
             uniformBufferManager.update(currentImage,glm::mat4(1.0f));//TODO CORRECT HERE IF NEDED
+        }
+
+        static void set_MAX_NUM_OF_ENTITY(int max){
+            DescriptorManager::MAX_NUM_OF_ENTITY = max;
         }
 
     };

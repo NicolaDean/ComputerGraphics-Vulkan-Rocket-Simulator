@@ -34,7 +34,7 @@ namespace Engine{
         /**************UTILS************************/
         void setSeed(int s){SEED = s;};
         float getNoise(int x,int y);
-
+        void clean();
         void init();
         /**************PERLIN NOISE******************/
         void generate2DPerlinNoise(int nOctaves);

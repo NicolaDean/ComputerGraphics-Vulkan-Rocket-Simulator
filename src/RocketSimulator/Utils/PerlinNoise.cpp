@@ -9,7 +9,7 @@ namespace Engine{
 
     float PerlinNoise::getNoise(int x, int y) {
 
-        //CHECK IF THIS POINT IS OUTSIDE THE GRID
+        //CHECK IF THIS POINT IS OUTSIDE THE GRIDe
         if(x<0 || x >= width) return 0;
         if(y<0 || y >= height) return 0;
 
@@ -18,6 +18,10 @@ namespace Engine{
         return res;
     }
 
+    void PerlinNoise::clean() {
+        free(noiseSeed2D);
+        free(perlinNoise2D);
+    }
     void PerlinNoise::init() {
         noiseSeed2D = new float[width * height];
         perlinNoise2D = new float[width * height];

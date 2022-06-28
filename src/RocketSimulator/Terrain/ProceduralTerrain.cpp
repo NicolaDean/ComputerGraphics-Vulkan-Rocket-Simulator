@@ -36,7 +36,7 @@ namespace Engine{
         return getHeight(x,z);
     }
 
-    //TODO CREATE A GRADIENT CLASS FOR COLORS
+    //TODO CREATE A GRADIENT CLASS FOR COLORSa
     glm::vec3 ProceduralTerrain::getColor(int x, int y) {
         return calculateNormal(x,y);
         /*float noise = getNoise(x,y);
@@ -49,6 +49,7 @@ namespace Engine{
         return glm::vec3(0.45,0.35,0.2);*/
     }
     void ProceduralTerrain::close() {
+        noises.clean();
         Mesh::close();
         std::cout<<"Terrain closing:\n";
     }

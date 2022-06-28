@@ -86,7 +86,7 @@ namespace Engine{
         //Printer::print("Rocket orientation",orientation);
 
         //TEST THE MOVEMENTS
-        //pos += glm::vec3 (0,1,0)*dt;
+        orientation += glm::vec3 (1,0,0)*dt;
 
 
         //check if clicked launch button

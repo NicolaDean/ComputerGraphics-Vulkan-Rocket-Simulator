@@ -30,7 +30,7 @@ namespace RocketSimulator{
        GraphicPipelineCustom* terrainPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertNoTexture.spv",
                                                    "./src/Shaders/compiledShaders/fragNoTexture.spv",
                                                    {terrainDescriptor});
-        GraphicPipelineCustom* skyboxPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertSkybox.spv",
+       GraphicPipelineCustom* skyboxPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertSkybox.spv",
                                                                  "./src/Shaders/compiledShaders/fragSkybox.spv",
                                                                  {&descManager});
 
@@ -59,7 +59,8 @@ namespace RocketSimulator{
         m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,100.0f);
         m2->launch();
 
-        Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
+        Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
+        //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
         std::cout<<"ADDRESS:" <<sky<<"\n";
         sky->init();
         sky->initDescriptor(&descManager);

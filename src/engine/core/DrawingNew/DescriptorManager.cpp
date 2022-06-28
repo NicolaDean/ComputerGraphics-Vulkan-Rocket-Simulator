@@ -3,12 +3,12 @@
 //
 
 #include "DescriptorManager.h"
-#define NUM_OF_DESCRIPTOR_SET_GROUP 5
 
 namespace Engine{
     DescriptorManager* DescriptorManager::globalDescriptor = new DescriptorManager();
     VkDescriptorPool DescriptorManager::descriptorPool;
 
+    int DescriptorManager::MAX_NUM_OF_ENTITY = 100;
 
     void DescriptorManager::closeDescriptorPool(){
         vkDestroyDescriptorPool(*device, DescriptorManager::descriptorPool, nullptr);
@@ -124,15 +124,15 @@ namespace Engine{
     void DescriptorManager::createDescriptorPool(VkDevice*  device) {
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        poolSizes[0].descriptorCount = static_cast<uint32_t>(NUM_OF_DESCRIPTOR_SET_GROUP*Constants::IMAGE_COUNT);//TODO ADD uniformInPool* (come fa il prof, vedi starter)
+        poolSizes[0].descriptorCount = static_cast<uint32_t>(DescriptorManager::MAX_NUM_OF_ENTITY*Constants::IMAGE_COUNT);//TODO ADD uniformInPool* (come fa il prof, vedi starter)
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        poolSizes[1].descriptorCount = static_cast<uint32_t>(NUM_OF_DESCRIPTOR_SET_GROUP*Constants::IMAGE_COUNT);//TODO ADD texturesInPool* (come fa il prof, vedi starter)
+        poolSizes[1].descriptorCount = static_cast<uint32_t>(DescriptorManager::MAX_NUM_OF_ENTITY*Constants::IMAGE_COUNT);//TODO ADD texturesInPool* (come fa il prof, vedi starter)
 
         VkDescriptorPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = static_cast<uint32_t>(NUM_OF_DESCRIPTOR_SET_GROUP*Constants::IMAGE_COUNT);//TODO ADD setsInPool* (come fa il prof, vedi starter)
+        poolInfo.maxSets = static_cast<uint32_t>(DescriptorManager::MAX_NUM_OF_ENTITY*Constants::IMAGE_COUNT);//TODO ADD setsInPool* (come fa il prof, vedi starter)
 
         if (vkCreateDescriptorPool(*device, &poolInfo, nullptr, &DescriptorManager::descriptorPool) != VK_SUCCESS) {
             throw std::runtime_error("failed to create descriptor pool!");
