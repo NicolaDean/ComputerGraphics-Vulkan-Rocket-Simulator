@@ -15,17 +15,18 @@ namespace Engine{
     float EXPLS_OFFSET = 1;
     float TOUT_LIGHT_FADE = 500;
     float MAX_LIGHT = 0.6f;
-    float gravity=0.001f;
-    float startHeight = 1.0f;
+    float gravity=0.1f;
 
 
-    void Rocket::trajectory(glm::vec3 target, float highMax, float vAcc) {
+    void Rocket::trajectory(glm::vec3 target, float heightMax, float vAcc) {
+        maxHeight=heightMax;
+        offsetHeight = heightMax - pos[1];
 
-        target = target +pos;
-        highMax -= pos[1];
-        if(highMax <= 0 || highMax < target[1]){
+        if(offsetHeight <= 0 || offsetHeight < target[1]){
             std::cout<<"Invalid trajectory height\n";
+            return;
         }
+
 
         //Setting start height for landing
         startHeight=pos[1];
@@ -33,14 +34,14 @@ namespace Engine{
         glm::vec2 htg      = glm::vec2(target[2], target[0]);
         hdir     = glm::normalize(htg);
         float aag      = vAcc * (vAcc + gravity);
-        timeout  = glm::sqrt(2 * gravity * highMax / aag);
-        float aag1yh   = aag * (1 - target[1] / highMax);
+        timeout  = glm::sqrt(2 * gravity * heightMax / aag);
+        float aag1yh   = aag * (1 - target[1] / heightMax);
         float r_aag1yh = sqrt(aag1yh);
         ttl      = timeout * (vAcc + gravity + r_aag1yh) / gravity ;
         float a2g      = vAcc * 2 + gravity;
         float isZero   = a2g - 2 * r_aag1yh;
         float xAcceleration     = isZero ? isZero / (pow(a2g,2) - 4 * aag1yh) : 1 / (2 * a2g);
-        verticalAcceleration[0]  = glm::length(htg) / highMax * aag * xAcceleration;
+        verticalAcceleration[0]  = glm::length(htg) / heightMax * aag * xAcceleration;
         verticalAcceleration[1]  = vAcc + gravity;
         std::cout<<"X vertical acc:\n"<<verticalAcceleration[0]<<"\n";
         std::cout<<"Y vertical acc:\n"<<verticalAcceleration[1]<<"\n";
@@ -54,15 +55,14 @@ namespace Engine{
 
     /* Update the accelerating components */
     void Rocket::updateAcceleration(float dt) {
-        float g = 0.001;
         verticalVelocity[0] += (verticalAcceleration[0]    ) * dt;
-        verticalVelocity[1] += (verticalAcceleration[1] - g) * dt;
+        verticalVelocity[1] += (verticalAcceleration[1] - gravity) * dt;
         if(verticalVelocity[1] < TERM_VEL){
             verticalVelocity[1] = TERM_VEL;
 
         }
         float dh = verticalVelocity[0] * dt - (verticalAcceleration[0]    ) / 2 * pow(dt,2);
-        float dv = verticalVelocity[1] * dt - (verticalAcceleration[1] - g) / 2 * pow(dt,2);
+        float dv = verticalVelocity[1] * dt - (verticalAcceleration[1] - gravity) / 2 * pow(dt,2);
         pos[0] += dh * hdir[1];
         pos[2] += dh * hdir[0];
         pos[1] += dv;
@@ -156,35 +156,43 @@ namespace Engine{
 
         //TODO pitch Target find correct function atan2
 
-        /*float pitchTarget = - M_PI / 2 - glm::atan(verticalVelocity);
+        float pitchTarget = - M_PI / 2 - atan2(verticalVelocity[1],verticalVelocity[0]);
+        //std::cout<<"IF :"<<abs(pitchTarget-pitch)<<"\n";
+
         if(abs(pitchTarget - pitch) > PITCH_ANI){
                      pitch += PITCH_ANI * sgn(pitchTarget - pitch);
+            //std::cout<<"SIGN :"<<sgn(pitchTarget - pitch)<<"\n";
 
-         }
-        else{
+         }else{
                      pitch = pitchTarget;
-         }
-         -------------
-         THE UPDATE THESE MATRIXES
+            //std::cout<<"TARGET :"<<(pitchTarget)<<"\n";
 
-        get worldMatrix() {
-            if(this._wrldMat == null)
-                this._wrldMat = matrix.Mat4.transl(...this._pos)
-            .mul(this._pitchyaw)
-                    .mul(matrix.Mat4.rotZ(this._roll))
-                    .mul(matrix.Mat4.scale(this._hvscale[0], this._hvscale[0], this._hvscale[1]));
-            return this._wrldMat;
+        }
+        //std::cout<<"PITCH:"<<pitch<<"\n";
+        //std::cout<<"ROLL:"<<pitch<<"\n";
+        //std::cout<<"HDIR:"<<hdir[1]<<"\n";
+
+
+        //ON X is the vertical position
+        //setAngles(glm::vec3(hdir[0],hdir[0],roll));
+        if(pos[1]>=maxHeight+startHeight){
+            std::cout<<"POS Y"<<pos[1]<<"\n";
+            std::cout<<"Landing"<<"\n";
+            landingFactor=hdir[0]/600;
+            landing=true;
         }
 
-        get followMatrix() {
-            if(this._followMat == null)
-                this._followMat = matrix.Mat4.transl(...this._pos)
-            .mul(this._pitchyaw)
-                    .mul(matrix.Mat4.scale(this._hvscale[0], this._hvscale[0], this._hvscale[1]));
-            return this._followMat;
+        if(landing==false){
+            setAngles(glm::vec3(hdir[0],hdir[0],roll));
+        }else{
+            if(orientation[1]-landingFactor>0){
+                orientation -= glm::vec3(landingFactor,landingFactor,0);
+            }
+            else{
+                setAngles(glm::vec3(0,0,roll));
+            }
         }
 
-         */
 
 
     }

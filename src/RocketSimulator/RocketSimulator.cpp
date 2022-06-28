@@ -56,7 +56,7 @@ namespace RocketSimulator{
         m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
-        m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,100.0f);
+        m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,10);
         m2->launch();
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
