@@ -54,7 +54,7 @@ namespace Engine{
             launched=false;
         }
 
-        if(pos[1]>=maxHeight+startHeight-0.1){
+        if(pos[1]>=(maxHeight+startHeight)*0.9){
                 //landingFactor=hdir[0]/(ttl*100);
             landingFactory= glm::length(hdir)/(ttl*100);
             landingFactorx= (pitch + M_PI) /(ttl*100);
