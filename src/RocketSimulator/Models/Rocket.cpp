@@ -53,11 +53,13 @@ namespace Engine{
         if (pos[1] < startHeight) {
             launched=false;
         }
-        std::cout<<pos[1]<<" -- "<<maxHeight+startHeight<<" \n";
 
         if(pos[1]>=maxHeight+startHeight-0.1){
-                landingFactor=hdir[0]/(ttl*100);
-                landing=true;
+                //landingFactor=hdir[0]/(ttl*100);
+            landingFactory= glm::length(hdir)/(ttl*100);
+            landingFactorx= (pitch + M_PI) /(ttl*100);
+
+            landing=true;
         }
     }
     /* MAYBE BETTER IN UTILS */
@@ -149,13 +151,32 @@ namespace Engine{
 
 
             if(landing==false){
-                setAngles(glm::vec3(hdir[0],hdir[0],roll));
-            }else if(orientation[1]-landingFactor>0){
-                    orientation -= glm::vec3(landingFactor,landingFactor,0);
+                setAngles(glm::vec3(pitch + M_PI,glm::length(hdir),roll));
+            }else if(orientation[0]-landingFactorx>0){
+                orientation -= glm::vec3(landingFactorx,landingFactory,0);
+
+            }else if(orientation[1]-landingFactory>0){
+                std::cout<<"HDIR:"<<orientation[0]<<"\n";
+
+                    orientation -= glm::vec3(0,landingFactory,0);
                 }
                 else{
                     setAngles(glm::vec3(0,0,roll));
                 }
+
+                /*
+                 * OR
+                 * if(landing==false){
+            setAngles(glm::vec3(hdir[0],hdir[0],roll));
+                    }else{
+            if(orientation[1]-landingFactor>0){
+                orientation -= glm::vec3(landingFactor,landingFactor,0);
+            }
+            else{
+                setAngles(glm::vec3(0,0,roll));
+            }
+                     }
+                 */
 
 
 

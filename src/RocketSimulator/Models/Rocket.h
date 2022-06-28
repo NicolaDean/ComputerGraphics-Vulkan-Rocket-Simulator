@@ -36,7 +36,8 @@ namespace Engine{
         float maxHeight=0.0f;
         float offsetHeight=0.0f;
         float startHeight =0.0f;
-        float landingFactor=0.0f;
+        float landingFactorx=0.0f;
+        float landingFactory=0.0f;
 
         // Horizontal and vertical scale
         float hscale  = 1;
