@@ -35,8 +35,8 @@ namespace Engine{
 
         float maxHeight=0.0f;
         float offsetHeight=0.0f;
-        float startHeight = 1.0f;
-        float landingFactor=1.0f;
+        float startHeight =0.0f;
+        float landingFactor=0.0f;
 
         // Horizontal and vertical scale
         float hscale  = 1;
@@ -52,6 +52,7 @@ namespace Engine{
         }
         virtual void update(float dt);
         void close();
+        void checkPosition();
         void trajectory(glm::vec3 target, float heightMax, float vAcc);
         void updateAcceleration(float dt);
     };

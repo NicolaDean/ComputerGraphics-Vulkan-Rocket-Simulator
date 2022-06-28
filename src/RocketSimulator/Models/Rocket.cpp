@@ -45,9 +45,21 @@ namespace Engine{
         verticalAcceleration[1]  = vAcc + gravity;
         std::cout<<"X vertical acc:\n"<<verticalAcceleration[0]<<"\n";
         std::cout<<"Y vertical acc:\n"<<verticalAcceleration[1]<<"\n";
-         launched=true;
+        launched=true;
     };
 
+    void Rocket::checkPosition(){
+        // If floor collision warp up
+        if (pos[1] < startHeight) {
+            launched=false;
+        }
+        std::cout<<pos[1]<<" -- "<<maxHeight+startHeight<<" \n";
+
+        if(pos[1]>=maxHeight+startHeight-0.1){
+                landingFactor=hdir[0]/(ttl*100);
+                landing=true;
+        }
+    }
     /* MAYBE BETTER IN UTILS */
     template <typename T> int sgn(T val) {
         return (T(0) < val) - (val < T(0));
@@ -66,8 +78,8 @@ namespace Engine{
         pos[0] += dh * hdir[1];
         pos[2] += dh * hdir[0];
         pos[1] += dv;
-       //std::cout<<"dx: "<<dh<<"\n";
-       // std::cout<<"dy: "<<dv<<"\n";
+        //std::cout<<"dx: "<<dh<<"\n";
+        // std::cout<<"dy: "<<dv<<"\n";
 
     }
 
@@ -77,125 +89,78 @@ namespace Engine{
     }
     /* Update movement */
     void Rocket::update(float dt) {
-    if (launched) {
+        if (launched) {
 
-        //Can apply simple trajectory equation
-        //https://en.wikipedia.org/wiki/Projectile_motion#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
+            //Can apply simple trajectory equation
+            //https://en.wikipedia.org/wiki/Projectile_motion#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
 
-        //NEW METHOD TO PRINT VEC3 (we can add in Printer all print of class helper methods)
-        //Printer::print("Rocket orientation",orientation);
-
-        //TEST THE MOVEMENTS
-        orientation += glm::vec3 (1,0,0)*dt;
-
-
-        //check if clicked launch button
-        /*
-        if(!launched){
-            return;
-        }
-         */
-
-
-        //TEST ORIENTATION CHANGES
-        //pos += glm::vec3(0.0f,1.0f,0.0f)*dt;
-
-
-        /*TODO Convert in C++
-        //const pos_old = [...pos];
-        //const {floor: floor0} = this._globals.collision.findFloorHeight(...pos_old);
-
-        // If out of bounds
-        if(floor == null) {
-            deleted = true;
-            return;
-        }
-         */
-
-        /*TODO Invalid previous matrix
-        wrldMat = null;
-        followMat = null;
-
-        */
-
-        ttl -= dt;
-
-        // If timeout elapsed in this delta
-        // update first for timeout with propulsion and
-        // then turn off propulsion and update for the remaining time
-
-        if (timeout && timeout < dt) {
-            updateAcceleration(timeout);
-            dt -= timeout;
-            timeout = 0;
-            verticalAcceleration[0] = 0;
-            verticalAcceleration[1] = 0;
-        } else {
-            timeout -= dt;
-        }
-
-        updateAcceleration(dt);
-
-        if (!timeout) {
-            rspe += RSPE_ACC * dt;
-        }
-        if (rspe > RSPE_MAX) {
-            rspe = RSPE_MAX;
-        }
-        roll += rspe * dt;
-        //TODO NEED TO FIND FLOOR AND HEIGHT FOR COLLISION
+            //NEW METHOD TO PRINT VEC3 (we can add in Printer all print of class helper methods)
+            //Printer::print("Rocket orientation",orientation);
 
 
 
-        // If floor collision warp up
-        if (pos[1] < startHeight) {
-            launched=false;
-        }
+            ttl -= dt;
 
+            // If timeout elapsed in this delta
+            // update first for timeout with propulsion and
+            // then turn off propulsion and update for the remaining time
 
-
-        //TODO pitch Target find correct function atan2
-
-        float pitchTarget = - M_PI / 2 - atan2(verticalVelocity[1],verticalVelocity[0]);
-        //std::cout<<"IF :"<<abs(pitchTarget-pitch)<<"\n";
-
-        if(abs(pitchTarget - pitch) > PITCH_ANI){
-                     pitch += PITCH_ANI * sgn(pitchTarget - pitch);
-            //std::cout<<"SIGN :"<<sgn(pitchTarget - pitch)<<"\n";
-
-         }else{
-                     pitch = pitchTarget;
-            //std::cout<<"TARGET :"<<(pitchTarget)<<"\n";
-
-        }
-        //std::cout<<"PITCH:"<<pitch<<"\n";
-        //std::cout<<"ROLL:"<<pitch<<"\n";
-        //std::cout<<"HDIR:"<<hdir[1]<<"\n";
-
-
-        //ON X is the vertical position
-        //setAngles(glm::vec3(hdir[0],hdir[0],roll));
-        if(pos[1]>=maxHeight+startHeight){
-            std::cout<<"POS Y"<<pos[1]<<"\n";
-            std::cout<<"Landing"<<"\n";
-            landingFactor=hdir[0]/600;
-            landing=true;
-        }
-
-        if(landing==false){
-            setAngles(glm::vec3(hdir[0],hdir[0],roll));
-        }else{
-            if(orientation[1]-landingFactor>0){
-                orientation -= glm::vec3(landingFactor,landingFactor,0);
+            if (timeout && timeout < dt) {
+                updateAcceleration(timeout);
+                dt -= timeout;
+                timeout = 0;
+                verticalAcceleration[0] = 0;
+                verticalAcceleration[1] = 0;
+            } else {
+                timeout -= dt;
             }
-            else{
-                setAngles(glm::vec3(0,0,roll));
+
+            updateAcceleration(dt);
+
+            if (!timeout) {
+                rspe += RSPE_ACC * dt;
             }
+            if (rspe > RSPE_MAX) {
+                rspe = RSPE_MAX;
+            }
+            roll += rspe * dt;
+
+            checkPosition();
+
+            float pitchTarget = - M_PI / 2 - atan2(verticalVelocity[1],verticalVelocity[0]);
+            //std::cout<<"IF :"<<abs(pitchTarget-pitch)<<"\n";
+
+            if(abs(pitchTarget - pitch) > PITCH_ANI){
+                pitch += PITCH_ANI * sgn(pitchTarget - pitch);
+                //std::cout<<"SIGN :"<<sgn(pitchTarget - pitch)<<"\n";
+
+            }else{
+                pitch = pitchTarget;
+                //std::cout<<"TARGET :"<<(pitchTarget)<<"\n";
+
+            }
+            //std::cout<<"PITCH:"<<pitch<<"\n";
+            //std::cout<<"ROLL:"<<pitch<<"\n";
+            //std::cout<<"HDIR:"<<hdir[1]<<"\n";
+
+
+            //ON X is the vertical position
+            //setAngles(glm::vec3(hdir[0],hdir[0],roll));
+
+
+            if(landing==false){
+                setAngles(glm::vec3(hdir[0],hdir[0],roll));
+            }else if(orientation[1]-landingFactor>0){
+                    orientation -= glm::vec3(landingFactor,landingFactor,0);
+                }
+                else{
+                    setAngles(glm::vec3(0,0,roll));
+                }
+
+
+
+
         }
-
-
-
-    }
 
     }
 
