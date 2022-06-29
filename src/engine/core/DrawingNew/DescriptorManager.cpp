@@ -8,7 +8,7 @@ namespace Engine{
     DescriptorManager* DescriptorManager::globalDescriptor = new DescriptorManager();
     VkDescriptorPool DescriptorManager::descriptorPool;
 
-    int DescriptorManager::MAX_NUM_OF_ENTITY = 100;
+    int DescriptorManager::MAX_NUM_OF_ENTITY = 300;
 
     void DescriptorManager::closeDescriptorPool(){
         vkDestroyDescriptorPool(*device, DescriptorManager::descriptorPool, nullptr);

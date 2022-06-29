@@ -16,9 +16,6 @@ namespace Engine{
 
         int seed = 2222;
         PerlinNoise noises = PerlinNoise();
-        Random3DModelPool cactusPools = Random3DModelPool();
-        Random3DModelPool rockPools   = Random3DModelPool();
-        std::vector<Model*> cactus;
         float * heights; //TODO use dynamic programming to avoid recomputing same height multiple times
 
 
@@ -29,14 +26,6 @@ namespace Engine{
             noises.setSeed(seed); //TODO PUT A BUTTON THAT CHANGE SEED
             noises.init();
             noises.generate2DPerlinNoise(5);
-
-            cactusPools = Random3DModelPool(resX,resY,{ "./src/Models/Desert/aloe.obj",
-                                                            "./src/Models/Desert/cactus01.obj",
-                                                            "./src/Models/Desert/cactus02.obj",
-                                                            "./src/Models/Desert/cactus03.obj"},buffManager);
-            cactusPools.init();
-            cactusPools.generatePool(10);
-
         }
 
         float getHeight(int x, int y);

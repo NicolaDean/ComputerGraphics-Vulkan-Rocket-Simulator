@@ -41,6 +41,7 @@ namespace RocketSimulator{
         map->initDescriptor(terrainDescriptor);
         map->bindPipeline(terrainPipeline);
         map->setPos(glm::vec3(-15.0f,-0.5f,-15.0f));
+        map->populateMapWithRandomObject(&descManager,&graphicPipelineCustom);
         Mesh::meshes->push_back(map);
 
         //MODEL 2 ROCKET

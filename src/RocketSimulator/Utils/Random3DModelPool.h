@@ -17,7 +17,9 @@ namespace Engine{
 
         int SEED;
         std::vector<std::string> modelPaths;
+        std::vector<Model*> models;
         BufferManager bufferManager;
+        
     public:
         Random3DModelPool(){};
 
@@ -26,12 +28,12 @@ namespace Engine{
             height = y;
             modelPaths = mp;
             bufferManager = buff;
-
         }
 
         void init();
-        void initModels(GraphicPipelineCustom pipeline,DescriptorManager descriptor);
+        void initModels(GraphicPipelineCustom* pipeline,DescriptorManager* descriptor);
         std::vector<Model*> generatePool(int poolSize);
+
         void setSeed(int seed){
             SEED = seed;
         }
