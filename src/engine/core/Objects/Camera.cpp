@@ -94,60 +94,60 @@ namespace Engine{
 
     void Camera::onW(float dt) {
         CamPos -= speed * glm::vec3(CamDir[FORWARD_AXIS]) * dt;
-        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
         //viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
     }
     void Camera::onA(float dt) {
         CamPos += -speed * glm::vec3(CamDir[SIDE_AXIS]) * dt;
-        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
         //viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
     }
     void Camera::onS(float dt) {
         CamPos += speed * glm::vec3(CamDir[FORWARD_AXIS]) * dt;
-        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
         //viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));//TODO PUT THIS IN UPDATE SCENE,NOT HERE
     }
     void Camera::onD(float dt) {
         CamPos += speed * glm::vec3(CamDir[SIDE_AXIS]) * dt;
-        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+       // std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
     }
 
     void Camera::onSpace(float dt){
         CamPos += speed * glm::vec3(CamDir[VERTICAL_AXIS]) * dt;
-        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+       // std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
     }
     void Camera::onShift(float dt){
         CamPos -= speed * glm::vec3(CamDir[VERTICAL_AXIS]) * dt;
-        std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
+        //std::cout<<"POS: ("<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<")\n";
     }
     void Camera::onE(float dt) {
         CamAng.x += rotation_speed * dt;
-        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+        //std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
     }
 
     void Camera::onQ(float dt) {
         CamAng.x -= rotation_speed * dt;
-        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+        //std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
     }
 
     void Camera::onDown(float dt) {
         CamAng.x += rotation_speed * dt;
-        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+        //std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
     }
 
     void Camera::onUp(float dt) {
         CamAng.x -= rotation_speed * dt;
-        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+        //std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
     }
 
     void Camera::onRight(float dt) {
         CamAng.y -= rotation_speed * dt;
-        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+        //std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
     }
 
     void Camera::onLeft(float dt) {
         CamAng.y += rotation_speed * dt;
-        std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
+        //std::cout<<"Angle: ("<<CamAng.x<<","<<CamAng.y<<","<<CamAng.z<<")\n";
     }
 
     void Camera::updateCamDir(){

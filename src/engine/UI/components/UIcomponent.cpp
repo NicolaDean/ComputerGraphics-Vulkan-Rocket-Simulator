@@ -22,6 +22,8 @@ namespace Engine{
         float minY = y_pos - height/(float)2;
         float maxY = y_pos + height/(float)2;
 
+        std::cout<<"X:("<<minX<<" <" << x << " <" << maxX <<")\n";
+        std::cout<<"Y:("<<minY<<" <" << y << " <" << maxY <<")\n";
         //Result initialize
         bool betweenX = false;
         bool betweenY = false;
@@ -31,7 +33,7 @@ namespace Engine{
         if(y>minY && y<maxY) betweenY = true;
 
         bool clicked = betweenX && betweenY;
-        if(clicked){
+        if(betweenX){
             std::cout<<"Clicked\n";
             action();
         }

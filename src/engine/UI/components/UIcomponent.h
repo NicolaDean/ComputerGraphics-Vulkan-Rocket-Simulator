@@ -8,6 +8,7 @@
 #include "../../core/Objects/Mesh.h"
 #include "../../core/Objects/Texture.h"
 namespace Engine{
+
     class UIcomponent: public Engine::Mesh{
 
     protected:

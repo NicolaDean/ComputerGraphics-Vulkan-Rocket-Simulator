@@ -36,7 +36,6 @@ namespace RocketSimulator{
 
        /****************LOAD ALL MODELS OF THE APP**********************************/
 
-       UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,-0.9f,0.2f,0.2f);
 
         //PLANE
         ProceduralTerrain * p = new ProceduralTerrain(50,100,100,bufferManager);
@@ -57,7 +56,9 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,10);
-        m2->launch();
+
+
+        UImanager::addButton("./src/Textures/UI/launch.png", [](){},-0.9f,-0.9f,0.2f,0.2f);
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
         //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
@@ -71,5 +72,8 @@ namespace RocketSimulator{
 
     void RocketSimulator::onLaunchClick() {
         std::cout<<"LAUNCH ROCKET\n";
+    }
+    void RocketSimulator::fff(){
+        std::cout<<"LAUNCH FFFFFFFFFFFFFFFFf\n";
     }
 }

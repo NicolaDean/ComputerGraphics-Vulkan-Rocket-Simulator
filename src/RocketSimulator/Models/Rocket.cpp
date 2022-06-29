@@ -86,7 +86,7 @@ namespace Engine{
         //Printer::print("Rocket orientation",orientation);
 
         //TEST THE MOVEMENTS
-        orientation += glm::vec3 (1,0,0)*dt;
+        //orientation += glm::vec3 (1,0,0)*dt;
 
 
         //check if clicked launch button
@@ -171,7 +171,6 @@ namespace Engine{
         //std::cout<<"PITCH:"<<pitch<<"\n";
         //std::cout<<"ROLL:"<<pitch<<"\n";
         //std::cout<<"HDIR:"<<hdir[1]<<"\n";
-
 
         //ON X is the vertical position
         //setAngles(glm::vec3(hdir[0],hdir[0],roll));

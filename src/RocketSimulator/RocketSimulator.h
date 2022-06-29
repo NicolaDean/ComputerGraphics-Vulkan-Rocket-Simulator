@@ -27,7 +27,7 @@ namespace RocketSimulator{
 
 
         static void onLaunchClick();
-
+        void fff();
         void customInit();
         void customClose(){};
     };
