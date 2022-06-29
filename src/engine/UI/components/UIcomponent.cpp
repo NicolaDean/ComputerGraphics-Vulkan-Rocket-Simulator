@@ -61,9 +61,9 @@ namespace Engine{
         std::cout<<"WIDTH: "<<w<<"\n";
 
         //WRITE VERTEX IN COUNTER CLOCKWISE ORDER
-        vertices.push_back(Vertex::vertexFactory(-w+x,h+y,0,0.0f,1.0f,0.0f,1,0));
-        vertices.push_back(Vertex::vertexFactory(w+x,h+y,0,0.0f,1.0f,0.0f,0,0));
-        vertices.push_back(Vertex::vertexFactory(w+x,-h+y,0,1.0f,0.0f,0.0f,0,1));
-        vertices.push_back(Vertex::vertexFactory(-w+x,-h+y,0,1,0,0,1,1));
+        vertices.push_back(Vertex::vertexFactory(-w+x,h+y,0,0.0f,1.0f,0.0f,0,1));
+        vertices.push_back(Vertex::vertexFactory(w+x,h+y,0,0.0f,1.0f,0.0f,1,1));
+        vertices.push_back(Vertex::vertexFactory(w+x,-h+y,0,1.0f,0.0f,0.0f,1,0));
+        vertices.push_back(Vertex::vertexFactory(-w+x,-h+y,0,1,0,0,0,0));
     }
 }
