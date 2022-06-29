@@ -20,6 +20,7 @@ namespace Engine{
 
     class Camera:public Entity {
     public:
+
         static Camera* currentCam;
 
         /***********CAM SETTINGS VARIABLES*************/
@@ -28,7 +29,7 @@ namespace Engine{
         float nearPlane = 0.1f;
         float farPlane  = 200.0f;
         /***********CAMERA MOVEMENT VARIABLES***********/
-        glm::vec3 CamPos = glm::vec3(1,1.5,2);
+        glm::vec3 CamPos = glm::vec3(0,50,0);
         glm::vec3 CamAng = glm::vec3(0,0,0);
         glm::mat3 CamDir = I;
         float speed =0.55f;
@@ -52,11 +53,8 @@ namespace Engine{
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera
         void updateCamDir();
-        void setPosition(glm::vec3 p){
-            this->CamPos = p;
-            std::cout<<"OOK  CAmera pos setted\n";
-        }
-        void setAngle(glm::vec3 a){this->CamPos = a;}
+        void setPosition(glm::vec3 p);
+        void setAngle(glm::vec3 a);
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);
         void setPerspective(PerspectiveType p);

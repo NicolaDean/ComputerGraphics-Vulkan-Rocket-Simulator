@@ -1,5 +1,6 @@
 #include "RocketSimulator.h"
 
+
 namespace RocketSimulator{
 
     /***
@@ -14,8 +15,8 @@ namespace RocketSimulator{
 
         /****************CAMERA SETTINGS*******************************************/
         Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
-        Camera::currentCam->setPosition({1,1,-1});
-        Camera::currentCam->setAngle({0.1,0,0});
+        Camera::currentCam->setPosition(glm::vec3(0,10,0));
+        Camera::currentCam->setAngle({0,3.14,0});
         Camera::currentCam->setNearPlane(0.1);
         Camera::currentCam->setFarPlane(21.0);
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
@@ -66,6 +67,7 @@ namespace RocketSimulator{
 
         //BEFOR PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
+        //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
 
         UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/moon.png", onLaunchClick,-0.7f,0.9f,0.2f,0.2f);
