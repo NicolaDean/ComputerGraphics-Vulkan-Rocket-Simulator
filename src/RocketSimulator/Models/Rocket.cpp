@@ -45,7 +45,7 @@ namespace Engine{
         verticalAcceleration[1]  = vAcc + gravity;
         std::cout<<"X vertical acc:\n"<<verticalAcceleration[0]<<"\n";
         std::cout<<"Y vertical acc:\n"<<verticalAcceleration[1]<<"\n";
-        launched=true;
+        //launched=true;
     };
 
     void Rocket::checkPosition(){
@@ -54,10 +54,10 @@ namespace Engine{
             launched=false;
         }
 
-        if(pos[1]>=(maxHeight+startHeight)*0.9){
-            //landingFactor=hdir[0]/(ttl*1000);
-            landingFactory= glm::length(hdir)/(ttl*1000);
-            landingFactorx= (pitch + M_PI) /(ttl*1000);
+        if(pos[1]>=(maxHeight+startHeight)*0.9 && landing==false){
+                //landingFactor=hdir[0]/(ttl*100);
+            landingFactory= glm::length(hdir)/(600);
+            landingFactorx= (pitch + M_PI) /(600);
 
             landing=true;
         }
@@ -158,30 +158,31 @@ namespace Engine{
             }else if(orientation[1]-landingFactory>0){
                 std::cout<<"HDIR:"<<orientation[0]<<"\n";
 
-                orientation -= glm::vec3(0,landingFactory,0);
+                    orientation -= glm::vec3(0,landingFactory,0);
+                }
+                else{
+                    setAngles(glm::vec3(0,0,roll));
+                }
+
+                /*
+                 * OR
+                 * if(landing==false){
+            setAngles(glm::vec3(hdir[0],hdir[0],roll));
+                    }else{
+            if(orientation[1]-landingFactor>0){
+                orientation -= glm::vec3(landingFactor,landingFactor,0);
             }
             else{
                 setAngles(glm::vec3(0,0,roll));
             }
-
-            /*
-             * OR
-             * if(landing==false){
-        setAngles(glm::vec3(hdir[0],hdir[0],roll));
-                }else{
-        if(orientation[1]-landingFactor>0){
-            orientation -= glm::vec3(landingFactor,landingFactor,0);
-        }
-        else{
-            setAngles(glm::vec3(0,0,roll));
-        }
-                 }
-             */
+                     }
+                 */
 
 
 
 
         }
+
 
     }
 
