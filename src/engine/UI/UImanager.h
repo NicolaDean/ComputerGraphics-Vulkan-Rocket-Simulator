@@ -35,7 +35,7 @@ namespace Engine{
         }
 
 
-        static void addButton(std::string texture_path,void (*action)(),float x, float y, float w,float h);
+        static void addButton(std::string texture_path,std::function<void()> action,float x, float y, float w, float h);
 
         static void addComponent(UIcomponent* comp){
             UImanager::interface.components.push_back(comp);

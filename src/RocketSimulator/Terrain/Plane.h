@@ -16,6 +16,7 @@ namespace Engine {
         int resolutionY;
 
     public:
+        Plane(){};
         Plane(int size,int resX,int resY,BufferManager buffManager) : Mesh(buffManager) {
             SIZE = size;
             resolutionX = resX;

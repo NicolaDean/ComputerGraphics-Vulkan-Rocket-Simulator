@@ -23,6 +23,7 @@ namespace Engine{
 
 
     public:
+        ProceduralTerrain(): Plane(){};
         ProceduralTerrain(int size,int resX,int resY,BufferManager buffManager) : Plane(size,resX,resY,buffManager){
             noises = PerlinNoise(resX,resY);
             noises.setSeed(seed); //TODO PUT A BUTTON THAT CHANGE SEED

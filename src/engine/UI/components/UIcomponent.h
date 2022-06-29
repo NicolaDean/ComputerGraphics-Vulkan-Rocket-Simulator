@@ -9,6 +9,7 @@
 #include "../../core/Objects/Texture.h"
 namespace Engine{
 
+
     class UIcomponent: public Engine::Mesh{
 
     protected:
@@ -17,8 +18,8 @@ namespace Engine{
         float width;
         float height;
 
-        void (*action)();
-
+        //void (*action)();
+        std::function<void()> action;
         float near_plane = 0.2;
         bool visible = false;
 
@@ -26,13 +27,14 @@ namespace Engine{
         Engine::Texture texture;
     public:
         UIcomponent(){};
-        UIcomponent(float x,float y,float w,float h,std::string text_path,void (*a)(),BufferManager bufferManager): Mesh(bufferManager){
+
+        UIcomponent(float x,float y,float w,float h,std::string text_path,std::function<void()> onClick,BufferManager bufferManager): Mesh(bufferManager){
             x_pos = x;
             y_pos = y;
             width = w;
             height = h;
 
-            action = a;
+            action = onClick;
             initVertices(x,y,w/(float)2,h/(float)2);
            /* vertices ={
                     {{-0.05f,-0.02f,-0.2f},{1.0f,0.0f,0.0f},{1,1}},

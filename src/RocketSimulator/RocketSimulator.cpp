@@ -35,16 +35,13 @@ namespace RocketSimulator{
                                                                  {&descManager});
 
        /****************LOAD ALL MODELS OF THE APP**********************************/
-
-       UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,-0.9f,0.2f,0.2f);
-
         //PLANE
-        ProceduralTerrain * p = new ProceduralTerrain(50,100,100,bufferManager);
-        p->init();
-        p->initDescriptor(terrainDescriptor);
-        p->bindPipeline(terrainPipeline);
-        p->setPos(glm::vec3(-15.0f,-0.5f,-15.0f));
-        Mesh::meshes->push_back(p);
+        Map * map = new Map(50,100,100,bufferManager);
+        map->init();
+        map->initDescriptor(terrainDescriptor);
+        map->bindPipeline(terrainPipeline);
+        map->setPos(glm::vec3(-15.0f,-0.5f,-15.0f));
+        Mesh::meshes->push_back(map);
 
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
@@ -57,7 +54,10 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,0.5);
-        m2->launch();
+
+        //BEFOR PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
+        auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
+        UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,-0.9f,0.2f,0.2f);
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
         //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
@@ -69,7 +69,4 @@ namespace RocketSimulator{
 
     }
 
-    void RocketSimulator::onLaunchClick() {
-        std::cout<<"LAUNCH ROCKET\n";
-    }
 }

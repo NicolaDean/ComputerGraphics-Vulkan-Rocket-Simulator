@@ -35,7 +35,7 @@ namespace Engine{
 
 
     public:
-        static std::vector<Mesh*>* meshes;
+        static std::vector<Mesh*>* meshes; //GLOBAL MESH ARRAY
 
 
         Mesh(): Entity(){}
@@ -56,6 +56,10 @@ namespace Engine{
 
 
         /********************GETTER SETTER********************************/
+
+        static void addMesh(Mesh * m){
+            meshes->push_back(m);
+        }
         UniformBufferManager* getUniformBufferManager(){
             return &uniformBufferManager;
         }

@@ -8,7 +8,7 @@
 namespace Engine{
     UImanager UImanager::interface = UImanager();
 
-    void UImanager::addButton(std::string texture_path,void (*action)(),float x, float y, float w, float h) {
+    void UImanager::addButton(std::string texture_path,std::function<void()> action,float x, float y, float w, float h) {
         UIcomponent * button = new UIcomponent(x,y,w,h,texture_path,action,interface.bufferManager);
         button->init();
         button->bindPipeline(interface.pipeline);

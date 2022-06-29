@@ -55,9 +55,9 @@ namespace Engine{
         }
 
         if(pos[1]>=(maxHeight+startHeight)*0.9){
-                //landingFactor=hdir[0]/(ttl*100);
-            landingFactory= glm::length(hdir)/(ttl*100);
-            landingFactorx= (pitch + M_PI) /(ttl*100);
+            //landingFactor=hdir[0]/(ttl*1000);
+            landingFactory= glm::length(hdir)/(ttl*1000);
+            landingFactorx= (pitch + M_PI) /(ttl*1000);
 
             landing=true;
         }
@@ -158,25 +158,25 @@ namespace Engine{
             }else if(orientation[1]-landingFactory>0){
                 std::cout<<"HDIR:"<<orientation[0]<<"\n";
 
-                    orientation -= glm::vec3(0,landingFactory,0);
-                }
-                else{
-                    setAngles(glm::vec3(0,0,roll));
-                }
-
-                /*
-                 * OR
-                 * if(landing==false){
-            setAngles(glm::vec3(hdir[0],hdir[0],roll));
-                    }else{
-            if(orientation[1]-landingFactor>0){
-                orientation -= glm::vec3(landingFactor,landingFactor,0);
+                orientation -= glm::vec3(0,landingFactory,0);
             }
             else{
                 setAngles(glm::vec3(0,0,roll));
             }
-                     }
-                 */
+
+            /*
+             * OR
+             * if(landing==false){
+        setAngles(glm::vec3(hdir[0],hdir[0],roll));
+                }else{
+        if(orientation[1]-landingFactor>0){
+            orientation -= glm::vec3(landingFactor,landingFactor,0);
+        }
+        else{
+            setAngles(glm::vec3(0,0,roll));
+        }
+                 }
+             */
 
 
 

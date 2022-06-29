@@ -10,7 +10,7 @@
 #include "Terrain/Plane.h"
 #include "Lights/Skybox.h"
 #include "Utils/PerlinNoise.h"
-#include "Terrain/ProceduralTerrain.h"
+#include "Terrain/Map.h"
 #include "../engine/UI/components/UIcomponent.h"
 
 
@@ -25,8 +25,6 @@ namespace RocketSimulator{
             //Some Code....
         }
 
-
-        static void onLaunchClick();
         void fff();
         void customInit();
         void customClose(){};

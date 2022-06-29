@@ -6,7 +6,6 @@
 
 namespace Engine{
 
-
     bool UIcomponent::isClicked(float X, float Y) {
         float screen_width = SwapChain::getSwapChainExtent().width;
         float screen_height = SwapChain::getSwapChainExtent().height;
@@ -40,6 +39,7 @@ namespace Engine{
         //Return true if point inside rectangle
         return clicked;
     }
+
 
     void UIcomponent::init() {
         texture.load();

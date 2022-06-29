@@ -11,6 +11,7 @@
 #include "core/Utils/printHelper.h"
 
 namespace Engine{
+
     /**
      * App class will contail all engine method public to the user (us)
      * For example methods to change views, to setup Camera, Load Models......
