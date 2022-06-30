@@ -15,32 +15,37 @@ namespace Engine{
     }
 
 
-    std::vector<Model*> Random3DModelPool::generatePool(int poolSize) {
+    void Random3DModelPool::generatePool(int poolsize) {
         srand(SEED);
-
-        int size = modelPaths.size();
-        for(int i=0;i<poolSize;i++){
-            int model_selector = (int)(((float)rand() / (float)RAND_MAX)*size);
-            std::cout<<modelPaths[model_selector]<<"\n";
-            Model* m = new Model(modelPaths[model_selector],"./src/Textures/desert.jpeg",bufferManager);
+        poolSize = poolsize;
+        for(auto selector: modelPaths){
+            std::cout<<selector<<"\n";
+            Model* m = new Model(selector,"./src/Textures/desert.jpeg",bufferManager);
             models.push_back(m);
         }
-
-        return  models;
     }
 
-    void Random3DModelPool::initModels(GraphicPipelineCustom* pipeline, DescriptorManager* descriptor) {
-        int i=-5;
+    std::vector<Model*> Random3DModelPool::initModels(GraphicPipelineCustom* pipeline, DescriptorManager* descriptor) {
 
         for(auto m: models){
             m->init();
             m->setScale(0.5);
-            m->setPos(glm::vec3(i,4,0));
+            m->setPos(glm::vec3(0,4,0));
             m->initDescriptor(descriptor);
             m->bindPipeline(pipeline);
             Mesh::addMesh(m);
-            i++;
         }
+
+        int size = modelPaths.size();
+        //LIKE A SORT OF INSTANCE RENDERING WE CLONE VERICES OF MODEL AND ONLY RECREATE DESCRIPTOR SET
+        for(int i=0;i<poolSize;i++){
+            int model_selector = (int)(((float)rand() / (float)RAND_MAX)*size);
+            Model * clone  = models.at(model_selector)->cloneModel(bufferManager,descriptor);
+            models.push_back(clone);
+
+        }
+
+        return  models;
     }
 
 }

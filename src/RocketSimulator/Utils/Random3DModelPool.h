@@ -15,6 +15,7 @@ namespace Engine{
         int width;
         int height;
 
+        int poolSize;
         int SEED;
         std::vector<std::string> modelPaths;
         std::vector<Model*> models;
@@ -31,8 +32,8 @@ namespace Engine{
         }
 
         void init();
-        void initModels(GraphicPipelineCustom* pipeline,DescriptorManager* descriptor);
-        std::vector<Model*> generatePool(int poolSize);
+        std::vector<Model*> initModels(GraphicPipelineCustom* pipeline,DescriptorManager* descriptor);
+        void generatePool(int poolSize);
 
         void setSeed(int seed){
             SEED = seed;

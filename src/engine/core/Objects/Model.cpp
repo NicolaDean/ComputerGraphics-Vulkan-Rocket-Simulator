@@ -14,17 +14,31 @@ namespace Engine{
         Mesh::init();
     }
 
+    void Model::initClone(){
+        isClone = true;
+        Mesh::init();
+    }
+
     void Model::initDescriptor(DescriptorManager* descriptorManager) {
         descriptorManager->pushElementDescriptor({0, UNIFORM, sizeof(UniformBufferObject), nullptr});
         descriptorManager->pushElementDescriptor({1, TEXTURE, 0, &texture});
         descriptorSets = descriptorManager->createAndGetDescriptorSets(&uniformBufferManager);
     }
 
-
+    Model* Model::cloneModel(BufferManager buff,DescriptorManager* desc){
+        Model *m = new Model(vertices,indices,buff,texture);
+        m->initClone();
+        m->initDescriptor(desc);
+        m->bindPipeline(pipeline);
+        Mesh::addMesh(m);
+        return m;
+    }
 
     void Model::close() {
         Mesh::close();
-        texture.clean();
+        if(!isClone) {
+            texture.clean();
+        }
         std::cout<<"Close model "<<modelPath<<"\n";
     }
 
