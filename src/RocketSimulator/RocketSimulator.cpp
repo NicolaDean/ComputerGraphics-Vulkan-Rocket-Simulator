@@ -14,10 +14,10 @@ namespace RocketSimulator{
 
         /****************CAMERA SETTINGS*******************************************/
         Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam0->setPosition(glm::vec3(50,1,0));
+        cam0->setPosition(glm::vec3(1,1,1));
         Camera::addCamera(cam0); //CAM 0
        // Camera::currentCam->setPosition({1,1,-1});
-        Camera::currentCam->setAngle({0.1,0,0});
+       // Camera::currentCam->setAngle({0.1,0,0});
         Camera::currentCam->setNearPlane(0.1);
         Camera::currentCam->setFarPlane(21.0);
 
@@ -70,6 +70,8 @@ namespace RocketSimulator{
         sky->initDescriptor(&descManager);
         sky->bindPipeline(skyboxPipeline);
         Mesh::meshes->push_back(sky);
+
+
 
         //BEFOR PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2

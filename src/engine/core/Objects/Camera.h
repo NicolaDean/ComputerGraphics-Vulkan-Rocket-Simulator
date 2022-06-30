@@ -57,7 +57,7 @@ namespace Engine{
         //Maybe put those in entity equal for model and camera
         void updateCamDir();
         void setPosition(glm::vec3 p);
-        void setAngle(glm::vec3 a){this->CamPos = a;}
+        void setAngle(glm::vec3 a){CamAng = a;}
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);
         void setPerspective(PerspectiveType p);

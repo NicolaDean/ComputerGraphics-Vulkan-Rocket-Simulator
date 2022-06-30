@@ -62,14 +62,6 @@ namespace Engine{
         setCamera(this);
     }
 
-    void Camera::setPosition(glm::vec3 p) {
-        CamPos = p;
-        std::cout<<"OOK  CAmera pos setted"<<"\n";
-    }
-    void Camera::setAngle(glm::vec3 a){
-        CamAng=a;
-    }
-
     void Camera::switchType(CameraType t){
         type = t;
         if(type == LOOK_AT_CAMERA){
@@ -113,6 +105,7 @@ namespace Engine{
 
     void Camera::setPosition(glm::vec3 p){
         CamPos = p;
+
     }
 
     void Camera::onW(float dt) {
@@ -181,6 +174,7 @@ namespace Engine{
 
     glm::mat4 Camera::getViewMatrix(){
         updateCamDir();
+        //std::cout<<"CAM:"<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<"\n";
         //TODO PUT IF ON CAM TYPE
         //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
         return LookInDirMat(CamPos,CamAng);

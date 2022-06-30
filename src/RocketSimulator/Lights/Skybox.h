@@ -12,6 +12,8 @@ namespace Engine{
 
         std::string  texturePath;
     public:
+        static std::vector<Mesh*> sky_list;
+        static int current;
         Skybox(BufferManager buff,std::string texturePath): Model(buff){
             modelPath = "./src/Models/SkyBoxCube.obj";
             texture = Texture(texturePath,buff);
@@ -19,10 +21,19 @@ namespace Engine{
 
             notCalculateWorldMatrix();
             modelMatrix = Camera::currentCam->getPerspectiveMatric() * Camera::currentCam->getCamPosTranslate();
+            Skybox::sky_list.push_back(this);
         }
 
         void init();
+        static void rotateSky(){
+            //Remove old sky
+            std::remove(Mesh::meshes->begin(), Mesh::meshes->end(), sky_list.at(current));
 
+            //Increment counter
+            current = (current+1)%3;
+            //Add new sky
+            Mesh::addMesh(sky_list.at(current));
+        }
         void loadCubicTexture(){
 
         }

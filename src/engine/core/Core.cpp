@@ -102,7 +102,6 @@ namespace Engine{
         UImanager::init(bufferManager,UIpipeline,&descManager);
         customInit();
 
-        Camera::setCamera(new Camera());
         manager.createCommandBuffers();
         manager.recordCommandBuffers();
         //Create Renderer (to draw Frames)

@@ -6,6 +6,8 @@
 
 namespace Engine{
 
+    std::vector<Mesh*> Skybox::sky_list;
+    int Skybox::current = 0;
     void Skybox::init() {
         std::cout<<"Loading SkyBox\n";
         loadModel();

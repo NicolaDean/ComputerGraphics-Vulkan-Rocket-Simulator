@@ -97,7 +97,7 @@ namespace Engine{
             //https://en.wikipedia.org/wiki/Projectile_motion#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
 
             //NEW METHOD TO PRINT VEC3 (we can add in Printer all print of class helper methods)
-            //Printer::print("Rocket orientation",orientation);
+            Printer::print("Rocket orientation",orientation);
 
 
 
