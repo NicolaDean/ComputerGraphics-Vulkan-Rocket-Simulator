@@ -49,7 +49,7 @@ namespace RocketSimulator{
         map->initDescriptor(terrainDescriptor);
         map->bindPipeline(terrainPipeline);
         map->setPos(glm::vec3(-(mapSize/2),0,-(mapSize/2)));
-        //map->populateMapWithRandomObject(&descManager,&graphicPipelineCustom);
+        map->populateMapWithRandomObject(&descManager,&graphicPipelineCustom);
         Mesh::meshes->push_back(map);
 
         //MODEL 2 ROCKET
@@ -71,7 +71,6 @@ namespace RocketSimulator{
         sky->initDescriptor(&descManager);
         sky->bindPipeline(skyboxPipeline);
         Mesh::meshes->push_back(sky);
-
 
         Skybox* sky2 =new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
         sky2->init();
