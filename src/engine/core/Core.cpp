@@ -186,7 +186,7 @@ namespace Engine{
         customClose();
         manager.close();
         //Uniform Buffer
-        textureManager.close();
+        //textureManager.close();
         //LayoutSet and Pool Descriptor
         descManager.closeDescriptorPool();
         descManager.close();
