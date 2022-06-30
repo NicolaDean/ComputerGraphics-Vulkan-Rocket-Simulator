@@ -20,6 +20,7 @@ namespace Engine{
         Model M1;
         Model M2;
         DescriptorManager * descriptorManager;
+        DescriptorManager * globalDescriptor;
 
     public:
 
@@ -62,7 +63,9 @@ namespace Engine{
         void setDescriptor(DescriptorManager * descriptorMng){
             descriptorManager = descriptorMng;
         }
-
+        void setGlobalDescriptor(DescriptorManager * descriptorMng){
+            globalDescriptor = descriptorMng;
+        }
         std::vector<VkCommandBuffer> getCommandBuffers(){
             return commandBuffers;
         }

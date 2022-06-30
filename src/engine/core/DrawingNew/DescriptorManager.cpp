@@ -20,6 +20,7 @@ namespace Engine{
     void DescriptorManager::setAsGlobal() {
         DescriptorManager::setAsGlobal(this);
     }
+
     void DescriptorManager::setAsGlobal(DescriptorManager* d) {
        globalDescriptor = d;
     }

@@ -80,6 +80,7 @@ namespace Engine{
         bufferManager = BufferManager(&logicDeviceManager,devicesManager.getSelectedDevice(),manager.getCommandPool());
         textureManager = TextureManager(bufferManager);
 
+        //**************CREATE DESCRIPTOR MANAGER*************************************************
         //Create Descriptor Manager and DescriptorPool
         descManager = DescriptorManager(bufferManager,&swapChain);
         descManager.createDescriptorPool(logicDeviceManager.getDevice());
@@ -89,7 +90,15 @@ namespace Engine{
         descManager.pushBindingDescriptor({1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT});
 
         descManager.createDescriptorSetLayouts();
-        descManager.setAsGlobal();
+
+
+        //************GLOBAL UNIFORM BUFFER DESCRIPTOR*************************************************
+        globalDescriptor = descriptorFactory();
+        globalDescriptor->pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS});
+        globalDescriptor->createDescriptorSetLayouts();
+        globalDescriptor->setAsGlobal();
+        manager.setGlobalDescriptor(globalDescriptor);
+
 
         graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/vertShader.spv",
                                                     "./src/Shaders/compiledShaders/fragShader.spv",
@@ -99,9 +108,12 @@ namespace Engine{
                                                             {&descManager});
         manager.setGraphicPipeline(&graphicPipelineCustom);
 
+        //INITIALIZE UI
         UImanager::init(bufferManager,UIpipeline,&descManager);
+        //INITIALIZE USER SCENE OBJECT PIPELINE AND DESCRIPTOR
         customInit();
 
+        //RECORD COMMAND BUFFER
         manager.createCommandBuffers();
         manager.recordCommandBuffers();
         //Create Renderer (to draw Frames)

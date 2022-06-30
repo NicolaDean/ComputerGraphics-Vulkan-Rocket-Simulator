@@ -16,4 +16,17 @@ namespace Engine{
         std::cout<<"SkyBox Loaded\n";
         Mesh::init();
     }
+
+    void Skybox::rotateSky() {
+        std::cout<<"Address SKY 1: " <<sky_list.at(current)<<"\n";
+        //Remove old sky
+        //std::remove(Mesh::meshes->begin(), Mesh::meshes->end(),sky_list.at(current) );
+        Mesh::meshes->erase(std::remove(Mesh::meshes->begin(), Mesh::meshes->end(),sky_list.at(current)), Mesh::meshes->end());
+        //Mesh::meshes->erase(Mesh::meshes->begin() + current);
+        //Increment counter
+        current = (current+1)%3;
+        std::cout<<"Address SKY 2: " <<sky_list.at(current)<<"\n";
+        //Add new sky
+        Mesh::addMesh(sky_list.at(current));
+    }
 }

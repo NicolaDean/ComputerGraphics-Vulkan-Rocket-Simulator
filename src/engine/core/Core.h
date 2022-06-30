@@ -54,7 +54,7 @@ namespace Engine{
         //NEW
         CommandManager manager;
         DescriptorManager descManager;
-
+        DescriptorManager* globalDescriptor;
     public:
         Core(){}
 

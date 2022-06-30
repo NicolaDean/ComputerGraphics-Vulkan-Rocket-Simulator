@@ -16,7 +16,7 @@ namespace Engine{
 
     //TODO, put create GLOBAL UNIFORM (or other type of uniform)
     void UniformBuffer::createUniformBuffers() {
-        VkDeviceSize bufferSize = sizeof(UniformBufferObject);
+        VkDeviceSize bufferSize = sizeof(UniformBufferObject); //TODO PUT HERE TYPE
         uniformBuffers.resize(Constants::IMAGE_COUNT);
         uniformBuffersMemory.resize(Constants::IMAGE_COUNT);
 

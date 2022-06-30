@@ -122,6 +122,7 @@ namespace Engine{
         }
     }
     void CommandManager::populateCommandBuffers(int currentImage,std::vector<Mesh*> meshes) {
+
         int i=0;
         for (auto mesh : meshes) // access by reference to avoid copying
         {
