@@ -19,7 +19,7 @@ namespace RocketSimulator{
        // Camera::currentCam->setPosition({1,1,-1});
        // Camera::currentCam->setAngle({0.1,0,0});
         Camera::currentCam->setNearPlane(0.1);
-        Camera::currentCam->setFarPlane(21.0);
+        Camera::currentCam->setFarPlane(300.0);
 
         Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
         Camera::addCamera(cam1); //CAM 1
@@ -42,8 +42,8 @@ namespace RocketSimulator{
                                                                  {&descManager});
 
        /****************LOAD ALL MODELS OF THE APP**********************************/
-        //PLANE
-        Map * map = new Map(50,100,100,bufferManager);
+        //PLANE (Size should be half the resolution for nice effect)
+        Map * map = new Map(20,40,40,bufferManager);
         map->init();
         map->initDescriptor(terrainDescriptor);
         map->bindPipeline(terrainPipeline);

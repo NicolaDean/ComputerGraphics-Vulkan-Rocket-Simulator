@@ -17,13 +17,10 @@ layout(location = 2) out vec3 fragTexCoord;
 void main()
 {
     mat4 m = ubo.view;
-    // Cancel out translation
+    // Cancel out translation -> ONLY ANGLES
     m[3] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-    fragTexCoord = pos*100;
-    // Convert cubemap coordinates into Vulkan coordinate space
-    //fragTexCoord.xy *= -1.0;
-    //TODO scale the skybox
-    gl_Position = ubo.proj * m * vec4(pos.xyz*100, 1.0);
-    //gl_Position = (ubo.model * vec4(pos, 1.0)).xyww;
+    //Change scale for resize skybox
+    int scale = 100;
+    fragTexCoord = pos*scale;
+    gl_Position = ubo.proj * m * vec4(pos.xyz*scale, 1.0);
 }

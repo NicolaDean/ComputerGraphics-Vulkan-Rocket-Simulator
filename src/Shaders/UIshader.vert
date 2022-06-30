@@ -22,10 +22,13 @@ layout(location = 1) out vec3 fragNorm;
 layout(location = 2) out vec2 fragTexCoord;
 
 void main() {
-    //gl_Position = ubo.proj  * vec4(pos, 1.0);
+
+    //POS IS IN VIEWPORT COORDINATES NOT WORLD COORDINATES
     gl_Position =  vec4(pos, 1.0);
-    //gl_Position = vec4(positions[gl_VertexIndex], 0.0, 1.0);
+    fragTexCoord = texCoord;
+
+    //NOT USEFUL
     fragViewDir  = (ubo.view[3]).xyz - (ubo.model * vec4(pos,  1.0)).xyz;
     fragNorm     = norm;
-    fragTexCoord = texCoord;
+
 }
