@@ -62,6 +62,13 @@ namespace Engine{
         setCamera(this);
     }
 
+    void Camera::setPosition(glm::vec3 p) {
+        CamPos = p;
+        std::cout<<"OOK  CAmera pos setted"<<"\n";
+    }
+    void Camera::setAngle(glm::vec3 a){
+        CamAng=a;
+    }
 
     void Camera::switchType(CameraType t){
         type = t;

@@ -49,7 +49,7 @@ namespace Engine{
         }
         void launch(){
             std::cout<<"LAUNCHED ROCKETTTTTTT\n";
-
+            launched=true;
         }
         virtual void update(float dt);
         void close();
