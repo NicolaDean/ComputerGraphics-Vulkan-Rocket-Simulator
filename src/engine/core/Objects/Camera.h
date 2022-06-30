@@ -81,7 +81,7 @@ namespace Engine{
 
         glm::mat4 getViewMatrix();
         glm::mat4 getPerspectiveMatric();
-        //void setTarget(Entity* target_model);
+        //void setTarget(Mesh* target_model);
         //void setTarget(glm::vec3 target_position);
         //void setUp(glm::vec3 up);
         // -> eg if we want a camera that track the rocket from bottom following and alligning to it(like in space x lives)

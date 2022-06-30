@@ -42,12 +42,13 @@ namespace RocketSimulator{
                                                                  {&descManager});
 
        /****************LOAD ALL MODELS OF THE APP**********************************/
+       float mapSize = 50;
         //PLANE (Size should be half the resolution for nice effect)
-        Map * map = new Map(20,40,40,bufferManager);
+        Map * map = new Map(mapSize,2*mapSize,2*mapSize,bufferManager);
         map->init();
         map->initDescriptor(terrainDescriptor);
         map->bindPipeline(terrainPipeline);
-        map->setPos(glm::vec3(-15.0f,-0.5f,-15.0f));
+        map->setPos(glm::vec3(-(mapSize/2),0,-(mapSize/2)));
         map->populateMapWithRandomObject(&descManager,&graphicPipelineCustom);
         Mesh::meshes->push_back(map);
 
@@ -57,7 +58,7 @@ namespace RocketSimulator{
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
         m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
-        m2->setScale(0.03);
+        m2->setScale(0.05);
         m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);

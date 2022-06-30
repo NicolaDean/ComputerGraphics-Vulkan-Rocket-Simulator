@@ -28,9 +28,20 @@ namespace Engine{
                                                         "./src/Models/Desert/cactus02.obj",
                                                         "./src/Models/Desert/cactus03.obj"},buff);
             cactusPools.init();
+
+            rockPools = Random3DModelPool(resX,resY,{"./src/Models/Desert/rock01.obj",
+                                                     "./src/Models/Desert/rock02.obj",
+                                                     "./src/Models/Desert/rock03.obj",
+                                                     "./src/Models/Desert/rock04.obj",
+                                                     "./src/Models/Desert/rock05.obj",
+                                                     "./src/Models/Desert/rock06.obj",
+                                                     "./src/Models/Desert/rock07.obj",
+                                                     "./src/Models/Desert/rock08.obj"},buff);
+            rockPools.init();
         }
 
         void populateMapWithRandomObject(DescriptorManager* manager, GraphicPipelineCustom* pipelineCustom);
+        void positionModel(Model * m);
         static float getMapHeight(int x, int z){
             return 4;
             //singleton_map->getHeight(x,z); // TODO UNDERSTAND HOW GET THE MAP HEIGHT FROM COORDINATES

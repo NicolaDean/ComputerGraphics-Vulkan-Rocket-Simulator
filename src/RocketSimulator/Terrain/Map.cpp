@@ -9,24 +9,35 @@ namespace Engine
     Map* Map::singleton_map = new Map();
 
 
+    void Map::positionModel(Model *m) {
+        float grid_x,grid_y;
+
+        grid_x = ((float)rand() / (float)RAND_MAX) * resolutionX;
+        grid_y = ((float)rand() / (float)RAND_MAX) * resolutionY;
+
+        float posX = ((float)grid_x/((float)resolutionX -1)) * SIZE;
+        float posY = ((float)grid_y/((float)resolutionY -1)) * SIZE;
+        float h = ProceduralTerrain::getHeight(posX,posY);
+
+        std::cout<<std::dec<<"("<<posX<<","<<posY<<","<<h<<")\n";
+
+
+        m->setPos(glm::vec3(posX - SIZE/2,h,posY- SIZE/2));
+        m->setScale(0.5);
+    }
     void Map::populateMapWithRandomObject(DescriptorManager *manager, GraphicPipelineCustom *pipelineCustom) {
         std::vector<Model*> models = cactusPools.generatePool(20);
         cactusPools.initModels(pipelineCustom,manager);
 
         for(auto m : models){
-            float x,y;
+            positionModel(m);
+        }
 
-            x = ((float)rand() / (float)RAND_MAX) * 2 - 1;
-            y = ((float)rand() / (float)RAND_MAX) * 2 - 1;
+        std::vector<Model*> rocks = rockPools.generatePool(20);
+        rockPools.initModels(pipelineCustom,manager);
 
-            x = x * (SIZE/2);
-            y = y * (SIZE/2);
-
-            std::cout<<std::dec<<"("<<x<<","<<y<<")\n";
-            int h = this->getHeight(x,y);
-
-            m->setPos(glm::vec3(x,h,y));
-            m->setScale(0.1);
+        for(auto m : rocks){
+            positionModel(m);
         }
     }
 }
