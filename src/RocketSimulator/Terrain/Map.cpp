@@ -10,7 +10,7 @@ namespace Engine
 
 
     void Map::populateMapWithRandomObject(DescriptorManager *manager, GraphicPipelineCustom *pipelineCustom) {
-        std::vector<Model*> models = cactusPools.generatePool(100);
+        std::vector<Model*> models = cactusPools.generatePool(20);
         cactusPools.initModels(pipelineCustom,manager);
 
         for(auto m : models){

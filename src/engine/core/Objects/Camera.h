@@ -46,16 +46,17 @@ namespace Engine{
         /*************CAMERA CONSTRUCTORS********************/
         Camera();
         Camera(CameraType t,PerspectiveType p);
-        static void setCamera(Camera* cam);
 
+        /*************SWITCH CAMERA**********************/
+        static std::vector<Camera*> cameras; //List of existing cameras
+        static void addCamera(Camera* cam); //Add a camera to list of cameras
+        static void switchCamera(int num); //Switch to a specific camera
+        static void setCamera(Camera* cam); // DEPRECATED (set a camera as current cam)
 
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera
         void updateCamDir();
-        void setPosition(glm::vec3 p){
-            this->CamPos = p;
-            std::cout<<"OOK  CAmera pos setted\n";
-        }
+        void setPosition(glm::vec3 p);
         void setAngle(glm::vec3 a){this->CamPos = a;}
         /***************CAMERA SETTINGS******************/
         void switchType(CameraType t);

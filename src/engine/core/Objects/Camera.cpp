@@ -7,7 +7,7 @@
 
 namespace Engine{
 
-
+    std::vector<Camera *> Camera::cameras;
     /**
  * Create a look in direction matrix
  * @param Pos Position of the camera
@@ -90,6 +90,22 @@ namespace Engine{
 
     void Camera::setCamera(Camera* cam){
         currentCam = cam;
+    }
+
+    void Camera::addCamera(Camera *cam) {
+        cameras.push_back(cam);
+        currentCam = cam;
+    }
+
+    void Camera::switchCamera(int num) {
+        if(num<cameras.size())
+            currentCam = cameras.at(num);
+        else
+            std::runtime_error("CAMERA DOSNT EXIST");
+    }
+
+    void Camera::setPosition(glm::vec3 p){
+        CamPos = p;
     }
 
     void Camera::onW(float dt) {

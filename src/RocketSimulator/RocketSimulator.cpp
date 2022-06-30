@@ -13,11 +13,18 @@ namespace RocketSimulator{
     void RocketSimulator::customInit() {
 
         /****************CAMERA SETTINGS*******************************************/
-        Camera::setCamera(new Camera(LOOK_IN_DIRECTION,ORTOGONALE));
-        Camera::currentCam->setPosition({1,1,-1});
+        Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam0->setPosition(glm::vec3(50,1,0));
+        Camera::addCamera(cam0); //CAM 0
+       // Camera::currentCam->setPosition({1,1,-1});
         Camera::currentCam->setAngle({0.1,0,0});
         Camera::currentCam->setNearPlane(0.1);
         Camera::currentCam->setFarPlane(21.0);
+
+        Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        Camera::addCamera(cam1); //CAM 1
+
+        Camera::switchCamera(0); //SET CAM 0 as current Cam
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
 
         //Descriptor For Terrain: (Only Uniform Buffer, No Texture)
