@@ -81,12 +81,16 @@ namespace Engine{
     }
     //TODO ADD A GRAPHIC PIPELINE WITH ONLY VERTEX/INDEX WITH NO TEXTURE (FOR THE TERRAIN GENERATOR)
     void App::updateMeshesPos(int currentFrame) {
-        //SIMPLY UPDATE UNIFOMR BUFFERS OF ALL MESHES
+        //******UPDATE LIGHTS DATA THROUGH UNIFORM BUFFER************
+        globalDescriptor->getUniformBuffer().updateGlobal(currentFrame);
+
+        //*******SIMPLY UPDATE UNIFOMR BUFFERS OF ALL MESHES**********
         for (auto mesh : *Mesh::meshes)
         {
-            mesh->move();
             mesh->updateUniformBuffer(currentFrame);
         }
+
+        /********MOUSE CLICK*************************/
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         bool click = false;
@@ -94,6 +98,7 @@ namespace Engine{
         if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
             click = true;
         }
+        /********Buttons  CLICK Handle*************************/
         for(auto mesh : UImanager::interface.getUI()){
             mesh->updateUniformBuffer(currentFrame);
             if(click) {

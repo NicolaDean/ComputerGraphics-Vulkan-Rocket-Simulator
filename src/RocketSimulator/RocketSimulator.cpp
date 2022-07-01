@@ -36,10 +36,10 @@ namespace RocketSimulator{
         std::cout<<"Creating new Terrain Pipeline\n";
        GraphicPipelineCustom* terrainPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertNoTexture.spv",
                                                    "./src/Shaders/compiledShaders/fragNoTexture.spv",
-                                                   {terrainDescriptor});
+                                                   {globalDescriptor,terrainDescriptor});
        GraphicPipelineCustom* skyboxPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertSkybox.spv",
                                                                  "./src/Shaders/compiledShaders/fragSkybox.spv",
-                                                                 {&descManager});
+                                                                 {globalDescriptor,&descManager});
 
        /****************LOAD ALL MODELS OF THE APP**********************************/
        float mapSize = 50;

@@ -58,7 +58,7 @@ namespace Engine{
         // Create uniform buffer
         for (int j = 0; j < elementsDescriptors.size(); j++) {
             if(elementsDescriptors[j].type == UNIFORM) {
-                manager->pushUniformBuffer(j);
+                manager->pushUniformBuffer(j,elementsDescriptors[j].size);
             }
         }
 

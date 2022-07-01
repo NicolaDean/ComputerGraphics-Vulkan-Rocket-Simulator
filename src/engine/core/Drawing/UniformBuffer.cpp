@@ -15,8 +15,8 @@ namespace Engine{
     }
 
     //TODO, put create GLOBAL UNIFORM (or other type of uniform)
-    void UniformBuffer::createUniformBuffers() {
-        VkDeviceSize bufferSize = sizeof(UniformBufferObject); //TODO PUT HERE TYPE
+    void UniformBuffer::createUniformBuffers(int buffSize) {
+        VkDeviceSize bufferSize = buffSize; //TODO PUT HERE TYPE
         uniformBuffers.resize(Constants::IMAGE_COUNT);
         uniformBuffersMemory.resize(Constants::IMAGE_COUNT);
 
@@ -25,16 +25,19 @@ namespace Engine{
         }
     }
 
-
+    void UniformBuffer::updateGlobalUniformBuffer(uint32_t currentImage) {
+        GlobalUniformBufferObject gubo{};
+        gubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
+        gubo.proj = Camera::currentCam->getPerspectiveMatric();
+        gubo.lightColor = glm::vec4(1.0f,1.0f,1.0f,1);
+        void* data;
+        vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(gubo), 0, &data);
+        memcpy(data, &gubo, sizeof(gubo));
+        vkUnmapMemory(*device, uniformBuffersMemory[currentImage]);
+    }
     void UniformBuffer::updateUniformBuffer(uint32_t currentImage,glm::mat4 modelMatrix) {
-        static auto startTime = std::chrono::high_resolution_clock::now();
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
-
         UniformBufferObject ubo{};
         ubo.model = modelMatrix;
-        ubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
-        ubo.proj = Camera::currentCam->getPerspectiveMatric();
 
         void* data;
         vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
@@ -43,21 +46,16 @@ namespace Engine{
     }
 
     void UniformBuffer::updateUniformBufferAbsolutePos(uint32_t currentImage,glm::mat4 modelMatrix){
-        static auto startTime = std::chrono::high_resolution_clock::now();
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
-
         UniformBufferObject ubo{};
         ubo.model = modelMatrix;
-        ubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
-
-        //ONLY MODEL MATRIX
-
-        //TODO clean up this code
 
         void* data;
         vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(ubo), 0, &data);
         memcpy(data, &ubo, sizeof(ubo));
         vkUnmapMemory(*device, uniformBuffersMemory[currentImage]);
+    }
+
+    void UniformBuffer::copyBufferToMemory(uint32_t currentImage){
+        //TODO CREATE A UNIFIED FUNCTION TO SAVE BUFFER TO MEMROY
     }
 }

@@ -123,6 +123,21 @@ namespace Engine{
     }
     void CommandManager::populateCommandBuffers(int currentImage,std::vector<Mesh*> meshes) {
 
+        std::vector<VkDescriptorSet> globalDescriptorSets = DescriptorManager::getGlobalDescriptor()->getDescriptorSet();
+
+
+        /*vkCmdBindDescriptorSets(commandBuffers[currentImage],
+                                VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                graphicPipeline->getPipelineLayout(), 0, 1, &(globalDescriptorSets[currentImage]),
+                                0, nullptr);
+
+        for(auto pip : GraphicPipelineCustom::userPipelines){
+            vkCmdBindDescriptorSets(commandBuffers[currentImage],
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    pip->getPipelineLayout(), 0, 1, &(globalDescriptorSets[currentImage]),
+                                    0, nullptr);
+        }*/
+
         int i=0;
         for (auto mesh : meshes) // access by reference to avoid copying
         {
@@ -130,6 +145,11 @@ namespace Engine{
             //BIND PIPELINE TO COMMAND BUFFER
             vkCmdBindPipeline(commandBuffers[currentImage], VK_PIPELINE_BIND_POINT_GRAPHICS,
                               mesh->getPipeline()->getGraphicPipeline());
+
+            vkCmdBindDescriptorSets(commandBuffers[currentImage],
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    mesh->getPipeline()->getPipelineLayout(), 0, 1, &(globalDescriptorSets[currentImage]),
+                                    0, nullptr);
             //BIND VERTEX BAFFER
             VkBuffer vertexBuffers[] = {mesh->getVertexBuffer()};
             VkDeviceSize offsets[] = {0};
@@ -146,7 +166,7 @@ namespace Engine{
 
             vkCmdBindDescriptorSets(commandBuffers[currentImage],
                                     VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                    mesh->getPipeline()->getPipelineLayout(), 0, 1, &(descriptorSets[currentImage]),
+                                    mesh->getPipeline()->getPipelineLayout(), 1, 1, &(descriptorSets[currentImage]),
                                     0, nullptr);
 
 

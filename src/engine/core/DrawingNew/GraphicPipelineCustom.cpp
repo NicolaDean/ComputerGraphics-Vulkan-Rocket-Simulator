@@ -8,6 +8,7 @@
 
 namespace Engine{
 
+    std::vector<GraphicPipelineCustom*> GraphicPipelineCustom::userPipelines;
 
     void GraphicPipelineCustom::recreate(SwapChain * swap) {
         swapChain = swap;

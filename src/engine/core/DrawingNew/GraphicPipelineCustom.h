@@ -25,6 +25,8 @@ namespace Engine{
         std::vector<DescriptorManager *> descriptors;
 
     public:
+        static std::vector<GraphicPipelineCustom*> userPipelines;
+
         GraphicPipelineCustom(){};
         GraphicPipelineCustom(VkDevice * dev,SwapChain * swap){
             device = dev;

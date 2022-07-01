@@ -1,6 +1,14 @@
 #version 450
 
-layout(binding = 1) uniform sampler2D texSampler;
+layout(set = 0, binding = 0) uniform GlobalUniformBuffer {
+    mat4 view;
+    mat4 proj;
+    vec3 lightDir;
+    vec4 lightColor;
+    vec3 eyePos;
+} gubo;
+
+layout(set=1,binding = 1) uniform sampler2D texSampler;
 
 layout(location = 0) in vec3 fragViewDir;
 layout(location = 1) flat in vec3 fragColor;

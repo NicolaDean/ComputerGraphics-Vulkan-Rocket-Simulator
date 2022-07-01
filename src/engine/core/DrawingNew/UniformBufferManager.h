@@ -21,7 +21,7 @@ namespace Engine{
         }
 
         void clean();
-        void pushUniformBuffer(int i);
+        void pushUniformBuffer(int i,int buffSize);
 
         void resizeVector(int size){
             uniformBuffers.resize(size);
@@ -40,6 +40,7 @@ namespace Engine{
 
         /*******UPDATE METHOD****/
         void update(uint32_t currentImage,glm::mat4 modelMatrix);
+        void updateGlobal(uint32_t currentImage);
         void updateAbsolute(uint32_t currentImage,glm::mat4 modelMatrix);
     };
 }

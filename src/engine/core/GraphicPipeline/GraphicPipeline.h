@@ -41,7 +41,7 @@ namespace Engine{
         void createRenderPass(VkFormat swapChainImageFormat,DepthImage depthImage);
         void createUniformBuffers(BufferManager bufferMng){
             uniformBuffer = UniformBuffer(bufferMng);
-            uniformBuffer.createUniformBuffers();
+            uniformBuffer.createUniformBuffers(sizeof(UniformBufferObject));
         };
 
         void createDescriptorSetLayout(){descriptor.createDescriptorSetLayout();};

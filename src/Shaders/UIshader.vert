@@ -2,8 +2,6 @@
 
 layout(binding = 0) uniform UniformBufferObject {
     mat4 model;
-    mat4 view;
-    mat4 proj;
 } ubo;
 
 vec2 positions[4] = vec2[](
@@ -27,8 +25,5 @@ void main() {
     gl_Position =  vec4(pos, 1.0);
     fragTexCoord = texCoord;
 
-    //NOT USEFUL
-    fragViewDir  = (ubo.view[3]).xyz - (ubo.model * vec4(pos,  1.0)).xyz;
-    fragNorm     = norm;
 
 }

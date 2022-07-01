@@ -96,13 +96,15 @@ namespace Engine{
         globalDescriptor = descriptorFactory();
         globalDescriptor->pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS});
         globalDescriptor->createDescriptorSetLayouts();
+        globalDescriptor->pushElementDescriptor({0, UNIFORM, sizeof(GlobalUniformBufferObject), nullptr});
+        globalDescriptor->createDescriptorSets();
         globalDescriptor->setAsGlobal();
         manager.setGlobalDescriptor(globalDescriptor);
 
 
         graphicPipelineCustom.createGraphicPipeline("./src/Shaders/compiledShaders/vertShader.spv",
                                                     "./src/Shaders/compiledShaders/fragShader.spv",
-                                                    {&descManager});
+                                                    {globalDescriptor,&descManager});
         GraphicPipelineCustom* UIpipeline = pipelineFactory("./src/Shaders/compiledShaders/vertUIshader.spv",
                                                             "./src/Shaders/compiledShaders/fragUIshader.spv",
                                                             {&descManager});
@@ -276,7 +278,7 @@ namespace Engine{
 
     void Core::closeUserPipelines() {
         std::cout<<"CLOSE USER PIPELINES\n";
-        for(auto p : userPipelines){
+        for(auto p : GraphicPipelineCustom::userPipelines){
             p->close();
         }
         graphicPipelineCustom.close();
@@ -291,7 +293,7 @@ namespace Engine{
         graphicPipelineCustom.recreate(&swapChain);
         std::cout<<"MAIN PIPELINE RECREATED\n";
         //Recreate all the graphics pipelines
-        for(auto p : userPipelines){
+        for(auto p : GraphicPipelineCustom::userPipelines){
             p->setRenderPass(graphicPipelineCustom.getRenderPass());
             p->recreate(&swapChain);
         }
@@ -304,7 +306,7 @@ namespace Engine{
         pipeline->setRenderPass(graphicPipelineCustom.getRenderPass());
         pipeline->createGraphicPipeline(VertShader,FragShader,D);
         std::cout<<"CREATING -> "<<VertShader<<"\n";
-        userPipelines.push_back(pipeline);
+        GraphicPipelineCustom::userPipelines.push_back(pipeline);
 
         return pipeline;
     }

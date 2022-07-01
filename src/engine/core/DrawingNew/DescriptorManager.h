@@ -59,7 +59,7 @@ namespace Engine{
 
         void close();
         void closeDescriptorPool();
-            void setAsGlobal();
+        void setAsGlobal();
         static void setAsGlobal(DescriptorManager* d);
 
         //User push descriptors info
@@ -76,10 +76,14 @@ namespace Engine{
         VkDescriptorSetLayout getDescriptorSetLayout(){
             return descriptorSetLayout;
         }
+
+        UniformBufferManager getUniformBuffer(){
+            return uniformBufferManager;
+        }
         std::vector<VkDescriptorSet> getDescriptorSet(){
             return descriptorSets;
         }
-        DescriptorManager * getGlobalDescriptor(){
+        static DescriptorManager * getGlobalDescriptor(){
             return globalDescriptor;
         }
         void updateBufferManager(uint32_t currentImage){
