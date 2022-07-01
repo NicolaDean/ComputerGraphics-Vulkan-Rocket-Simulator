@@ -20,12 +20,14 @@ namespace Engine{
 
     class Camera:public Entity {
     public:
+
         static Camera* currentCam;
 
         /***********CAM SETTINGS VARIABLES*************/
         CameraType type;
         PerspectiveType perspective;
         float nearPlane = 0.1f;
+        //How far you can see
         float farPlane  = 200.0f;
         /***********CAMERA MOVEMENT VARIABLES***********/
         glm::vec3 CamPos = glm::vec3(1,1.5,2);
@@ -46,12 +48,12 @@ namespace Engine{
         /*************CAMERA CONSTRUCTORS********************/
         Camera();
         Camera(CameraType t,PerspectiveType p);
+        static void setCamera(Camera* cam);
 
         /*************SWITCH CAMERA**********************/
         static std::vector<Camera*> cameras; //List of existing cameras
         static void addCamera(Camera* cam); //Add a camera to list of cameras
         static void switchCamera(int num); //Switch to a specific camera
-        static void setCamera(Camera* cam); // DEPRECATED (set a camera as current cam)
 
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera
