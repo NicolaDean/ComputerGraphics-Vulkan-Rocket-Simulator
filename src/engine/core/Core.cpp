@@ -3,6 +3,7 @@
 
 
 namespace Engine{
+    GLFWwindow* Core::window;
     void Core::run(){
         init();
         initVulkan();

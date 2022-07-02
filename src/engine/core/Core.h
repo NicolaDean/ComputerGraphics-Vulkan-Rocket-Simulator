@@ -47,7 +47,7 @@ namespace Engine{
         std::vector<GraphicPipelineCustom*> userPipelines;
         std::vector<DescriptorManager*> userDescriptors;
 
-        GLFWwindow* window;
+        static GLFWwindow* window;
         BufferManager bufferManager; //TODO PUT THIS CLASS STATIC SO TO REMOVE ALL ITS PASSAGES
         GraphicPipelineCustom graphicPipelineCustom;
         SwapChain swapChain;
