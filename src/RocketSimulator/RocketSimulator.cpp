@@ -1,4 +1,5 @@
 #include "RocketSimulator.h"
+#include <math.h>
 
 namespace RocketSimulator{
 
@@ -22,9 +23,15 @@ namespace RocketSimulator{
         Camera::currentCam->setFarPlane(300.0);
 
         Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam1->setPosition(glm::vec3(0,20,0));
+        cam1->setAngle(glm::vec3(-M_PI_2,0,0));
+
         Camera::addCamera(cam1); //CAM 1
 
-        Camera::switchCamera(0); //SET CAM 0 as current Cam
+        Camera * cam2 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        Camera::addCamera(cam2); //CAM 1
+
+        Camera::switchCamera(1); //SET CAM 0 as current Cam
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
 
         //Descriptor For Terrain: (Only Uniform Buffer, No Texture)
@@ -84,7 +91,7 @@ namespace RocketSimulator{
 
         Skybox::rotateSky(); //WORK!!!
         //TODO ADD A METHOD TO CLEANUP SKYBOX NOT IN THE MESH VECTOR
-        //BEFOR PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
+        //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
         auto onSkyClick = std::bind(&RocketSimulator::rotateSky, this); //Bind method launch of Rocket to actual object m2
         //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
