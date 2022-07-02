@@ -1,4 +1,5 @@
 #include "RocketSimulator.h"
+#include <math.h>
 
 namespace RocketSimulator{
 
@@ -22,7 +23,13 @@ namespace RocketSimulator{
         Camera::currentCam->setFarPlane(300.0);
 
         Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam1->setPosition(glm::vec3(0,20,0));
+        cam1->setAngle(glm::vec3(-M_PI_2,0,0));
+
         Camera::addCamera(cam1); //CAM 1
+
+        Camera * cam2 = new Camera(Engine::LOOK_AT_CAMERA,ORTOGONALE);
+        Camera::addCamera(cam2); //CAM 1
 
         Camera::switchCamera(0); //SET CAM 0 as current Cam
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
@@ -58,6 +65,7 @@ namespace RocketSimulator{
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
         m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
+        //cam2-> set track
         m2->setScale(0.05);
         m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
@@ -84,21 +92,29 @@ namespace RocketSimulator{
 
         Skybox::rotateSky(); //WORK!!!
         //TODO ADD A METHOD TO CLEANUP SKYBOX NOT IN THE MESH VECTOR
-        //BEFOR PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
+        //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
         auto onSkyClick = std::bind(&RocketSimulator::rotateSky, this); //Bind method launch of Rocket to actual object m2
+        auto onTargetClick = std::bind(&RocketSimulator::changeCameraTarget, this); //Bind method launch of Rocket to actual object m2
+
         //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
 
         //TODO ADD A "ANTI DEBOUNCE" SYSTEM FOR BUTTONS (NOW A SINGLE CLICK IS LIKE 10 or more clicks...)
         UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/moon.png", onSkyClick,-0.7f,0.9f,0.2f,0.2f);
-        UImanager::addButton("./src/Textures/UI/target.png", onLaunchClick,-0.5f,0.9f,0.2f,0.2f);
+        UImanager::addButton("./src/Textures/UI/target.png", onTargetClick,-0.5f,0.9f,0.2f,0.2f);
 
     }
 
     void RocketSimulator::rotateSky() {
         std::cout<<"CHANGE SKYBOX ROTATION\n";
         Skybox::rotateSky();
+    }
+
+    void RocketSimulator::changeCameraTarget(){
+        std::cout<<"CHANGE TARGET CAM\n";
+        Camera::switchCamera(1); //SET CAM 0 as current Cam
+
     }
 
 }

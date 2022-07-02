@@ -9,7 +9,8 @@ namespace Engine{
     bool UIcomponent::isClicked(float X, float Y) {
         float screen_width = SwapChain::getSwapChainExtent().width;
         float screen_height = SwapChain::getSwapChainExtent().height;
-        //NORMALIZE COORDINATE
+        //NORMALIZE COORDINATE (Where MIN is 0 and max is screen_max_size
+        //https://stats.stackexchange.com/questions/281162/scale-a-number-between-a-range
         float x = (2.0f * X) / screen_width - 1.0f;
         float y = 1.0f - (2.0f * Y) / screen_height;
 
@@ -23,6 +24,8 @@ namespace Engine{
 
         std::cout<<"Screen:("<<screen_width<<" <" << screen_height <<"."<<X<<")\n";
         std::cout<<"X:("<<minX<<" <" << x << " <" << maxX <<")\n";
+        std::cout<<"X:"<<X<<" ,Y:" << Y << " ," << screen_width  <<screen_width <<"\n";
+
         std::cout<<"Y:("<<minY<<" <" << y << " <" << maxY <<")\n";
         //Result initialize
         bool betweenX = false;
@@ -33,7 +36,7 @@ namespace Engine{
         if(y>minY && y<maxY) betweenY = true;
 
         bool clicked = betweenX && betweenY;
-        if(betweenX){
+        if(clicked){
             std::cout<<"Clicked\n";
             action();
         }
