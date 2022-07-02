@@ -56,6 +56,9 @@ namespace Engine{
         void checkPosition();
         void trajectory(glm::vec3 target, float heightMax, float vAcc);
         void updateAcceleration(float dt);
+        glm::vec3 getPosition(){
+            return this->pos;
+        }
     };
 }
 
