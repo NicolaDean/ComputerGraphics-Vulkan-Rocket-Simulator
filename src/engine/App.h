@@ -28,9 +28,10 @@ namespace Engine{
 
         void updateScene(uint32_t currentImage);
         void updateCamera(float dt);
-        void updateMeshesPos(int currentFrame);
+        void updateMeshesPos(int currentFrame,float time);
         void customInit();
-
+        bool clickHandle(float time,double * xpos,double * ypos);
+        bool antiDebounce(float time);
 
         void subscribeMovable(Mesh *  entity){
             movableEntities->push_back(entity);

@@ -77,10 +77,11 @@ namespace Engine{
             entity->update(deltaT);
         }
         /********CALCULATE STATIC MESHES POSITION*************/
-        updateMeshesPos(currentFrame);
+        updateMeshesPos(currentFrame,time);
+
     }
     //TODO ADD A GRAPHIC PIPELINE WITH ONLY VERTEX/INDEX WITH NO TEXTURE (FOR THE TERRAIN GENERATOR)
-    void App::updateMeshesPos(int currentFrame) {
+    void App::updateMeshesPos(int currentFrame,float time) {
         //******UPDATE LIGHTS DATA THROUGH UNIFORM BUFFER************
         globalDescriptor->getUniformBuffer().updateGlobal(currentFrame);
 
@@ -90,21 +91,42 @@ namespace Engine{
             mesh->updateUniformBuffer(currentFrame);
         }
 
-        /********MOUSE CLICK*************************/
         double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
-        bool click = false;
-        glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
-        if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-            click = true;
-        }
+        bool click = clickHandle(time,&xpos,&ypos);
         /********Buttons  CLICK Handle*************************/
         for(auto mesh : UImanager::interface.getUI()){
             mesh->updateUniformBuffer(currentFrame);
             if(click) {
-               mesh->isClicked(xpos,ypos);
+                mesh->isClicked(xpos,ypos);
             }
         }
+
+
+    }
+
+    bool App::clickHandle(float time,double * xpos,double * ypos){
+        glfwGetCursorPos(window, xpos, ypos);
+        bool click = false;
+        glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+        if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            click = antiDebounce(time);
+        }
+
+        return click;
+
+    }
+
+    bool App::antiDebounce(float time){
+        static float lastClickTime = 0.0f;
+
+        float delta = time - lastClickTime;
+        if(delta > 0.33){
+            lastClickTime = time;
+            std::cout<<"OOOK ANTI DEBOUNCE\n";
+            return true;
+        }
+        std::cout<<"FAIL\n";
+        return false;
     }
 
     void App::customInit() {
