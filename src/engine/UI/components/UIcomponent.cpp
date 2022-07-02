@@ -21,6 +21,7 @@ namespace Engine{
         float minY = y_pos - height/(float)2;
         float maxY = y_pos + height/(float)2;
 
+        std::cout<<"Screen:("<<screen_width<<" <" << screen_height <<"."<<X<<")\n";
         std::cout<<"X:("<<minX<<" <" << x << " <" << maxX <<")\n";
         std::cout<<"Y:("<<minY<<" <" << y << " <" << maxY <<")\n";
         //Result initialize
