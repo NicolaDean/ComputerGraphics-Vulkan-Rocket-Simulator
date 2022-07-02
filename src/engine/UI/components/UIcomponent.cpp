@@ -7,13 +7,15 @@
 namespace Engine{
 
     bool UIcomponent::isClicked(float X, float Y) {
+
         float screen_width = SwapChain::getSwapChainExtent().width;
         float screen_height = SwapChain::getSwapChainExtent().height;
         //NORMALIZE COORDINATE (Where MIN is 0 and max is screen_max_size
         //https://stats.stackexchange.com/questions/281162/scale-a-number-between-a-range
-        float x = (2.0f * X) / screen_width - 1.0f;
-        float y = 1.0f - (2.0f * Y) / screen_height;
-
+        float x = (2.0f * X) / (screen_width/2) - 1.0f;
+        float y =  (2.0f * Y) / (screen_height/2) -1.0f;
+        //float x = (2.0f * X) / (screen_width) - 1.0f;
+        //float y =  (2.0f * Y) / (screen_height) -1.0f;
 
         //horizontal    interval ( minX < x < maxX)
         float minX = x_pos - width/(float)2;
@@ -23,7 +25,7 @@ namespace Engine{
         float maxY = y_pos + height/(float)2;
 
         std::cout<<"X:("<<minX<<" <" << x << " <" << maxX <<")\n";
-        std::cout<<"X:"<<X<<" ,Y:" << Y << " ," << screen_width  <<screen_width <<"\n";
+        std::cout<<"X:"<<X<<" ,Y:" << Y << " ," << screen_width   <<" ," <<screen_height <<"\n";
 
         std::cout<<"Y:("<<minY<<" <" << y << " <" << maxY <<")\n";
         //Result initialize
