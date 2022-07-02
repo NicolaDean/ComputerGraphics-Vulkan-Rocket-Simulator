@@ -54,6 +54,7 @@ namespace Engine{
         static std::vector<Camera*> cameras; //List of existing cameras
         static void addCamera(Camera* cam); //Add a camera to list of cameras
         static void switchCamera(int num); //Switch to a specific camera
+        static void nextCamera();
 
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera
@@ -65,6 +66,7 @@ namespace Engine{
         void setPerspective(PerspectiveType p);
         void setNearPlane(float n){nearPlane = n;};
         void setFarPlane(float f){farPlane = f;};
+
         /*************USER INPUT METHODS******************/
         void onW(float dt);
         void onA(float dt);
@@ -79,7 +81,6 @@ namespace Engine{
         void update(float dt){};
         void onLeft(float dt);
         void onRight(float dt);
-
 
         glm::mat4 getViewMatrix();
         glm::mat4 getPerspectiveMatric();

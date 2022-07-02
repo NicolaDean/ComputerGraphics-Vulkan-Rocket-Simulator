@@ -180,5 +180,31 @@ namespace Engine{
         return LookInDirMat(CamPos,CamAng);
     }
 
+    //TODO Debounce control as for skybox
+    void Camera::nextCamera(){
+        auto it = find(cameras.begin(), cameras.end(), currentCam);
+
+        // If element was found
+        if (it != cameras.end())
+        {
+
+            // calculating the index
+            // of K
+            int index = it - cameras.begin();
+            std::cout << index <<"\n";
+            int i=(index+1)%3;
+            Camera::switchCamera(i);
+           // return index;
+        }
+        else {
+            // If the element is not
+            // present in the vector
+            std::cout << "-1" << "\n";
+        }
+
+
+        //return -1;
+    }
+
 
 }

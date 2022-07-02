@@ -30,6 +30,8 @@ namespace RocketSimulator{
         void customClose(){};
         void rotateSky();
         void changeCameraTarget();
+        void switchCamera();
+        void nextCamera();
     };
 }
 
