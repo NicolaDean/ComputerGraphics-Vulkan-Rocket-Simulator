@@ -95,7 +95,8 @@ namespace RocketSimulator{
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
         auto onSkyClick = std::bind(&RocketSimulator::rotateSky, this); //Bind method launch of Rocket to actual object m2
-        auto onTargetClick = std::bind(&RocketSimulator::changeCameraTarget, this); //Bind method launch of Rocket to actual object m2
+        auto onTargetClick = std::bind(&RocketSimulator::changeCameraTarget, this); //Bind method target of Rocket to actual object m2
+        auto onSwitchClick = std::bind(&RocketSimulator::switchCamera, this); //Bind method launch of Rocket to actual object m2
 
         //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
 
@@ -103,6 +104,8 @@ namespace RocketSimulator{
         UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/moon.png", onSkyClick,-0.7f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/target.png", onTargetClick,-0.5f,0.9f,0.2f,0.2f);
+        UImanager::addButton("./src/Textures/UI/switch.png", onSwitchClick,-0.3f,0.9f,0.2f,0.2f);
+
 
     }
 
@@ -114,6 +117,12 @@ namespace RocketSimulator{
     void RocketSimulator::changeCameraTarget(){
         std::cout<<"CHANGE TARGET CAM\n";
         Camera::switchCamera(1); //SET CAM 0 as current Cam
+
+    }
+
+    void RocketSimulator::switchCamera(){
+        std::cout<<"SWITCH CAM\n";
+        Camera::getIndex();
 
     }
 
