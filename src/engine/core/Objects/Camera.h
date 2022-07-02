@@ -54,7 +54,7 @@ namespace Engine{
         static std::vector<Camera*> cameras; //List of existing cameras
         static void addCamera(Camera* cam); //Add a camera to list of cameras
         static void switchCamera(int num); //Switch to a specific camera
-        static void getIndex();
+        static void nextCamera();
 
         /***************CAMERA MOVEMENT******************/
         //Maybe put those in entity equal for model and camera

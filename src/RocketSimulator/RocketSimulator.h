@@ -31,7 +31,7 @@ namespace RocketSimulator{
         void rotateSky();
         void changeCameraTarget();
         void switchCamera();
-        void getIndex();
+        void nextCamera();
     };
 }
 

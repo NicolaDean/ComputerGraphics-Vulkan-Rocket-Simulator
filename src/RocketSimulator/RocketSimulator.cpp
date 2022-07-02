@@ -122,7 +122,7 @@ namespace RocketSimulator{
 
     void RocketSimulator::switchCamera(){
         std::cout<<"SWITCH CAM\n";
-        Camera::getIndex();
+        Camera::nextCamera();
 
     }
 
