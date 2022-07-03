@@ -180,7 +180,6 @@ namespace Engine{
         return LookInDirMat(CamPos,CamAng);
     }
 
-    //TODO Debounce control as for skybox
     void Camera::nextCamera(){
         auto it = find(cameras.begin(), cameras.end(), currentCam);
 

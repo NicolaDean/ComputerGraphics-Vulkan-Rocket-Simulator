@@ -1,5 +1,6 @@
 #include "RocketSimulator.h"
 #include <math.h>
+#include "./Models/Platform.h"
 
 namespace RocketSimulator{
 
@@ -30,6 +31,7 @@ namespace RocketSimulator{
 
         Camera * cam2 = new Camera(Engine::LOOK_AT_CAMERA,ORTOGONALE);
         Camera::addCamera(cam2); //CAM 1
+
 
         Camera::switchCamera(0); //SET CAM 0 as current Cam
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
@@ -72,6 +74,16 @@ namespace RocketSimulator{
         this->subscribeMovable(m2);
         m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,0.5);
 
+        //PLATFORM
+        Platform* platform = new Platform(bufferManager);
+        platform->init();
+        platform->bindPipeline(&graphicPipelineCustom);
+        platform->initDescriptor(&descManager);
+        platform->setPos(glm::vec3(1.0f,0.2f,1.0f));
+        platform->setScale(0.05);
+        platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
+        Mesh::meshes->push_back(platform);
+
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
         //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
         std::cout<<"ADDRESS:" <<sky<<"\n";
@@ -100,7 +112,6 @@ namespace RocketSimulator{
 
         //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
 
-        //TODO ADD A "ANTI DEBOUNCE" SYSTEM FOR BUTTONS (NOW A SINGLE CLICK IS LIKE 10 or more clicks...)
         UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/moon.png", onSkyClick,-0.7f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/target.png", onTargetClick,-0.5f,0.9f,0.2f,0.2f);
