@@ -12,19 +12,19 @@ namespace Engine{
         alignas(16) glm::mat4 model;
     };
 
-    struct Light{
-        alignas(16) glm::vec3 pos;
-        alignas(16) glm::vec3 color;
+    struct LightUniform{
+        glm::vec3 pos;
+        glm::vec3 color;
     };
 
     struct GlobalUniformBufferObject {
-        alignas(16) glm::mat4 view;
-        alignas(16) glm::mat4 proj;
-        alignas(16) glm::vec3 lightDir;
-        alignas(16) glm::vec4 lightColor;
-        alignas(16) glm::vec3 eyePos;
-        alignas(16) int numLights;
-        Light lights[10];
+        glm::mat4 view;
+        glm::mat4 proj;
+        glm::vec3 lightDir;
+        glm::vec4 lightColor;
+        glm::vec3 eyePos;
+        LightUniform lights[2];
+        int numLights;
     };
 
 

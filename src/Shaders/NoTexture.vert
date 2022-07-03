@@ -1,8 +1,17 @@
 #version 450
 
+struct LightUniform {
+    vec3 pos;
+    vec3 col;
+};
 layout(set = 0, binding = 0) uniform GlobalUniformBuffer {
     mat4 view;
     mat4 proj;
+    vec3 lightDir;
+    vec4 lightColor;
+    vec3 eyePos;
+    LightUniform lights[2];
+    int numLights;
 } gubo;
 
 layout(set = 1, binding = 0) uniform UniformBufferObject {

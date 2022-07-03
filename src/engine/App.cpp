@@ -104,6 +104,13 @@ namespace Engine{
 
     }
 
+    /**
+     * Handle click by returning true if click occurred, and copying x,y coordinates on param
+     * @param time
+     * @param xpos
+     * @param ypos
+     * @return
+     */
     bool App::clickHandle(float time,double * xpos,double * ypos){
         glfwGetCursorPos(window, xpos, ypos);
         bool click = false;
@@ -116,16 +123,19 @@ namespace Engine{
 
     }
 
+    /**
+     * Check if there is a debounce on this click (confront lastTimeClick)
+     * @param time
+     * @return
+     */
     bool App::antiDebounce(float time){
         static float lastClickTime = 0.0f;
 
         float delta = time - lastClickTime;
         if(delta > 0.33){
             lastClickTime = time;
-            std::cout<<"OOOK ANTI DEBOUNCE\n";
             return true;
         }
-        std::cout<<"FAIL\n";
         return false;
     }
 

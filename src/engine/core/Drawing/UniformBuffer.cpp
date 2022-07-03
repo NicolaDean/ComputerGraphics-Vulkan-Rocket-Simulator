@@ -30,6 +30,31 @@ namespace Engine{
         gubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
         gubo.proj = Camera::currentCam->getPerspectiveMatric();
         gubo.lightColor = glm::vec4(1.0f,1.0f,1.0f,1);
+        gubo.lightDir = glm::vec3(1,2,1);
+        gubo.numLights = 2;
+        //gubo.lights[0] = Light::sceneLights.at(0)->getPointLight();
+        /*int currLight = 0;
+        for(auto l : Light::sceneLights){
+            gubo.lights[0] = LightUniform{};
+            gubo.lights[0].color = l->color;
+            gubo.lights[0].pos = glm::vec3(1,1,1)
+            currLight++;
+        }*/
+
+        for(int i=0;i<Light::sceneLights.size();i++){
+            gubo.lights[i] = LightUniform{};
+            gubo.lights[i].color = Light::sceneLights.at(i)->color;
+            gubo.lights[i].pos = glm::vec3(0,0,1);
+        }
+
+       /* gubo.lights[0] = LightUniform{};
+        gubo.lights[0].color = Light::sceneLights.at(0)->color;
+        gubo.lights[0].pos = glm::vec3(0,0,1);
+        gubo.lights[1] = LightUniform{};
+        gubo.lights[1].color = glm::vec3(0,0,1);
+        gubo.lights[1].pos = glm::vec3(0,0,1);*/
+
+        //std::cout <<"COLOR:" <<gubo.lights[0].color.x<< "," <<gubo.lights[0].color.y<<","<<gubo.lights[0].color.z<<"\n";
         void* data;
         vkMapMemory(*device, uniformBuffersMemory[currentImage], 0, sizeof(gubo), 0, &data);
         memcpy(data, &gubo, sizeof(gubo));

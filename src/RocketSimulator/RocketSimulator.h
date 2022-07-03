@@ -12,7 +12,7 @@
 #include "Utils/PerlinNoise.h"
 #include "Terrain/Map.h"
 #include "../engine/UI/components/UIcomponent.h"
-
+#include "../engine/core/Objects/Light.h"
 
 using namespace Engine;
 

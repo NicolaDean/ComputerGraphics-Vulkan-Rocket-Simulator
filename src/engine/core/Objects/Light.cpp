@@ -3,3 +3,17 @@
 //
 
 #include "Light.h"
+
+namespace Engine{
+    std::vector<Light*> Light::sceneLights;
+
+    void Light::getPointLight(LightUniform * uniform) {
+        uniform->color  = color;
+        uniform->pos    = pos;
+    }
+
+    void Light::update(float dt) {
+
+    }
+
+}

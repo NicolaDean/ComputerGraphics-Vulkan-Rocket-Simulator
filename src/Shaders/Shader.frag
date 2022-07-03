@@ -1,5 +1,5 @@
 #version 450
-struct PointLight {
+struct LightUniform {
     vec3 pos;
     vec3 col;
 };
@@ -10,8 +10,8 @@ layout(set = 0, binding = 0) uniform globalUniformBufferObject {
     vec3 lightDir;
     vec4 lightColor;
     vec3 eyePos;
+    LightUniform lights[2];
     int numLights;
-    PointLight lights[10];
 } gubo;
 
 layout(set=1,binding = 1) uniform sampler2D texSampler;

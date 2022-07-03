@@ -10,6 +10,7 @@
 #include "../Utils/Constants.h"
 #include "BufferManager.h"
 #include "../Objects/Camera.h"
+#include "../Objects/Light.h"
 #include "../Presentation/SwapChain.h"
 namespace Engine {
 

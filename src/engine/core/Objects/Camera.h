@@ -20,7 +20,7 @@ namespace Engine{
 
     class Camera:public Entity {
     public:
-
+        static int currentCamIndex;
         static Camera* currentCam;
 
         /***********CAM SETTINGS VARIABLES*************/

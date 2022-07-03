@@ -72,6 +72,8 @@ namespace RocketSimulator{
         this->subscribeMovable(m2);
         m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,0.5);
 
+        //TODO LOAD ROCKET BASE
+        /********************SKYBOX CREATION********************************/
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
         //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
         std::cout<<"ADDRESS:" <<sky<<"\n";
@@ -92,15 +94,19 @@ namespace RocketSimulator{
 
         Skybox::rotateSky(); //WORK!!!
         //TODO ADD A METHOD TO CLEANUP SKYBOX NOT IN THE MESH VECTOR
+
+        /****************************LIGHT SETUP******************************************/
+        Light * light1 = new Light(glm::vec3(5,2,1),glm::vec3(0.0,0.0,0));
+        Light * light2 = new Light(glm::vec3(5,2,1),glm::vec3(0,1,1));
+
+        /****************************UI COMPOSITION***************************************/
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
         auto onSkyClick = std::bind(&RocketSimulator::rotateSky, this); //Bind method launch of Rocket to actual object m2
         auto onTargetClick = std::bind(&RocketSimulator::changeCameraTarget, this); //Bind method target of Rocket to actual object m2
         auto onSwitchClick = std::bind(&RocketSimulator::switchCamera, this); //Bind method launch of Rocket to actual object m2
 
-        //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
 
-        //TODO ADD A "ANTI DEBOUNCE" SYSTEM FOR BUTTONS (NOW A SINGLE CLICK IS LIKE 10 or more clicks...)
         UImanager::addButton("./src/Textures/UI/launch.png", onLaunchClick,-0.9f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/moon.png", onSkyClick,-0.7f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/target.png", onTargetClick,-0.5f,0.9f,0.2f,0.2f);

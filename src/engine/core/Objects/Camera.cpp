@@ -7,6 +7,7 @@
 
 namespace Engine{
 
+    int Camera::currentCamIndex = 0;
     std::vector<Camera *> Camera::cameras;
     /**
  * Create a look in direction matrix
@@ -182,9 +183,18 @@ namespace Engine{
 
     //TODO Debounce control as for skybox
     void Camera::nextCamera(){
-        auto it = find(cameras.begin(), cameras.end(), currentCam);
 
-        // If element was found
+        //Select camera in rotation
+        currentCamIndex = (currentCamIndex +1)%3;
+        std::cout << currentCamIndex <<"\n";
+        Camera::switchCamera(currentCamIndex);
+
+        /*
+
+        //auto it = find(cameras.begin(), cameras.end(), currentCam);
+        //if(currentCam == nullptr) return; //NO CAMERA SELECTED
+
+         // If element was found
         if (it != cameras.end())
         {
 
@@ -200,7 +210,7 @@ namespace Engine{
             // If the element is not
             // present in the vector
             std::cout << "-1" << "\n";
-        }
+        }*/
 
 
         //return -1;
