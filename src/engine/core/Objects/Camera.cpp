@@ -181,7 +181,6 @@ namespace Engine{
         return LookInDirMat(CamPos,CamAng);
     }
 
-    //TODO Debounce control as for skybox
     void Camera::nextCamera(){
 
         //Select camera in rotation

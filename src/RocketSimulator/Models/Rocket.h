@@ -8,7 +8,6 @@
 #include "../../engine/core/Utils/printHelper.h"
 namespace Engine{
     class Rocket:public Model {
-//Set renderer? renderer = renderer;
         //Bools for explosion and deletion
         bool explosion = false;
         bool deleted=false;
