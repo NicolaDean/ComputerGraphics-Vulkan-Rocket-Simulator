@@ -14,11 +14,11 @@ namespace Engine{
     public:
         static std::vector<Light*> sceneLights;
 
-        glm::vec3 color;
+        glm::vec4 color;
 
         Light(){}
 
-        Light(glm::vec3 lightPos,glm::vec3 lightColor){
+        Light(glm::vec3 lightPos,glm::vec4 lightColor){
             pos = lightPos;
             color = lightColor;
             sceneLights.push_back(this);
@@ -26,6 +26,8 @@ namespace Engine{
 
         void getPointLight(LightUniform * uniform);
         virtual void update(float dt);
+
+        glm::vec3 getPos(){return pos;};
     };
 }
 

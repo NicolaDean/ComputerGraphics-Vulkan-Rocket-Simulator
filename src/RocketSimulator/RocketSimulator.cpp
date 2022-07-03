@@ -76,7 +76,9 @@ namespace RocketSimulator{
 
         /********************SKYBOX CREATION********************************/
         //PLATFORM
-        Platform* platform = new Platform(bufferManager);
+        Model* platform = new Model("./src/Models/platform.obj",
+              "./src/Textures/platform.jpeg",bufferManager);
+        //Platform* platform = new Platform(bufferManager);
         platform->init();
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
@@ -107,8 +109,8 @@ namespace RocketSimulator{
         //TODO ADD A METHOD TO CLEANUP SKYBOX NOT IN THE MESH VECTOR
 
         /****************************LIGHT SETUP******************************************/
-        Light * light1 = new Light(glm::vec3(5,2,1),glm::vec3(0.0,0.0,0));
-        Light * light2 = new Light(glm::vec3(5,2,1),glm::vec3(0,1,1));
+        Light * light1 = new Light(glm::vec3(1,3,2),glm::vec4(0.0,0,1,0));
+        Light * light2 = new Light(glm::vec3(5,3,1),glm::vec4(1,0,0,0));
 
         /****************************UI COMPOSITION***************************************/
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)

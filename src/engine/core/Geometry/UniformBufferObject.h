@@ -7,24 +7,25 @@
 #include "../../commonLibs.h"
 #include <glm/glm.hpp>
 
+#define LIGHT_NUM 2
 namespace Engine{
     struct UniformBufferObject {
         alignas(16) glm::mat4 model;
     };
 
     struct LightUniform{
-        glm::vec3 pos;
-        glm::vec3 color;
+        alignas (16)glm::vec3 pos;
+        alignas (16)glm::vec4 color;
     };
 
     struct GlobalUniformBufferObject {
-        glm::mat4 view;
-        glm::mat4 proj;
-        glm::vec3 lightDir;
-        glm::vec4 lightColor;
-        glm::vec3 eyePos;
-        LightUniform lights[2];
-        int numLights;
+        alignas (16)glm::mat4 view;
+        alignas (16)glm::mat4 proj;
+        alignas (16)glm::vec3 lightDir;
+        alignas (16)glm::vec4 lightColor;
+        alignas (16) glm::vec3 eyePos;
+        LightUniform lights[LIGHT_NUM];
+        alignas (4)int numLights;
     };
 
 

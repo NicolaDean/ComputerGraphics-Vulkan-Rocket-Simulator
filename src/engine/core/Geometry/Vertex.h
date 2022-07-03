@@ -13,9 +13,10 @@ namespace Engine{
      */
     //THIS WILL BE USER AS STRUCTURE FOR SHADER
     struct Vertex {
-        glm::vec3 pos;
-        glm::vec3 norm;
-        glm::vec2 texCoord;
+        alignas(16)glm::vec3 pos;
+        alignas(16)glm::vec3 norm;
+        alignas(16)glm::vec3 color;
+        alignas(8)glm::vec2 texCoord;
 
         static Vertex vertexFactory(float x,float y,float z,float nx,float ny,float nz,float u,float v){
             Vertex vertex;
@@ -23,7 +24,7 @@ namespace Engine{
             vertex.pos = glm::vec3 (x,y,z);
             vertex.norm = glm::vec3(nx,ny,nz);
             vertex.texCoord = glm::vec2(u,v);
-
+            vertex.color = glm::vec3 (1,1,1);
             return vertex;
         }
 
@@ -36,8 +37,8 @@ namespace Engine{
             return bindingDescription;
         }
 
-        static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions() {
-            std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
+        static std::array<VkVertexInputAttributeDescription, 4> getAttributeDescriptions() {
+            std::array<VkVertexInputAttributeDescription, 4> attributeDescriptions{};
 
             attributeDescriptions[0].binding = 0;
             attributeDescriptions[0].location = 0;
@@ -51,8 +52,13 @@ namespace Engine{
 
             attributeDescriptions[2].binding = 0;
             attributeDescriptions[2].location = 2;
-            attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
-            attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
+            attributeDescriptions[2].format = VK_FORMAT_R32G32B32_SFLOAT;
+            attributeDescriptions[2].offset = offsetof(Vertex, color);
+
+            attributeDescriptions[3].binding = 0;
+            attributeDescriptions[3].location = 3;
+            attributeDescriptions[3].format = VK_FORMAT_R32G32_SFLOAT;
+            attributeDescriptions[3].offset = offsetof(Vertex, texCoord);
 
             return attributeDescriptions;
         }

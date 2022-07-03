@@ -2,7 +2,7 @@
 
 struct LightUniform {
     vec3 pos;
-    vec3 col;
+    vec4 color;
 };
 layout(set = 0, binding = 0) uniform GlobalUniformBuffer {
     mat4 view;
@@ -20,15 +20,25 @@ layout(set = 1, binding = 0) uniform UniformBufferObject {
 
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inColor;
-layout(location = 2) in vec2 inTexCoord;
+layout(location = 2) in vec3 color;
+layout(location = 3) in vec2 inTexCoord;
 
-layout(location = 0) out vec3 fragViewDir;
+layout(location = 0) out vec3 fragNorm;
 layout(location = 1) flat out vec3 fragColor;
+layout(location = 2) out vec3 fragPosWorld;
 
 void main() {
-    vec2 a = inTexCoord;
+
+    //Position of a vertex in world
+    vec4 positionWorld = ubo.model * vec4(inPosition, 1.0);
+    //Pixel Position and data for fragment
+    fragPosWorld = positionWorld.xyz;
+    //fragNorm     = (ubo.model * vec4(inColor, 0.0)).xyz;
+    fragColor    = inColor;
+    fragNorm =  inColor.xyz * 2.0 - 1.0;//required just because of the format the normals were stored in (0 - 1)
+    //VERTEX POSITION
     gl_Position = gubo.proj * gubo.view * ubo.model * vec4(inPosition, 1.0);
-    fragViewDir  = (gubo.view[3]).xyz - (ubo.model * vec4(inPosition,  1.0)).xyz;
+    //fragViewDir  = (gubo.view[3]).xyz - (ubo.model * vec4(inPosition,  1.0)).xyz;
     // normal * 2 -1 (to be from -1 to 1)
-    fragColor = inColor;
+
 }

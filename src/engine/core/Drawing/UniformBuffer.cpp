@@ -29,22 +29,15 @@ namespace Engine{
         GlobalUniformBufferObject gubo{};
         gubo.view = Camera::currentCam->getViewMatrix();//TODO app Camera::perspective and camera customizzation
         gubo.proj = Camera::currentCam->getPerspectiveMatric();
-        gubo.lightColor = glm::vec4(1.0f,1.0f,1.0f,1);
+        gubo.lightColor = glm::vec4(0.6f,0.6,0.6f,0.5);
         gubo.lightDir = glm::vec3(1,2,1);
         gubo.numLights = 2;
-        //gubo.lights[0] = Light::sceneLights.at(0)->getPointLight();
-        /*int currLight = 0;
-        for(auto l : Light::sceneLights){
-            gubo.lights[0] = LightUniform{};
-            gubo.lights[0].color = l->color;
-            gubo.lights[0].pos = glm::vec3(1,1,1)
-            currLight++;
-        }*/
+        gubo.eyePos = Camera::currentCam->CamPos;
 
         for(int i=0;i<Light::sceneLights.size();i++){
             gubo.lights[i] = LightUniform{};
             gubo.lights[i].color = Light::sceneLights.at(i)->color;
-            gubo.lights[i].pos = glm::vec3(0,0,1);
+            gubo.lights[i].pos   = Light::sceneLights.at(i)->getPos();
         }
 
        /* gubo.lights[0] = LightUniform{};
