@@ -60,7 +60,7 @@ namespace Engine{
             //std::cout<<"llll::"<<ttl*offsetHeight*90<<"\n";
 
             landingFactory= glm::length(hdir)/((offsetHeight)*100);
-            landingFactorx= (pitch + M_PI) /((offsetHeight)*100);
+            landingFactorx= (pitch + M_PI)/((offsetHeight)*100);
 
             landing=true;
         }
