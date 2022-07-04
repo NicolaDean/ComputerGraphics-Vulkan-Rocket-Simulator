@@ -42,9 +42,8 @@ namespace Engine{
 
         void populateMapWithRandomObject(DescriptorManager* manager, GraphicPipelineCustom* pipelineCustom);
         void positionModel(Model * m);
-        static float getMapHeight(int x, int z){
-            return 4;
-            //singleton_map->getHeight(x,z); // TODO UNDERSTAND HOW GET THE MAP HEIGHT FROM COORDINATES
+        static float getMapHeight(float x, float z){
+            return singleton_map->getHeight(x- (singleton_map->SIZE/2),z- (singleton_map->SIZE/2)); // TODO UNDERSTAND HOW GET THE MAP HEIGHT FROM COORDINATES
         }
     };
 }

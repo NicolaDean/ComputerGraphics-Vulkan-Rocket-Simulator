@@ -35,8 +35,8 @@ void main() {
     //Pixel Position and data for fragment
     fragPosWorld = positionWorld.xyz;
     //fragNorm     = (ubo.model * vec4(inColor, 0.0)).xyz;
-    fragColor    = normal;
-    fragNorm =  normal.xyz * 2.0 - 1.0;//required just because of the format the normals were stored in (0 - 1)
+    fragColor    = color;
+    fragNorm =  normal.xyz;//required just because of the format the normals were stored in (0 - 1)
     //VERTEX POSITION
     gl_Position = gubo.proj * gubo.view * ubo.model * vec4(inPosition, 1.0);
     //fragViewDir  = (gubo.view[3]).xyz - (ubo.model * vec4(inPosition,  1.0)).xyz;

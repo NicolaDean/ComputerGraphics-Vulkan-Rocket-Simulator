@@ -10,12 +10,13 @@
 namespace Engine {
     class Plane : public Mesh {
     protected:
-        int SIZE;
+
 
         int resolutionX;
         int resolutionY;
 
     public:
+        int SIZE;
         Plane(){};
         Plane(int size,int resX,int resY,BufferManager buffManager) : Mesh(buffManager) {
             SIZE = size;

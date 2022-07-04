@@ -26,6 +26,7 @@ namespace Engine{
                 v.pos = glm::vec3(posX, getHeight(posX,posY),posY);//TODO, create a "getHeight" function so i can overwrite it in terrain Generator
                 //Allow also to load images onto the plane
                 v.norm = getColor(posX,posY);
+                v.color = glm::vec3(0.45,0.35,0.2);
                 v.texCoord = glm::vec2(0,0);
                 vertices.push_back(v);
             }

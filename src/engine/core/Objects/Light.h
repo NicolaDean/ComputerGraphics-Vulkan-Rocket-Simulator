@@ -9,10 +9,17 @@
 #include "../Geometry/UniformBufferObject.h"
 namespace Engine{
 
+    struct AmbientLight{
+        glm::vec3 lightDir;
+        glm::vec4 lightColor;
+    };
+
     class Light : public Entity{
 
     public:
+        static AmbientLight ambient;
         static std::vector<Light*> sceneLights;
+        static int numOfLights;
 
         glm::vec4 color;
 
@@ -22,11 +29,12 @@ namespace Engine{
             pos = lightPos;
             color = lightColor;
             sceneLights.push_back(this);
+            numOfLights++;
         }
 
         void getPointLight(LightUniform * uniform);
+        static void setAmbientLight(glm::vec3 direction,glm::vec4 color);
         virtual void update(float dt);
-
         glm::vec3 getPos(){return pos;};
     };
 }

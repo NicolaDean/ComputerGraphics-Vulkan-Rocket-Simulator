@@ -1,0 +1,19 @@
+//
+// Created by nicomane on 04/07/22.
+//
+
+#ifndef COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_DAYCYCLE_H
+#define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_DAYCYCLE_H
+
+namespace Engine{
+    class DayCycle {
+
+
+
+    };
+
+}
+
+
+
+#endif //COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_DAYCYCLE_H

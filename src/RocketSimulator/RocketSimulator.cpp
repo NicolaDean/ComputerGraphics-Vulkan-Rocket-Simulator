@@ -21,12 +21,13 @@ namespace RocketSimulator{
         glm::vec3 target= glm::vec3(10.0f,1.0f,10.0f);
 
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
-
-        //Descriptor For Terrain: (Only Uniform Buffer, No Texture)
+        //1)GLOBAL UNIFORM BUFFER DESCRIPTOR (IS INSIDE CORE)
+        //2)DESCRIPTOR FOR NORMAL 3D MODEL WITH TEXTURE AND UB (IS INSIDE CORE)
+        //3) DESCRIPTOR FOR TERRAIN (ONLY 3d MODEL no TEXTURE)
         DescriptorManager* terrainDescriptor = descriptorFactory();
         terrainDescriptor->pushBindingDescriptor({0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT});
         terrainDescriptor->createDescriptorSetLayouts();
-
+        //4)(END)
         /****************CUSTOM PIPELINES******************************************/
         std::cout<<"Creating new Terrain Pipeline\n";
        GraphicPipelineCustom* terrainPipeline = pipelineFactory("./src/Shaders/compiledShaders/vertNoTexture.spv",
@@ -105,7 +106,7 @@ namespace RocketSimulator{
         platform->init();
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
-        platform->setPos(glm::vec3(startPos.x,0.2f,startPos.z));
+        platform->setPos(glm::vec3(startPos.x,Map::getMapHeight(startPos.x,startPos.z),startPos.z));
         platform->setScale(rocketScale*11);
         platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platform);
@@ -117,7 +118,7 @@ namespace RocketSimulator{
         platformTarget->init();
         platformTarget->bindPipeline(&graphicPipelineCustom);
         platformTarget->initDescriptor(&descManager);
-        platformTarget->setPos(glm::vec3(target.x,target.y-0.8f,target.z));
+        platformTarget->setPos(glm::vec3(target.x,Map::getMapHeight(target.x,target.z),target.z));
         platformTarget->setScale(rocketScale*11);
         platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platformTarget);
@@ -149,6 +150,10 @@ namespace RocketSimulator{
         //TO ADD LIGHT: insert lightPos (x,y,z) and lightColor (r,g,b,intensity)  20 is a good number for intensity (1 imperceptible 50 super high)
         Light * light1 = new Light(glm::vec3(-5,3,2),glm::vec4(0.0,0,1,20));
         Light * light2 = new Light(glm::vec3(5,3,1),glm::vec4(1,0,0,20));
+
+        /**************************AMBIENT LIGHT SETUP***********************************/
+        //W in color is the intensity COLOR:(r,g,b,intensity)
+        Light::setAmbientLight(glm::vec3(0,1,1),glm::vec4(0.6f,0.6,0.6f,0.5));
 
         /****************************UI COMPOSITION***************************************/
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
