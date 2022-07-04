@@ -88,7 +88,7 @@ namespace RocketSimulator{
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
         platform->setPos(glm::vec3(startPos.x,0.2f,startPos.z));
-        platform->setScale(0.5);
+        platform->setScale(0.55);
         platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platform);
 
@@ -99,8 +99,8 @@ namespace RocketSimulator{
         platformTarget->init();
         platformTarget->bindPipeline(&graphicPipelineCustom);
         platformTarget->initDescriptor(&descManager);
-        platformTarget->setPos(glm::vec3(target.x+startPos.x,target.y-0.8f,target.z+startPos.y));
-        platformTarget->setScale(0.5);
+        platformTarget->setPos(glm::vec3(target.x,target.y-0.8f,target.z));
+        platformTarget->setScale(0.55);
         platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platformTarget);
 

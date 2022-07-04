@@ -19,6 +19,7 @@ namespace Engine{
 
 
     void Rocket::trajectory(glm::vec3 target, float heightMax, float vAcc) {
+        target -= pos;
         maxHeight=heightMax;
         offsetHeight = heightMax - pos[1];
 
