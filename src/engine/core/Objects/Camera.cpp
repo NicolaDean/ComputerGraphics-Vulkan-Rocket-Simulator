@@ -184,8 +184,8 @@ namespace Engine{
     void Camera::nextCamera(){
 
         //Select camera in rotation
-        currentCamIndex = (currentCamIndex +1)%3;
-        std::cout << currentCamIndex <<"\n";
+        currentCamIndex = (currentCamIndex +1)%cameras.size();
+        std::cout << "Current CAM:" <<currentCamIndex <<"\n";
         Camera::switchCamera(currentCamIndex);
 
         /*

@@ -13,25 +13,37 @@ namespace RocketSimulator{
      * /REMEMBER TO MODIFY THE NUMBER OF MODELS IN THE CREATE POOL FUNCTION WHEN ADDING MODEL
      */
     void RocketSimulator::customInit() {
+        /****************POSITIONS SETTINGS*******************************************/
+
         glm::vec3  startPos=glm::vec3(1.0f,1.0f,1.0f);
+
+        //Set Target (bottom is fake)
+        glm::vec3 target= glm::vec3(10.0f,1.0f,10.0f);
 
         /****************CAMERA SETTINGS*******************************************/
         Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam0->setPosition(glm::vec3(startPos.x+5,startPos.y+0.5,startPos.z+9));
+        cam0->setPosition(glm::vec3(startPos.x+4,startPos.y+0.5,startPos.z));
         Camera::addCamera(cam0); //CAM 0
-       // Camera::currentCam->setPosition({1,1,-1});
+        cam0->setAngle(glm::vec3(0,M_PI_2,0));
+
+        // Camera::currentCam->setPosition({1,1,-1});
        // Camera::currentCam->setAngle({0.1,0,0});
         Camera::currentCam->setNearPlane(0.1);
         Camera::currentCam->setFarPlane(300.0);
 
         Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam1->setPosition(glm::vec3(0,20,0));
+        cam1->setPosition(glm::vec3(startPos.x,20,startPos.z));
         cam1->setAngle(glm::vec3(-M_PI_2,0,0));
 
         Camera::addCamera(cam1); //CAM 1
 
         Camera * cam2 = new Camera(Engine::LOOK_AT_CAMERA,ORTOGONALE);
         Camera::addCamera(cam2); //CAM 1
+
+        Camera * cam3 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam3->setPosition(glm::vec3(target.x+4,target.y+0.5,target.z));
+        Camera::addCamera(cam3); //CAM 0
+        cam3->setAngle(glm::vec3(0,M_PI_2,0));
 
 
         Camera::switchCamera(0); //SET CAM 0 as current Cam
@@ -63,8 +75,6 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(map);
 
 
-        //Set Target (bottom is fake)
-        glm::vec3 target= glm::vec3(10.0f,1.0f,10.0f);
 
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
