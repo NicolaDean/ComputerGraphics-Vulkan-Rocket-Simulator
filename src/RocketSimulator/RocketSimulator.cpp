@@ -64,20 +64,21 @@ namespace RocketSimulator{
 
 
         //Set Target (bottom is fake)
-        glm::vec3 target= glm::vec3(5.0f,1.0f,5.0f);
+        glm::vec3 target= glm::vec3(10.0f,1.0f,10.0f);
 
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
+        float rocketScale=0.05;
         m2->init();
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
         m2->setPos(startPos);
         //cam2-> set track
-        m2->setScale(0.05);
+        m2->setScale(rocketScale);
         m2->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
-        m2->trajectory(target,3.0f,0.5);
+        m2->trajectory(target,8.0f,0.5);
 
         /********************SKYBOX CREATION********************************/
         //PLATFORM
@@ -88,7 +89,7 @@ namespace RocketSimulator{
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
         platform->setPos(glm::vec3(startPos.x,0.2f,startPos.z));
-        platform->setScale(0.55);
+        platform->setScale(rocketScale*11);
         platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platform);
 
@@ -100,7 +101,7 @@ namespace RocketSimulator{
         platformTarget->bindPipeline(&graphicPipelineCustom);
         platformTarget->initDescriptor(&descManager);
         platformTarget->setPos(glm::vec3(target.x,target.y-0.8f,target.z));
-        platformTarget->setScale(0.55);
+        platformTarget->setScale(rocketScale*11);
         platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platformTarget);
 
