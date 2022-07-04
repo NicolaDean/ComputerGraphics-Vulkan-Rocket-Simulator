@@ -13,10 +13,11 @@ namespace RocketSimulator{
      * /REMEMBER TO MODIFY THE NUMBER OF MODELS IN THE CREATE POOL FUNCTION WHEN ADDING MODEL
      */
     void RocketSimulator::customInit() {
+        glm::vec3  startPos=glm::vec3(1.0f,1.0f,1.0f);
 
         /****************CAMERA SETTINGS*******************************************/
         Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam0->setPosition(glm::vec3(1,1,1));
+        cam0->setPosition(glm::vec3(startPos.x+5,startPos.y+0.5,startPos.z+9));
         Camera::addCamera(cam0); //CAM 0
        // Camera::currentCam->setPosition({1,1,-1});
        // Camera::currentCam->setAngle({0.1,0,0});
@@ -61,31 +62,48 @@ namespace RocketSimulator{
         map->populateMapWithRandomObject(&descManager,&graphicPipelineCustom);
         Mesh::meshes->push_back(map);
 
+
+        //Set Target (bottom is fake)
+        glm::vec3 target= glm::vec3(5.0f,1.0f,5.0f);
+
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
         m2->init();
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
-        m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
+        m2->setPos(startPos);
         //cam2-> set track
         m2->setScale(0.05);
         m2->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
-        m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,0.5);
+        m2->trajectory(target,3.0f,0.5);
 
         /********************SKYBOX CREATION********************************/
         //PLATFORM
         Model* platform = new Model("./src/Models/platform.obj",
-              "./src/Textures/platform.jpeg",bufferManager);
+              "./src/Textures/platform.jpg",bufferManager);
         //Platform* platform = new Platform(bufferManager);
         platform->init();
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
-        platform->setPos(glm::vec3(1.0f,0.2f,1.0f));
+        platform->setPos(glm::vec3(startPos.x,0.2f,startPos.z));
         platform->setScale(0.5);
         platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platform);
+
+        //Platform target (movable?)
+
+        Model* platformTarget = new Model("./src/Models/platform.obj",
+                                    "./src/Textures/platform.jpg",bufferManager);
+        platformTarget->init();
+        platformTarget->bindPipeline(&graphicPipelineCustom);
+        platformTarget->initDescriptor(&descManager);
+        platformTarget->setPos(glm::vec3(target.x+startPos.x,target.y-0.8f,target.z+startPos.y));
+        platformTarget->setScale(0.5);
+        platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
+        Mesh::meshes->push_back(platformTarget);
+
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
         //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
