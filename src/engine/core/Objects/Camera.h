@@ -8,14 +8,13 @@
 #include "../../commonLibs.h"
 #include "../Utils/Constants.h"
 #include "Entity.h"
-#include "Camera.h"
 
 namespace Engine{
 
     glm::mat4 LookInDirMat(glm::vec3 Pos, glm::vec3 Angs);
     glm::mat4 LookAtMat(glm::vec3 Pos, glm::vec3 aim, float Roll);
 
-    enum CameraType { LOOK_AT_CAMERA, LOOK_IN_DIRECTION};
+    enum CameraType { LOOK_IN_DIRECTION,LOOK_AT_CAMERA};
     enum PerspectiveType {ORTOGONALE};
 
     class Camera:public Entity {
@@ -40,7 +39,7 @@ namespace Engine{
         glm::mat4 perspectiveMatrix;
 
         //Contain a pointer to a target to look
-        Entity* CameraTarget;
+        Entity* CameraTargetEntity;
 
         glm::mat4 getCamPosTranslate(){
             return glm::transpose(glm::mat4(CamDir));
@@ -84,7 +83,7 @@ namespace Engine{
 
         glm::mat4 getViewMatrix();
         glm::mat4 getPerspectiveMatric();
-        //void setTarget(Mesh* target_model);
+        void setTarget(Entity* target_model);
         //void setTarget(glm::vec3 target_position);
         //void setUp(glm::vec3 up);
         // -> eg if we want a camera that track the rocket from bottom following and alligning to it(like in space x lives)

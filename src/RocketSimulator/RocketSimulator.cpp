@@ -20,33 +20,6 @@ namespace RocketSimulator{
         //Set Target (bottom is fake)
         glm::vec3 target= glm::vec3(10.0f,1.0f,10.0f);
 
-        /****************CAMERA SETTINGS*******************************************/
-        Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam0->setPosition(glm::vec3(startPos.x+4,startPos.y+0.5,startPos.z));
-        Camera::addCamera(cam0); //CAM 0
-        cam0->setAngle(glm::vec3(0,M_PI_2,0));
-
-        // Camera::currentCam->setPosition({1,1,-1});
-       // Camera::currentCam->setAngle({0.1,0,0});
-        Camera::currentCam->setNearPlane(0.1);
-        Camera::currentCam->setFarPlane(300.0);
-
-        Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam1->setPosition(glm::vec3(startPos.x,20,startPos.z));
-        cam1->setAngle(glm::vec3(-M_PI_2,0,0));
-
-        Camera::addCamera(cam1); //CAM 1
-
-        Camera * cam2 = new Camera(Engine::LOOK_AT_CAMERA,ORTOGONALE);
-        Camera::addCamera(cam2); //CAM 1
-
-        Camera * cam3 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam3->setPosition(glm::vec3(target.x+4,target.y+0.5,target.z));
-        Camera::addCamera(cam3); //CAM 0
-        cam3->setAngle(glm::vec3(0,M_PI_2,0));
-
-
-        Camera::switchCamera(0); //SET CAM 0 as current Cam
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
 
         //Descriptor For Terrain: (Only Uniform Buffer, No Texture)
@@ -89,6 +62,36 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->trajectory(target,8.0f,0.5);
+
+        /****************CAMERA SETTINGS*******************************************/
+        Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam0->setPosition(glm::vec3(startPos.x+4,startPos.y+0.5,startPos.z));
+        Camera::addCamera(cam0); //CAM 0
+        cam0->setAngle(glm::vec3(0,M_PI_2,0));
+
+        // Camera::currentCam->setPosition({1,1,-1});
+        // Camera::currentCam->setAngle({0.1,0,0});
+        Camera::currentCam->setNearPlane(0.1);
+        Camera::currentCam->setFarPlane(300.0);
+
+        Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam1->setPosition(glm::vec3(startPos.x,20,startPos.z));
+        cam1->setAngle(glm::vec3(-M_PI_2,0,0));
+
+        Camera::addCamera(cam1); //CAM 1
+
+        Camera * cam2 = new Camera(LOOK_AT_CAMERA,ORTOGONALE);
+        cam2->setTarget(m2);
+        Camera::addCamera(cam2); //
+
+        Camera * cam3 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam3->setPosition(glm::vec3(target.x+4,target.y+0.5,target.z));
+        Camera::addCamera(cam3); //CAM 0
+        cam3->setAngle(glm::vec3(0,M_PI_2,0));
+
+
+        Camera::switchCamera(0); //SET CAM 0 as current Cam
+        cam2->switchType(LOOK_AT_CAMERA);
 
         /********************SKYBOX CREATION********************************/
         //PLATFORM
