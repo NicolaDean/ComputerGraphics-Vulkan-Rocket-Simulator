@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+#include "Entity.h"
 
 
 namespace Engine{
@@ -43,7 +44,7 @@ namespace Engine{
         return z_rotation(Roll) * glm::lookAt(Pos,aim,u);
     }
 
-    Camera* Camera::currentCam = new Camera();
+    Camera* Camera::currentCam ;
 
     //TODO ADD METHODS TO MOVE CAMERA AND TO CHANGE SETTINGS (focal lenght etc..)
     Camera::Camera():Entity() {
@@ -65,14 +66,6 @@ namespace Engine{
 
     void Camera::switchType(CameraType t){
         type = t;
-        if(type == LOOK_AT_CAMERA){
-            LookAtMat(glm::vec3(5.0f, 5.0f, 5.0f),glm::vec3(0.0f, 0.0f, 0.0f),0);
-            //viewMatrix = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        }
-        if(type == LOOK_IN_DIRECTION){
-            //TODO FIND HOW DO
-            viewMatrix = LookInDirMat(CamPos,glm::vec3(0,1,0));
-        }
     }
 
     glm::mat4 Camera::getPerspectiveMatric() {
@@ -176,7 +169,10 @@ namespace Engine{
     glm::mat4 Camera::getViewMatrix(){
         updateCamDir();
         //std::cout<<"CAM:"<<CamPos.x<<","<<CamPos.y<<","<<CamPos.z<<"\n";
-        //TODO PUT IF ON CAM TYPE
+        if(type==LOOK_AT_CAMERA){
+            glm::vec3 p=CameraTargetEntity->getPos();
+            return glm::lookAt(CamPos,p,glm::vec3(0,1,0));
+        }
         //return glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
         return LookInDirMat(CamPos,CamAng);
     }
@@ -184,8 +180,8 @@ namespace Engine{
     void Camera::nextCamera(){
 
         //Select camera in rotation
-        currentCamIndex = (currentCamIndex +1)%3;
-        std::cout << currentCamIndex <<"\n";
+        currentCamIndex = (currentCamIndex +1)%cameras.size();
+        std::cout << "Current CAM:" <<currentCamIndex <<"\n";
         Camera::switchCamera(currentCamIndex);
 
         /*
@@ -211,9 +207,12 @@ namespace Engine{
             std::cout << "-1" << "\n";
         }*/
 
-
         //return -1;
     }
+
+    void Camera::setTarget(Entity* target_model){
+        CameraTargetEntity=target_model;
+    };
 
 
 }

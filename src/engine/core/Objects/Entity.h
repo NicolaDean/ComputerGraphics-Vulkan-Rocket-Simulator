@@ -92,6 +92,10 @@ namespace Engine{
             pos = p;
         }
 
+        glm::vec3 getPos(){
+            return pos;
+        }
+
         void setAngles(glm::vec3 a){
             setUpdated();
             orientation = a;

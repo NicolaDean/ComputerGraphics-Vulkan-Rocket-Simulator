@@ -13,27 +13,13 @@ namespace RocketSimulator{
      * /REMEMBER TO MODIFY THE NUMBER OF MODELS IN THE CREATE POOL FUNCTION WHEN ADDING MODEL
      */
     void RocketSimulator::customInit() {
+        /****************POSITIONS SETTINGS*******************************************/
 
-        /****************CAMERA SETTINGS*******************************************/
-        Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam0->setPosition(glm::vec3(1,1,1));
-        Camera::addCamera(cam0); //CAM 0
-       // Camera::currentCam->setPosition({1,1,-1});
-       // Camera::currentCam->setAngle({0.1,0,0});
-        Camera::currentCam->setNearPlane(0.1);
-        Camera::currentCam->setFarPlane(300.0);
+        glm::vec3  startPos=glm::vec3(1.0f,1.0f,1.0f);
 
-        Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam1->setPosition(glm::vec3(0,20,0));
-        cam1->setAngle(glm::vec3(-M_PI_2,0,0));
+        //Set Target (bottom is fake)
+        glm::vec3 target= glm::vec3(10.0f,1.0f,10.0f);
 
-        Camera::addCamera(cam1); //CAM 1
-
-        Camera * cam2 = new Camera(Engine::LOOK_AT_CAMERA,ORTOGONALE);
-        Camera::addCamera(cam2); //CAM 1
-
-
-        Camera::switchCamera(0); //SET CAM 0 as current Cam
         /****************CUSTOM DESCRIPTOR LAYOUTS*********************************/
 
         //Descriptor For Terrain: (Only Uniform Buffer, No Texture)
@@ -61,31 +47,81 @@ namespace RocketSimulator{
         map->populateMapWithRandomObject(&descManager,&graphicPipelineCustom);
         Mesh::meshes->push_back(map);
 
+
+
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
+        float rocketScale=0.05;
         m2->init();
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
-        m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
+        m2->setPos(startPos);
         //cam2-> set track
-        m2->setScale(0.05);
-        m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
+        m2->setScale(rocketScale);
+        m2->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
-        m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,0.5);
+        m2->trajectory(target,8.0f,0.5);
+
+        /****************CAMERA SETTINGS*******************************************/
+        Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam0->setPosition(glm::vec3(startPos.x+4,startPos.y+0.5,startPos.z));
+        Camera::addCamera(cam0); //CAM 0
+        cam0->setAngle(glm::vec3(0,M_PI_2,0));
+
+        // Camera::currentCam->setPosition({1,1,-1});
+        // Camera::currentCam->setAngle({0.1,0,0});
+        Camera::currentCam->setNearPlane(0.1);
+        Camera::currentCam->setFarPlane(300.0);
+
+        Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam1->setPosition(glm::vec3(startPos.x,20,startPos.z));
+        cam1->setAngle(glm::vec3(-M_PI_2,0,0));
+
+        Camera::addCamera(cam1); //CAM 1
+
+        //LOOKAT Camera (Follows the rocket)
+        Camera * cam2 = new Camera(LOOK_AT_CAMERA,ORTOGONALE);
+        cam2->setPosition(glm::vec3(startPos.x+4,startPos.y+0.5,startPos.z));
+        cam2->setAngle(glm::vec3(M_PI_4,0,0));
+        cam2->setTarget(m2);
+        Camera::addCamera(cam2); //
+        cam2->switchType(LOOK_AT_CAMERA);
+
+
+        Camera * cam3 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
+        cam3->setPosition(glm::vec3(target.x+4,target.y+0.5,target.z));
+        Camera::addCamera(cam3); //CAM 0
+        cam3->setAngle(glm::vec3(0,M_PI_2,0));
+
+
+        Camera::switchCamera(0); //SET CAM 0 as current Cam
 
         /********************SKYBOX CREATION********************************/
         //PLATFORM
         Model* platform = new Model("./src/Models/platform.obj",
-              "./src/Textures/platform.jpeg",bufferManager);
+              "./src/Textures/platform.jpg",bufferManager);
         //Platform* platform = new Platform(bufferManager);
         platform->init();
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
-        platform->setPos(glm::vec3(1.0f,0.2f,1.0f));
-        platform->setScale(0.05);
+        platform->setPos(glm::vec3(startPos.x,0.2f,startPos.z));
+        platform->setScale(rocketScale*11);
         platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platform);
+
+        //Platform target (movable?)
+
+        Model* platformTarget = new Model("./src/Models/platform.obj",
+                                    "./src/Textures/platform.jpg",bufferManager);
+        platformTarget->init();
+        platformTarget->bindPipeline(&graphicPipelineCustom);
+        platformTarget->initDescriptor(&descManager);
+        platformTarget->setPos(glm::vec3(target.x,target.y-0.8f,target.z));
+        platformTarget->setScale(rocketScale*11);
+        platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
+        Mesh::meshes->push_back(platformTarget);
+
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
         //Skybox* sky = new  Skybox(bufferManager,"./src/Textures/Skybox_Default/Skybox");
