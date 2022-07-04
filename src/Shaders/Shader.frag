@@ -15,10 +15,10 @@ layout(set = 0, binding = 0) uniform GlobalUniformBuffer {
 
 layout(set=1,binding = 1) uniform sampler2D texSampler;
 
-layout(location = 0) in vec3 fragViewDir;
-layout(location = 1) in vec3 fragNorm;
-layout(location = 2) in vec2 fragTexCoord;
-layout(location = 3) out vec3 fragPosWorld;
+layout(location = 0) flat in vec3 fragViewDir;
+layout(location = 1) flat in vec3 fragNorm;
+layout(location = 2) flat in vec2 fragTexCoord;
+layout(location = 3) flat in vec3 fragPosWorld;
 
 layout(location = 0) out vec4 outColor;
 
@@ -40,10 +40,10 @@ void main() {
     // Hemispheric ambient
     vec3 ambient  = (vec3(0.1f,0.1f, 0.1f) * (1.0f + N.y) + vec3(0.0f,0.0f, 0.1f) * (1.0f - N.y));
 
-    vec3 diffuseLight = ambient;
+    vec3 diffuseLight = ambient; // CHECK IF CORRECT
     for (int i = 0; i < gubo.numLights; i++) {
         LightUniform light = gubo.lights[i];
-        vec3 directionToLight = light.position.xyz - fragNorm;
+        vec3 directionToLight = light.position.xyz - fragPosWorld;
         float attenuation = 1.0 / dot(directionToLight, directionToLight);// distance squared
         float cosAngIncidence = max(dot(surfaceNormal, normalize(directionToLight)), 0);
         vec3 intensity = light.color.xyz * light.color.w * attenuation;
@@ -51,5 +51,6 @@ void main() {
         diffuseLight += intensity * cosAngIncidence;
     }
     diffuseLight = diffuseLight * diffColor;
+
     outColor = vec4(clamp(diffuseLight + diffuse + specular, vec3(0.0f), vec3(1.0f)), 1.0f);
 }

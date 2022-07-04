@@ -108,9 +108,11 @@ namespace RocketSimulator{
         Skybox::rotateSky(); //WORK!!!
         //TODO ADD A METHOD TO CLEANUP SKYBOX NOT IN THE MESH VECTOR
 
+        //TODO ADD A STATIC METHOD TO MODIFY "AMBIENT LIGHT SETTINGS"
         /****************************LIGHT SETUP******************************************/
-        Light * light1 = new Light(glm::vec3(1,3,2),glm::vec4(0.0,0,1,0));
-        Light * light2 = new Light(glm::vec3(5,3,1),glm::vec4(1,0,0,0));
+        //TO ADD LIGHT: insert lightPos (x,y,z) and lightColor (r,g,b,intensity)  20 is a good number for intensity (1 imperceptible 50 super high)
+        Light * light1 = new Light(glm::vec3(-5,3,2),glm::vec4(0.0,0,1,20));
+        Light * light2 = new Light(glm::vec3(5,3,1),glm::vec4(1,0,0,20));
 
         /****************************UI COMPOSITION***************************************/
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
