@@ -80,9 +80,14 @@ namespace RocketSimulator{
 
         Camera::addCamera(cam1); //CAM 1
 
+        //LOOKAT Camera (Follows the rocket)
         Camera * cam2 = new Camera(LOOK_AT_CAMERA,ORTOGONALE);
+        cam2->setPosition(glm::vec3(startPos.x+4,startPos.y+0.5,startPos.z));
+        cam2->setAngle(glm::vec3(M_PI_4,0,0));
         cam2->setTarget(m2);
         Camera::addCamera(cam2); //
+        cam2->switchType(LOOK_AT_CAMERA);
+
 
         Camera * cam3 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
         cam3->setPosition(glm::vec3(target.x+4,target.y+0.5,target.z));
@@ -91,7 +96,6 @@ namespace RocketSimulator{
 
 
         Camera::switchCamera(0); //SET CAM 0 as current Cam
-        cam2->switchType(LOOK_AT_CAMERA);
 
         /********************SKYBOX CREATION********************************/
         //PLATFORM
