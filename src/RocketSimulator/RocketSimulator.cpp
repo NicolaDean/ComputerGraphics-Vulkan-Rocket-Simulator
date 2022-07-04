@@ -69,7 +69,7 @@ namespace RocketSimulator{
         m2->setPos(glm::vec3(1.0f,1.0f,1.0f));
         //cam2-> set track
         m2->setScale(0.05);
-        m2->setAngles(glm::vec3(1.0f,0.0f,0.0f));
+        m2->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
         m2->trajectory(glm::vec3(5.0f,1.0f,5.0f),3.0f,0.5);
@@ -83,7 +83,7 @@ namespace RocketSimulator{
         platform->bindPipeline(&graphicPipelineCustom);
         platform->initDescriptor(&descManager);
         platform->setPos(glm::vec3(1.0f,0.2f,1.0f));
-        platform->setScale(0.05);
+        platform->setScale(0.5);
         platform->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platform);
 
