@@ -8,7 +8,7 @@
 #include "../../commonLibs.h"
 #include "../Utils/Constants.h"
 #include "Entity.h"
-#include "Camera.h"
+#include "Mesh.h"
 
 namespace Engine{
 
@@ -41,7 +41,6 @@ namespace Engine{
 
         //Contain a pointer to a target to look
         Entity* CameraTarget;
-
         glm::mat4 getCamPosTranslate(){
             return glm::transpose(glm::mat4(CamDir));
         }

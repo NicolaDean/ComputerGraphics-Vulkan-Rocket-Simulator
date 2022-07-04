@@ -128,8 +128,6 @@ namespace RocketSimulator{
         UImanager::addButton("./src/Textures/UI/moon.png", onSkyClick,-0.7f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/target.png", onTargetClick,-0.5f,0.9f,0.2f,0.2f);
         UImanager::addButton("./src/Textures/UI/switch.png", onSwitchClick,-0.3f,0.9f,0.2f,0.2f);
-
-
     }
 
     void RocketSimulator::rotateSky() {
