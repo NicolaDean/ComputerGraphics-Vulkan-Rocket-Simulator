@@ -62,7 +62,6 @@ namespace RocketSimulator{
         m2->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(m2);
         this->subscribeMovable(m2);
-        m2->trajectory(target,8.0f,0.5);
 
         /****************CAMERA SETTINGS*******************************************/
         Camera * cam0 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
@@ -122,6 +121,7 @@ namespace RocketSimulator{
         platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platformTarget);
         this->subscribeMovable(platformTarget);
+        m2->setTarget(platformTarget->getPos());
 
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");

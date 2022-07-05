@@ -34,7 +34,9 @@
             void onK(float dt);
 
             void onL(float dt);
-
+            glm::vec3* getPos(){
+                return &pos;
+            }
 
         };
     };

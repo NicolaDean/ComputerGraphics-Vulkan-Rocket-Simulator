@@ -13,6 +13,7 @@ namespace Engine{
         bool deleted=false;
         bool launched = false;
         bool landing=false;
+        glm::vec3* target;
 
         // Rotation around its axis
         float roll= 0.0f;
@@ -48,6 +49,7 @@ namespace Engine{
         }
         void launch(){
             std::cout<<"LAUNCHED ROCKETTTTTTT\n";
+            trajectory(*target,8.0f,0.5);
             launched=true;
         }
         virtual void update(float dt);
@@ -57,6 +59,9 @@ namespace Engine{
         void updateAcceleration(float dt);
         glm::vec3 getPosition(){
             return this->pos;
+        }
+        void setTarget(glm::vec3* t){
+            target=t;
         }
     };
 }
