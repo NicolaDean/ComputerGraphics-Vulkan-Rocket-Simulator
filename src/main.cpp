@@ -14,7 +14,7 @@ const uint32_t HEIGHT = 480;
 
 int main() {
     //App::App app = App::App();
-    RocketSimulator::RocketSimulator rocketSimulator = RocketSimulator::RocketSimulator(WIDTH,HEIGHT,"Rocket Simusclsator");
+    RocketSimulator::RocketSimulator rocketSimulator = RocketSimulator::RocketSimulator(WIDTH,HEIGHT,"Rocket Simulator");
     try {
         rocketSimulator.run();
     } catch (const std::exception& e) {
