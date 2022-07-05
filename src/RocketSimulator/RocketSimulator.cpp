@@ -75,7 +75,7 @@ namespace RocketSimulator{
         Camera::currentCam->setFarPlane(300.0);
 
         Camera * cam1 = new Camera(LOOK_IN_DIRECTION,ORTOGONALE);
-        cam1->setPosition(glm::vec3(startPos.x,20,startPos.z));
+        cam1->setPosition(glm::vec3(target.x,25,target.z));
         cam1->setAngle(glm::vec3(-M_PI_2,0,0));
 
         Camera::addCamera(cam1); //CAM 1

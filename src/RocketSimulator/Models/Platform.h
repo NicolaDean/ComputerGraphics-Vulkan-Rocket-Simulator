@@ -7,6 +7,8 @@
 #include "../../engine/core/Objects/Model.h"
 #include "../../engine/core/Utils/printHelper.h"
 #include "../../engine/core/Core.h"
+#include "../../engine/core/Objects/Camera.h"
+
 
     namespace Engine {
         class Platform : public Model {
@@ -21,6 +23,9 @@
 
            void setTarget(){
                 target=!target;
+                if (target){
+                    Camera::switchCamera(1); //SET CAM 0 as current Cam
+                }
             };
 
 
