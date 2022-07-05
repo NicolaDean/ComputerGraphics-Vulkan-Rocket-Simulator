@@ -91,10 +91,13 @@ namespace Engine{
     }
 
     void Camera::switchCamera(int num) {
-        if(num<cameras.size())
+        if(num<cameras.size()){
             currentCam = cameras.at(num);
-        else
+            currentCamIndex=num;
+        }
+        else{
             std::runtime_error("CAMERA DOSNT EXIST");
+        }
     }
 
     void Camera::setPosition(glm::vec3 p){
