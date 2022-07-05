@@ -11,7 +11,7 @@
     namespace Engine {
         class Platform : public Model {
             float speed = 0.55f;
-            bool target;
+            bool target= false;
         public:
             Platform(BufferManager bufferManager) : Model("./src/Models/platform.obj",
                                                           "./src/Textures/platform.jpg", bufferManager) {
@@ -19,11 +19,10 @@
             }
 
 
-           void enableTarget(){
-                target=true;
+           void setTarget(){
+                target=!target;
             };
 
-            static void disableTarget();
 
             void update(float dt);
 

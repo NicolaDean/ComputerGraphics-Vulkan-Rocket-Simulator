@@ -4,7 +4,7 @@
 
 #include "Platform.h"
 #include "../../engine/core/Core.h"
-
+#include "../Terrain/ProceduralTerrain.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -25,26 +25,36 @@ namespace Engine {
             if (glfwGetKey(window, GLFW_KEY_J)) {
                 onJ(dt);
             }
-
+            //TODO check if sets the correct height
+            ProceduralTerrain proceduralTerrain;
+            pos[1]= proceduralTerrain.getHeight(pos[0],pos[1]);
         }
 
     }
 
+    //TODO the target then is slow
     void Platform::onI(float dt) {
-        pos[0] += speed * pos[0] * dt;
-        //pos[1]= ProceduratTerrain::getHeight(pos[0],pos[1]);
+        //pos[0] += speed * pos[0] * dt;
+        pos[0] +=  pos[0] * dt;
+
     }
 
     void Platform::onJ(float dt) {
-        pos[2] += -speed * pos[2] * dt;
+        //pos[2] += -speed * pos[2] * dt;
+        pos[2] +=  -pos[2] * dt;
+
     }
 
     void Platform::onK(float dt) {
-        pos[0] += -speed * pos[0] * dt;
+       // pos[0] += -speed * pos[0] * dt;
+        pos[0] +=  -pos[0] * dt;
+
     }
 
     void Platform::onL(float dt) {
-        pos[2] += speed *pos[2] * dt;
+        //pos[2] += speed *pos[2] * dt;
+        pos[2] += pos[2] * dt;
+
     }
 
 

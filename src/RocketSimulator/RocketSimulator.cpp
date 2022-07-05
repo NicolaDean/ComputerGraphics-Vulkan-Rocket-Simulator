@@ -159,7 +159,7 @@ namespace RocketSimulator{
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
         auto onSkyClick = std::bind(&RocketSimulator::rotateSky, this); //Bind method launch of Rocket to actual object m2
-        auto onTargetClick = std::bind(&Platform::enableTarget, platformTarget); //Bind method target of Rocket to actual object m2
+        auto onTargetClick = std::bind(&Platform::setTarget, platformTarget); //Bind method target of Rocket to actual object m2
         auto onSwitchClick = std::bind(&RocketSimulator::switchCamera, this); //Bind method launch of Rocket to actual object m2
 
         //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
