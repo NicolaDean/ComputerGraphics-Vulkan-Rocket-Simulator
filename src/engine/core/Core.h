@@ -65,7 +65,9 @@ namespace Engine{
             name = win_name;
         }
 
-        GLFWwindow* getWindow();
+        static GLFWwindow* getWindow(){
+            return window;
+        };
 
     private:
         void init();

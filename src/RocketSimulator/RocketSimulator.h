@@ -13,6 +13,8 @@
 #include "Terrain/Map.h"
 #include "../engine/UI/components/UIcomponent.h"
 #include "../engine/core/Objects/Light.h"
+#include "Models/Platform.h"
+
 
 using namespace Engine;
 

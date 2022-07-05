@@ -6,17 +6,39 @@
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_PLATFORM_H
 #include "../../engine/core/Objects/Model.h"
 #include "../../engine/core/Utils/printHelper.h"
+#include "../../engine/core/Core.h"
 
-    namespace Engine{
-        class Platform:public Model {
-
+    namespace Engine {
+        class Platform : public Model {
+            float speed = 0.55f;
+            bool target;
         public:
-            Platform(BufferManager bufferManager):Model("./src/Models/platform.obj",
-            "./src/Textures/platform.jpg",bufferManager){
-                std::cout<<"PLATFORM BUILT\n";
+            Platform(BufferManager bufferManager) : Model("./src/Models/platform.obj",
+                                                          "./src/Textures/platform.jpg", bufferManager) {
+                std::cout << "PLATFORM BUILT\n";
             }
+
+
+           void enableTarget(){
+                target=true;
+            };
+
+            static void disableTarget();
+
+            void update(float dt);
+
+            /*************USER INPUT METHODS******************/
+            void onI(float dt);
+
+            void onJ(float dt);
+
+            void onK(float dt);
+
+            void onL(float dt);
+
+
         };
-    }
+    };
 
 
 

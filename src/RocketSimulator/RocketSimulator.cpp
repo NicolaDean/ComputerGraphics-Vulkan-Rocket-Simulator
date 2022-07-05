@@ -1,6 +1,6 @@
 #include "RocketSimulator.h"
 #include <math.h>
-#include "./Models/Platform.h"
+#include "Models/Platform.h"
 
 namespace RocketSimulator{
 
@@ -113,8 +113,7 @@ namespace RocketSimulator{
 
         //Platform target (movable?)
 
-        Model* platformTarget = new Model("./src/Models/platform.obj",
-                                    "./src/Textures/platform.jpg",bufferManager);
+        Platform* platformTarget = new Platform(bufferManager);
         platformTarget->init();
         platformTarget->bindPipeline(&graphicPipelineCustom);
         platformTarget->initDescriptor(&descManager);
@@ -122,6 +121,7 @@ namespace RocketSimulator{
         platformTarget->setScale(rocketScale*11);
         platformTarget->setAngles(glm::vec3(0.0f,0.0f,0.0f));
         Mesh::meshes->push_back(platformTarget);
+        this->subscribeMovable(platformTarget);
 
 
         Skybox* sky =new  Skybox(bufferManager,"./src/Textures/Sky_Night/Night");
@@ -159,7 +159,7 @@ namespace RocketSimulator{
         //BEFORE PASSING A FUNCTION TO BUTTON NEED TO BIND THE FUNCTION TYPE (eg Rocket::launch) and OBJECT POINTER (eg m2)
         auto onLaunchClick = std::bind(&Rocket::launch, m2); //Bind method launch of Rocket to actual object m2
         auto onSkyClick = std::bind(&RocketSimulator::rotateSky, this); //Bind method launch of Rocket to actual object m2
-        auto onTargetClick = std::bind(&RocketSimulator::changeCameraTarget, this); //Bind method target of Rocket to actual object m2
+        auto onTargetClick = std::bind(&Platform::enableTarget, platformTarget); //Bind method target of Rocket to actual object m2
         auto onSwitchClick = std::bind(&RocketSimulator::switchCamera, this); //Bind method launch of Rocket to actual object m2
 
         //auto onCameraClick = std::bind(&Camera::change, m2); //Bind method launch of Rocket to actual object m2
@@ -179,6 +179,7 @@ namespace RocketSimulator{
     void RocketSimulator::changeCameraTarget(){
         std::cout<<"CHANGE TARGET CAM\n";
         Camera::switchCamera(1); //SET CAM 0 as current Cam
+        //Platform::enableTarget();
 
     }
 

@@ -11,9 +11,7 @@ namespace Engine{
         close();
     }
 
-    GLFWwindow* Core::getWindow(){
-        return window;
-    }
+
 
     void Core::init(){
         //Open GLFW window
