@@ -52,7 +52,7 @@ namespace RocketSimulator{
 
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
-        float rocketScale=0.05;
+        float rocketScale=0.06;
         m2->init();
         m2->bindPipeline(&graphicPipelineCustom);
         m2->initDescriptor(&descManager);
