@@ -58,6 +58,7 @@ namespace Engine{
         }
 
         void close();
+        void closeGlobalUniformBuffer();
         void closeDescriptorPool();
         void setAsGlobal();
         static void setAsGlobal(DescriptorManager* d);

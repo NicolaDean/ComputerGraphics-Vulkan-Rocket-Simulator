@@ -26,14 +26,14 @@ namespace Engine
         m->setScale(0.5);
     }
     void Map::populateMapWithRandomObject(DescriptorManager *manager, GraphicPipelineCustom *pipelineCustom) {
-        cactusPools.generatePool(200);
+        cactusPools.generatePool(1);
         std::vector<Model*> models =  cactusPools.initModels(pipelineCustom,manager);
 
         for(auto m : models){
             positionModel(m);
         }
 
-        rockPools.generatePool(30);
+        rockPools.generatePool(1);
         std::vector<Model*> rocks =  rockPools.initModels(pipelineCustom,manager);
 
         for(auto m : rocks){

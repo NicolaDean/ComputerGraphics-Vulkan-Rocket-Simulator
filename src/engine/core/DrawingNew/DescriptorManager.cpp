@@ -17,6 +17,11 @@ namespace Engine{
         //TODO CLOSE DESCRIPTOR POOL
         vkDestroyDescriptorSetLayout(*device, descriptorSetLayout, nullptr);
     }
+
+    void DescriptorManager::closeGlobalUniformBuffer() {
+        uniformBufferManager.clean();
+    }
+
     void DescriptorManager::setAsGlobal() {
         DescriptorManager::setAsGlobal(this);
     }

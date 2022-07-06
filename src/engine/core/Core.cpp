@@ -196,16 +196,17 @@ namespace Engine{
     void Core::close(){
         //TODO CHECK THE CLEANUP METHODS, A VK BUFFER IS MISSING...
         cleanupSwapChain();
-        customClose();
         manager.close();
-        //Uniform Buffer
-        //textureManager.close();
+        //GlobalUniform Buffer
+        DescriptorManager::globalDescriptor->closeGlobalUniformBuffer();
         //LayoutSet and Pool Descriptor
         descManager.closeDescriptorPool();
         descManager.close();
         closeUserDescriptors();
-        //Vertex and Index Buffer
+        //Vertex and Index Buffer OF ALL MESHES
         cleanMeshes();
+        //CLEAN CUSTO OF USER
+        customClose();
         //Close All Semaphore
         renderer.close();
         //Close Command Pool

@@ -42,7 +42,6 @@ namespace Engine{
             int model_selector = (int)(((float)rand() / (float)RAND_MAX)*size);
             Model * clone  = models.at(model_selector)->cloneModel(bufferManager,descriptor);
             models.push_back(clone);
-
         }
 
         return  models;
