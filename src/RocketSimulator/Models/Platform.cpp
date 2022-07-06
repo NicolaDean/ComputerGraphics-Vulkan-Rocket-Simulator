@@ -25,9 +25,9 @@ namespace Engine {
             if (glfwGetKey(window, GLFW_KEY_J)) {
                 onJ(dt);
             }
-            //TODO check if sets the correct height
-            ProceduralTerrain proceduralTerrain;
-            pos[1]= proceduralTerrain.getHeight(pos[0],pos[1]);
+
+            //y = height of map in (x,z)
+            pos[1] = Map::getMapHeight(pos[0],pos[2]);
         }
 
     }

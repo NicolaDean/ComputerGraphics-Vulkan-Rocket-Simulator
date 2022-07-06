@@ -5,6 +5,7 @@
 #ifndef COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_PLATFORM_H
 #define COMPUTERGRAPHICS_VULKAN_ROCKET_SIMULATOR_PLATFORM_H
 #include "../../engine/core/Objects/Model.h"
+#include "../Terrain/Map.h"
 #include "../../engine/core/Utils/printHelper.h"
 #include "../../engine/core/Core.h"
 #include "../../engine/core/Objects/Camera.h"
