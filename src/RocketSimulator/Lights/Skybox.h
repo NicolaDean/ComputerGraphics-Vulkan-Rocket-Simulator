@@ -24,7 +24,9 @@ namespace Engine{
             Skybox::sky_list.push_back(this);
         }
 
+
         void init();
+        static void closeSky();
         static void rotateSky();
         void loadCubicTexture(){
 

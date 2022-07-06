@@ -49,7 +49,6 @@ namespace RocketSimulator{
         Mesh::meshes->push_back(map);
 
 
-
         //MODEL 2 ROCKET
         Rocket* m2 = new Rocket(bufferManager);
         float rocketScale=0.06;
@@ -142,7 +141,7 @@ namespace RocketSimulator{
         sky3->initDescriptor(&descManager);
         sky3->bindPipeline(skyboxPipeline);
 
-        Skybox::rotateSky(); //WORK!!!
+        //Skybox::rotateSky(); //WORK!!!
         //TODO ADD A METHOD TO CLEANUP SKYBOX NOT IN THE MESH VECTOR
 
         //TODO ADD A STATIC METHOD TO MODIFY "AMBIENT LIGHT SETTINGS"
@@ -187,6 +186,10 @@ namespace RocketSimulator{
         std::cout<<"SWITCH CAM\n";
         Camera::nextCamera();
 
+    }
+
+    void RocketSimulator::customClose() {
+        Skybox::closeSky();
     }
 
 }

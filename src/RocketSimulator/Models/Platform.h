@@ -33,6 +33,7 @@
 
             void update(float dt);
 
+            void close();
             /*************USER INPUT METHODS******************/
             void onI(float dt);
 

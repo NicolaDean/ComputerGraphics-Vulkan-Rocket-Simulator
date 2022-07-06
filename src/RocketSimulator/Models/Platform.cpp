@@ -10,6 +10,10 @@
 
 namespace Engine {
 
+    void Platform::close() {
+        Model::close();
+    }
+
     void Platform::update(float dt) {
         GLFWwindow* window=Core::getWindow();
         if (Platform::target) {

@@ -17,6 +17,13 @@ namespace Engine{
         Mesh::init();
     }
 
+    void Skybox::closeSky() {
+        for(int i=0;i<sky_list.size();i++){
+            if(current!=i){
+                sky_list.at(i)->close();
+            }
+        }
+    }
     void Skybox::rotateSky() {
         std::cout<<"Address SKY 1: " <<sky_list.at(current)<<"\n";
         //Remove old sky
