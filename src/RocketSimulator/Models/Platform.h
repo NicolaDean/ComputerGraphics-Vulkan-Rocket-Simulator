@@ -13,7 +13,7 @@
 
     namespace Engine {
         class Platform : public Model {
-            float speed = 0.55f;
+            float speed = 10.0f;
             bool target= false;
         public:
             Platform(BufferManager bufferManager) : Model("./src/Models/platform.obj",

@@ -39,25 +39,25 @@ namespace Engine {
     //TODO the target then is slow
     void Platform::onI(float dt) {
         //pos[0] += speed * pos[0] * dt;
-        pos[0] +=  pos[0] * dt;
+        pos[0] +=  speed * dt;
 
     }
 
     void Platform::onJ(float dt) {
         //pos[2] += -speed * pos[2] * dt;
-        pos[2] +=  -pos[2] * dt;
+        pos[2] +=  -speed  * dt;
 
     }
 
     void Platform::onK(float dt) {
        // pos[0] += -speed * pos[0] * dt;
-        pos[0] +=  -pos[0] * dt;
+        pos[0] +=  -speed  * dt;
 
     }
 
     void Platform::onL(float dt) {
         //pos[2] += speed *pos[2] * dt;
-        pos[2] += pos[2] * dt;
+        pos[2] += speed  * dt;
 
     }
 
