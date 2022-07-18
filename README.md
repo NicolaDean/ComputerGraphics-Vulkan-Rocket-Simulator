@@ -1,4 +1,8 @@
 # ComputerGraphics-Vulkan-Rocket-Simulator
+##DEMO
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/gsZSmiKNmbU/0.jpg)](http://www.youtube.com/watch?v=gsZSmiKNmbU "DEMO")
+
 ##TERRAIN GENERATION
  -Create a gradientClass that allow to do gradient between 2 color (eg yellow->dark yellow)
  -Create a PerlinNoise generator
